@@ -17,3 +17,4 @@ Route::get('/', function () {
 
 
 Route::resource('invoice', 'InvoiceController');
+Route::resource('payment', 'PaymentController');

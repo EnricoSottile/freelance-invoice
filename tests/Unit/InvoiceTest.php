@@ -12,9 +12,6 @@ use Carbon\Carbon;
 class InvoiceTest extends TestCase
 {
 
-    /** 
-     * used for testing purposes
-     */
     const INVOICE_NUMBER = 'TEST_INVOICE';
 
 
@@ -28,9 +25,6 @@ class InvoiceTest extends TestCase
         $invoice->net_amount = rand(0 * 100, 10000 * 100) / 100;
         $invoice->tax = rand(0 * 100, 100 * 100) / 100;
         $invoice->description = 'This is a test...';
-        $invoice->date = null;
-        $invoice->sent_date = null;
-        $invoice->registered_date = null;
 
         $this->assertTrue( $invoice->save() );
     }
@@ -40,15 +34,17 @@ class InvoiceTest extends TestCase
      */
     public function testInvoiceCanBeUpdated()
     {
-        $invoice = Invoice::where('number', self::INVOICE_NUMBER)->first();
+        $invoice = Invoice::where('number', self::INVOICE_NUMBER)
+                    ->orderBy('created_at', 'desc')->first();
         
-        $val_before = $invoice->date;
+        $value_before = $invoice->date;
         $invoice->date = Carbon::now();
         
         $this->assertTrue( $invoice->save() );
         
-        $invoice = Invoice::where('number', self::INVOICE_NUMBER)->first();
-        $this->assertTrue( $val_before !== $invoice->date );
+        $invoice = Invoice::where('number', self::INVOICE_NUMBER)
+                    ->orderBy('created_at', 'desc')->first();
+        $this->assertTrue( $value_before !== $invoice->date );
     }
 
 
@@ -58,9 +54,21 @@ class InvoiceTest extends TestCase
      */
     public function testInvoiceCanBeDeleted()
     {
-        $invoice = Invoice::where('number', self::INVOICE_NUMBER)->first();
+        $invoice = Invoice::where('number', self::INVOICE_NUMBER)
+                    ->orderBy('created_at', 'desc')->first();
         
         $this->assertTrue( $invoice->delete() );
+    }
+
+
+        /**
+     * @return void
+     */
+    public function testInvoiceCanBePermanentlyDeleted()
+    {
+        $invoice = Invoice::withTrashed()->where('number', self::INVOICE_NUMBER)
+                    ->orderBy('created_at', 'desc')->first();
+        
         $this->assertTrue( $invoice->forceDelete() );
     }
 
