@@ -16,6 +16,12 @@ class CreateInvoicesTable extends Migration
         Schema::create('invoices', function (Blueprint $table) {
             $table->bigIncrements('id');
 
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+
+            $table->unsignedBigInteger('customer_id');
+            $table->foreign('customer_id')->references('id')->on('customers');
+
             $table->string('number');
             $table->decimal('net_amount', 10,2)->default(0.00);
             $table->decimal('tax', 5,2)->default(0.00);

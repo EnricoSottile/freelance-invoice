@@ -6,14 +6,12 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
-use App\Models\Invoice;
 use App\Models\Payment;
 
 class PaymentTest extends TestCase
 {
 
-    const INVOICE_NUMBER = 'TEST_INVOICE_WITH_PAYMENTS';
-
+    const INVOICE_ID = 1;
 
     /**
      *
@@ -21,12 +19,10 @@ class PaymentTest extends TestCase
      */
     public function testPaymentCanBeCreated()
     {
-        $invoice = new Invoice();
-        $invoice->number = self::INVOICE_NUMBER;
-        $invoice->save();
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         $payment = new Payment();
-        $payment->invoice_id = $invoice->id;
+        $payment->invoice_id = self::INVOICE_ID;
         $this->assertTrue( $payment->save() );
     }
 
@@ -36,14 +32,13 @@ class PaymentTest extends TestCase
      */
     public function testPaymentCanBeUpdated()
     {
-        $invoice = Invoice::where('number', self::INVOICE_NUMBER)->orderBy('created_at', 'desc')->first();
-        $payment = Payment::where('invoice_id', $invoice->id)->first();
+        $payment = Payment::where('invoice_id', self::INVOICE_ID)->first();
         $value_before = $payment->net_amount;
 
         $payment->net_amount = 100.50;
         $this->assertTrue( $payment->save() );
 
-        $payment = Payment::where('invoice_id', $invoice->id)->first();
+        $payment = Payment::where('invoice_id', self::INVOICE_ID)->first();
         $this->assertTrue( $value_before !== $payment->net_amount );
     }
 
@@ -53,9 +48,7 @@ class PaymentTest extends TestCase
      */
     public function testPaymentCanBeDeleted()
     {
-        $invoice = Invoice::where('number', self::INVOICE_NUMBER)->orderBy('created_at', 'desc')->first();
-        $payment = Payment::where('invoice_id', $invoice->id)->first();
-
+        $payment = Payment::where('invoice_id', self::INVOICE_ID)->first();
         $this->assertTrue( $payment->delete() );
     }
 
@@ -66,10 +59,7 @@ class PaymentTest extends TestCase
      */
     public function testPaymentCanBePermanentlyDeleted()
     {
-        $invoice = Invoice::where('number', self::INVOICE_NUMBER)->orderBy('created_at', 'desc')->first();
-        $payment = Payment::withTrashed()->where('invoice_id', $invoice->id)->first();
-
+        $payment = Payment::withTrashed()->where('invoice_id', self::INVOICE_ID)->first();
         $this->assertTrue( $payment->forceDelete() );
-        $this->assertTrue( $invoice->forceDelete() );
     }
 }

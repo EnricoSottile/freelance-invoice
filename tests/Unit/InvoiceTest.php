@@ -13,6 +13,9 @@ class InvoiceTest extends TestCase
 {
 
     const INVOICE_NUMBER = 'TEST_INVOICE';
+    const CUSTOMER_ID = 1;
+    const USER_ID = 1;
+
 
 
     /**
@@ -20,7 +23,12 @@ class InvoiceTest extends TestCase
      */
     public function testInvoiceCanBeCreated()
     {
+
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        
         $invoice = new Invoice();
+        $invoice->customer_id = self::CUSTOMER_ID;
+        $invoice->user_id = self::USER_ID;
         $invoice->number = self::INVOICE_NUMBER;
         $invoice->net_amount = rand(0 * 100, 10000 * 100) / 100;
         $invoice->tax = rand(0 * 100, 100 * 100) / 100;
