@@ -7,11 +7,24 @@ use Illuminate\Foundation\Testing\WithFaker;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
 use App\Models\Payment;
+use Carbon\Carbon;
 
 class PaymentTest extends TestCase
 {
 
-    const INVOICE_ID = 1;
+    use RefreshDatabase;
+
+
+    /**
+     * @return Payment $payment
+     */
+    private function buildPayment() : Payment {
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+        $payment = new Payment();
+        $payment->invoice_id = 1;
+        return $payment;
+    }
 
     /**
      *
@@ -21,8 +34,7 @@ class PaymentTest extends TestCase
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
-        $payment = new Payment();
-        $payment->invoice_id = self::INVOICE_ID;
+        $payment = $this->buildPayment();
         $this->assertTrue( $payment->save() );
     }
 
@@ -32,13 +44,14 @@ class PaymentTest extends TestCase
      */
     public function testPaymentCanBeUpdated()
     {
-        $payment = Payment::where('invoice_id', self::INVOICE_ID)->first();
+        $payment = $this->buildPayment();
+        $payment->save();
+
         $value_before = $payment->net_amount;
-
         $payment->net_amount = 100.50;
-        $this->assertTrue( $payment->save() );
 
-        $payment = Payment::where('invoice_id', self::INVOICE_ID)->first();
+        $this->assertTrue( $payment->save() );
+        $payment->fresh();
         $this->assertTrue( $value_before !== $payment->net_amount );
     }
 
@@ -48,7 +61,9 @@ class PaymentTest extends TestCase
      */
     public function testPaymentCanBeDeleted()
     {
-        $payment = Payment::where('invoice_id', self::INVOICE_ID)->first();
+        $payment = $this->buildPayment();
+        $payment->save();
+
         $this->assertTrue( $payment->delete() );
     }
 
@@ -59,7 +74,36 @@ class PaymentTest extends TestCase
      */
     public function testPaymentCanBePermanentlyDeleted()
     {
-        $payment = Payment::withTrashed()->where('invoice_id', self::INVOICE_ID)->first();
+        $payment = $this->buildPayment();
+        $payment->save();
+
         $this->assertTrue( $payment->forceDelete() );
+    }
+
+
+    /**
+     * @return void
+     */
+    public function testPaymentCannotBeUpdatedIfPayed(){
+        $payment = $this->buildPayment();
+        $payment->payed_date = Carbon::now();
+        $payment->save();
+
+        $payment->net_amount = rand(0,1000);
+        $this->expectException(\Exception::class);
+        $payment->save();
+    }
+
+
+    /**
+     * @return void
+     */
+    public function testPaymentCannotBeDeletedIfPayed(){
+        $payment = $this->buildPayment();
+        $payment->payed_date = Carbon::now();
+        $payment->save();
+
+        $this->expectException(\Exception::class);
+        $payment->delete();
     }
 }

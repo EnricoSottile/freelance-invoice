@@ -21,7 +21,7 @@ class InvoiceTest extends TestCase
     /**
      * @return Invoice $invoice 
      */
-    private function buildInvoice(){
+    private function buildInvoice() : Invoice {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
         $invoice = new Invoice();
@@ -56,6 +56,7 @@ class InvoiceTest extends TestCase
         $invoice->date = Carbon::now();
 
         $this->assertTrue( $invoice->save() );
+        $invoice->fresh();
         $this->assertTrue( $value_before !== $invoice->date );
     }
 
