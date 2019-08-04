@@ -10,8 +10,8 @@ use App\Models\Customer;
 
 class CustomerTest extends TestCase
 {
+    
     const CUSTOMER_NAME = 'TEST_CUSTOMER';
-
 
     /**
      * @return void

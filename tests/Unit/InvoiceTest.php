@@ -17,7 +17,6 @@ class InvoiceTest extends TestCase
     const USER_ID = 1;
 
 
-
     /**
      * @return void
      */
