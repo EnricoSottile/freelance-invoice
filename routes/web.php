@@ -16,13 +16,22 @@ Route::get('/', function () {
 });
 
 
-
+// CUSTOMER
 Route::resource('customer', 'CustomerController')
         ->only(['index', 'store', 'update', 'destroy']);
 
+// INVOICE
 Route::resource('invoice', 'InvoiceController')
         ->only(['index', 'store', 'update', 'destroy']);
 
+// PAYMENT
 Route::resource('payment', 'PaymentController')
         ->only(['index', 'store', 'update', 'destroy']);
 
+        
+// TRASH
+Route::get('restore/{resource}/{id}', 'TrashController@restore')
+        ->name('trash.restore');
+
+Route::delete('trash/{resource}/{id}', 'TrashController@destroy')
+        ->name('trash.destroy');
