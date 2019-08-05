@@ -11,6 +11,7 @@ use \Carbon\Carbon;
 use App\User;
 use App\Models\Customer;
 use App\Models\Invoice;
+use App\Models\Payment;
 
 class InvoiceTest extends TestCase
 {
@@ -151,6 +152,64 @@ class InvoiceTest extends TestCase
         $response = $this->delete("/invoice/${id}");
         $response->assertStatus(500);
     }
+
+
+
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testInvoiceCannotBeDestroyedIfHasBeenPayed()
+    {
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create();
+        $invoice = factory( Invoice::class)
+                    ->create([
+                        'customer_id' => $customer->id, 
+                        'user_id' => $user->id, 
+                        'registered_date' => null]);
+        
+        $payments = factory( Payment::class, 3)
+                    ->create([
+                        'invoice_id' => $invoice->id, 
+                        'payed_date' => Carbon::now()]);
+        
+        $id = $invoice->id;
+        $response = $this->delete("/invoice/${id}");
+        $response->assertStatus(500);
+        $this->assertDatabaseHas('invoices', ['id' => $id, 'deleted_at' => null]);
+    }
+
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testInvoiceCanBeDestroyedIfHasUnpayedPayments()
+    {
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create();
+        $invoice = factory( Invoice::class)
+                    ->create([
+                        'customer_id' => $customer->id, 
+                        'user_id' => $user->id, 
+                        'registered_date' => null]);
+        
+        $payments = factory( Payment::class, 3)
+                    ->create([
+                        'invoice_id' => $invoice->id, 
+                        'payed_date' => null]);
+        
+        $id = $invoice->id;
+        $response = $this->delete("/invoice/${id}");
+        $response->assertStatus(200);
+        $this->assertSoftDeleted('invoices', ['id' => $id]);
+    }
+
+
 
 
 }

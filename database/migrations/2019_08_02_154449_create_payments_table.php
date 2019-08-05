@@ -18,8 +18,6 @@ class CreatePaymentsTable extends Migration
             $table->unsignedBigInteger('invoice_id');
             $table->foreign('invoice_id')->references('id')->on('invoices');
 
-            $table->string('group_id')->nullable();
-
             $table->decimal('net_amount', 10,2)->default(0.00);
             $table->dateTime('due_date')->nullable();
             $table->dateTime('payed_date')->nullable();

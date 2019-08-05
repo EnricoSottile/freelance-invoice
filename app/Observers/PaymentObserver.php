@@ -14,7 +14,7 @@ class PaymentObserver
      * @return void
      */
     public function updating(Payment $payment){
-        $existingPayment = Payment::find($payment->id);
+        $existingPayment = Payment::withTrashed()->findOrFail($payment->id);
 
         if ( $existingPayment->isPayed() ) {
             throw new \Exception('Cannot update registered payment');
@@ -30,7 +30,7 @@ class PaymentObserver
      */
     public function deleting(Payment $payment)
     {        
-        $existingPayment = Payment::find($payment->id);
+        $existingPayment = Payment::withTrashed()->findOrFail($payment->id);
 
         if ( $existingPayment->isPayed() ) {
             throw new \Exception('Cannot delete registered payment');

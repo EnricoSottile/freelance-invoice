@@ -31,11 +31,18 @@ class InvoiceObserver
      */
     public function deleting(Invoice $invoice)
     {        
+        
         $existingInvoice = Invoice::withTrashed()->findOrFail($invoice->id);
-
         if ( $existingInvoice->isRegistered() ) {
             throw new \Exception('Cannot delete registered invoice');
         }
+
+
+        $hasPayedPayments = $invoice->received_payments()->count();
+        if ($hasPayedPayments) {
+            throw new \Exception('Cannot delete invoice with registered payments');
+        }
+
     }
 
 }
