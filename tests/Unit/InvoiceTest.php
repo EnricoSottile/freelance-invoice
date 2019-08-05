@@ -24,13 +24,9 @@ class InvoiceTest extends TestCase
     private function buildInvoice() : Invoice {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
-        $invoice = new Invoice();
-        $invoice->customer_id = self::CUSTOMER_ID;
-        $invoice->user_id = self::USER_ID;
-        $invoice->number = 'TEST_INVOICE';
-        $invoice->net_amount = rand(0 * 100, 10000 * 100) / 100;
-        $invoice->tax = rand(0 * 100, 100 * 100) / 100;
-        $invoice->description = 'This is a test...';
+        $invoice = factory( Invoice::class )
+                    ->make(['customer_id' => 1, 'user_id' => 1]);
+
         return $invoice;
     }
 
@@ -50,6 +46,7 @@ class InvoiceTest extends TestCase
     public function testInvoiceCanBeUpdated()
     {
         $invoice = $this->buildInvoice();
+        $invoice->registered_date = null;
         $invoice->save();
         
         $value_before = $invoice->date;
@@ -68,6 +65,7 @@ class InvoiceTest extends TestCase
     public function testInvoiceCanBeDeleted()
     {
         $invoice = $this->buildInvoice();
+        $invoice->registered_date = null;
         $invoice->save();
         
         $this->assertTrue( $invoice->delete() );
@@ -80,6 +78,7 @@ class InvoiceTest extends TestCase
     public function testInvoiceCanBePermanentlyDeleted()
     {
         $invoice = $this->buildInvoice();
+        $invoice->registered_date = null;
         $invoice->save();
         $this->assertTrue( $invoice->forceDelete() );
     }
@@ -89,6 +88,7 @@ class InvoiceTest extends TestCase
      */
     public function testInvoiceIsRegisteredMethod(){
         $invoice = $this->buildInvoice();
+        $invoice->registered_date = null;
         $this->assertTrue( $invoice->isRegistered() === false);
 
         $invoice->registered_date = Carbon::now();
