@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+
 class TrashController extends Controller
 {
     /**
@@ -15,7 +16,10 @@ class TrashController extends Controller
      */
     public function restore($resource, $id)
     {
-        //
+        $model = 'App\Models\\' .  ucfirst($resource);
+        $trashed = $model::withTrashed()->findOrFail($id);
+        $trashed->restore();
+        return response()->json();
     }
 
     /**
@@ -27,6 +31,9 @@ class TrashController extends Controller
      */
     public function destroy($resource, $id)
     {
-        //
+        $model = 'App\Models\\' .  ucfirst($resource);
+        $trashed = $model::withTrashed()->findOrFail($id);
+        $trashed->forceDelete();
+        return response()->json();
     }
 }

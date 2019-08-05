@@ -15,7 +15,7 @@ class InvoiceObserver
      * @return void
      */
     public function updating(Invoice $invoice){
-        $existingInvoice = Invoice::find($invoice->id);
+        $existingInvoice = Invoice::withTrashed()->findOrFail($invoice->id);
 
         if ( $existingInvoice->isRegistered() ) {
             throw new \Exception('Cannot update registered invoice');
@@ -31,7 +31,7 @@ class InvoiceObserver
      */
     public function deleting(Invoice $invoice)
     {        
-        $existingInvoice = Invoice::find($invoice->id);
+        $existingInvoice = Invoice::withTrashed()->findOrFail($invoice->id);
 
         if ( $existingInvoice->isRegistered() ) {
             throw new \Exception('Cannot delete registered invoice');

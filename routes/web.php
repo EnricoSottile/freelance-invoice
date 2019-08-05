@@ -33,5 +33,5 @@ Route::resource('payment', 'PaymentController')
 Route::get('restore/{resource}/{id}', 'TrashController@restore')
         ->name('trash.restore');
 
-Route::delete('trash/{resource}/{id}', 'TrashController@destroy')
+Route::delete('destroy/{resource}/{id}', 'TrashController@destroy')
         ->name('trash.destroy');
