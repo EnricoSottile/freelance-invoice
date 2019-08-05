@@ -80,6 +80,17 @@ class PaymentTest extends TestCase
         $this->assertTrue( $payment->forceDelete() );
     }
 
+        /**
+     * @return void
+     */
+    public function testPaymentIsPayedMethod(){
+        $payment = $this->buildPayment();
+        $this->assertTrue( $payment->isPayed() === false);
+
+        $payment->payed_date = Carbon::now();
+        $this->assertTrue( $payment->isPayed() === true);
+    }
+
 
     /**
      * @return void

@@ -16,5 +16,13 @@ Route::get('/', function () {
 });
 
 
-Route::resource('invoice', 'InvoiceController');
-Route::resource('payment', 'PaymentController');
+
+Route::resource('customer', 'CustomerController')
+        ->only(['index', 'store', 'update', 'destroy']);
+
+Route::resource('invoice', 'InvoiceController')
+        ->only(['index', 'store', 'update', 'destroy']);
+
+Route::resource('payment', 'PaymentController')
+        ->only(['index', 'store', 'update', 'destroy']);
+

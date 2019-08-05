@@ -87,6 +87,17 @@ class InvoiceTest extends TestCase
     /**
      * @return void
      */
+    public function testInvoiceIsRegisteredMethod(){
+        $invoice = $this->buildInvoice();
+        $this->assertTrue( $invoice->isRegistered() === false);
+
+        $invoice->registered_date = Carbon::now();
+        $this->assertTrue( $invoice->isRegistered() === true);
+    }
+
+    /**
+     * @return void
+     */
     public function testInvoiceCannotBeUpdatedAfterRegistration(){
         $invoice = $this->buildInvoice();
         $invoice->registered_date = Carbon::now();
