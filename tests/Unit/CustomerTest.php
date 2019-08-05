@@ -13,8 +13,6 @@ class CustomerTest extends TestCase
 
     use RefreshDatabase;
     
-    const CUSTOMER_NAME = 'TEST_CUSTOMER';
-
     /**
      * @return void
      */
@@ -30,7 +28,6 @@ class CustomerTest extends TestCase
     public function testCustomerCanBeUpdated()
     {
         $customer = factory( Customer::class )->create();
-        $customer = Customer::first();
         
         $value_before = $customer->email;
         $customer->email = 'test.new.mail@app.test';
@@ -48,7 +45,6 @@ class CustomerTest extends TestCase
     public function testCustomerCanBeDeleted()
     {
         $customer = factory( Customer::class )->create();
-        $customer = Customer::first();
         $this->assertTrue( $customer->delete() );
     }
 
@@ -58,9 +54,7 @@ class CustomerTest extends TestCase
      */
     public function testCustomerCanBePermanentlyDeleted()
     {
-        $customer = factory( Customer::class )->create();
-        $customer = Customer::first();
-        
+        $customer = factory( Customer::class )->create();        
         $this->assertTrue( $customer->forceDelete() );
     }
 }

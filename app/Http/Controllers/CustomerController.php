@@ -29,11 +29,12 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomer $request)
     {
+        $attributes = ['full_name', 'email', 'phone', 'vat_code'];
+        
         $customer = new Customer();
-        $customer->full_name = $request->full_name;
-        $customer->email = $request->email;
-        $customer->phone = $request->phone;
-        $customer->vat_code = $request->vat_code;
+        foreach($attributes as $a) {
+            $customer->{$a} = $request->{$a};
+        }
         $customer->save();
 
         return response()->json();

@@ -49,15 +49,12 @@ class CustomerTest extends TestCase
     {
         $data = ['email' => 'test' . rand(10, 100) . '@mail.com'];
 
-        factory( Customer::class )->create();
-        $customer = Customer::first();
+        $customer = factory( Customer::class )->create();
         $update = array_merge($customer->toArray(), $data);
         $response = $this->put("/customer/" . $customer->id, $update);
 
-        $compare = $update;
-
         $response->assertStatus(200);
-        $this->assertDatabaseHas('customers', $compare);
+        $this->assertDatabaseHas('customers', $update);
     }
 
 
@@ -68,8 +65,8 @@ class CustomerTest extends TestCase
      */
     public function testCustomerDestroy()
     {
-        factory( Customer::class )->create();
-        $id = Customer::first()->id;
+        $customer = factory( Customer::class )->create();
+        $id = $customer->id;
         
         $response = $this->delete("/customer/${id}");
         $response->assertStatus(200);

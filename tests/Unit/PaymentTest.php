@@ -51,7 +51,6 @@ class PaymentTest extends TestCase
         $payment->net_amount = 100.50;
 
         $this->assertTrue( $payment->save() );
-        $payment->fresh();
         $this->assertTrue( $value_before !== $payment->net_amount );
     }
 

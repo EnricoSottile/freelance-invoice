@@ -53,7 +53,6 @@ class InvoiceTest extends TestCase
         $invoice->date = Carbon::now();
 
         $this->assertTrue( $invoice->save() );
-        $invoice->fresh();
         $this->assertTrue( $value_before !== $invoice->date );
     }
 

@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Invoice;
+use \Auth;
 
 class InvoiceController extends Controller
 {
@@ -13,7 +15,7 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        //
+        return Invoice::all()->toJson();
     }
 
 
@@ -25,7 +27,28 @@ class InvoiceController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = [
+            'customer_id',
+            'number',
+            'net_amount',
+            'tax',
+            'description',
+            'date',
+            'sent_date',
+            'registered_date',
+        ];
+
+
+        $invoice = new Invoice();
+        $invoice->user_id = Auth::user()->id;
+
+        foreach($attributes as $a) {
+            $invoice->{$a} = $request->{$a};
+        }
+
+        $invoice->save();
+
+        return response()->json();
     }
 
 
@@ -39,7 +62,25 @@ class InvoiceController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $invoice = Invoice::findOrFail($id);     
+        $attributes = [
+            'customer_id',
+            'number',
+            'net_amount',
+            'tax',
+            'description',
+            'date',
+            'sent_date',
+            'registered_date',
+        ];
+
+        foreach($attributes as $a) {
+            $invoice->{$a} = $request->{$a} ?? $invoice->{$a};
+        }
+
+        $invoice->save();
+
+        return response()->json();
     }
 
     /**
@@ -50,7 +91,9 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $invoice = Invoice::findOrFail($id);  
+        $invoice->delete();
+        return response()->json();
     }
 
 }
