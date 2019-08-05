@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 
+use App\Http\Requests\StoreCustomer;
+use App\Http\Requests\UpdateCustomer;
+
 class CustomerController extends Controller
 {
      /**
@@ -24,7 +27,7 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreCustomer $request)
     {
         $customer = new Customer();
         $customer->full_name = $request->full_name;
@@ -45,7 +48,7 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateCustomer $request, $id)
     {
         $customer = Customer::findOrFail($id);        
         $attributes = ['full_name', 'email', 'phone', 'vat_code'];

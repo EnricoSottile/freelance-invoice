@@ -51,9 +51,10 @@ class CustomerTest extends TestCase
 
         factory( Customer::class )->create();
         $customer = Customer::first();
-        $response = $this->put("/customer/" . $customer->id, $data);
+        $update = array_merge($customer->toArray(), $data);
+        $response = $this->put("/customer/" . $customer->id, $update);
 
-        $compare = array_merge($customer->toArray(), $data);
+        $compare = $update;
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('customers', $compare);
