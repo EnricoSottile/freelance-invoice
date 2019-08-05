@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use \Auth;
 
+use App\Http\Requests\StoreInvoice;
+use App\Http\Requests\UpdateInvoice;
+
 class InvoiceController extends Controller
 {
     /**
@@ -25,7 +28,7 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StoreInvoice $request)
     {
         $attributes = [
             'customer_id',
@@ -60,7 +63,7 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdateInvoice $request, $id)
     {
         $invoice = Invoice::findOrFail($id);     
         $attributes = [

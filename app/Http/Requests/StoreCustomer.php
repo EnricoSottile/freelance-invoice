@@ -26,8 +26,8 @@ class StoreCustomer extends FormRequest
         return [
             'full_name' => 'required|string',
             'email' => 'email|nullable',
-            'phone' => 'nullable',
-            'vat_code' => 'nullable'
+            'phone' => 'string|nullable',
+            'vat_code' => 'string|nullable'
         ];
     }
 }

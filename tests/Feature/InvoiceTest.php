@@ -46,6 +46,7 @@ class InvoiceTest extends TestCase
 
         $invoice = factory( Invoice::class )
                     ->make(['customer_id' => $customer->id]);
+
         $response = $this->actingAs($user)
                     ->post('/invoice', $invoice->toArray());
         
@@ -71,11 +72,12 @@ class InvoiceTest extends TestCase
                         'user_id' => $user->id, 
                         'registered_date' => null]);
         
+        $update = array_merge($invoice->toArray(), $data);
         $response = $this->actingAs($user)
-                    ->put("/invoice/" . $invoice->id, $data);
+                    ->put("/invoice/" . $invoice->id, $update);
 
         $response->assertStatus(200);
-        $this->assertDatabaseHas('invoices', array_merge($invoice->toArray(), $data));
+        $this->assertDatabaseHas('invoices', $update);
     }
 
     /**
@@ -95,8 +97,9 @@ class InvoiceTest extends TestCase
             'user_id' => $user->id, 
             'registered_date' => Carbon::now() ]);
 
+        $update = array_merge($invoice->toArray(), $data);
         $response = $this->actingAs($user)
-                ->put("/invoice/" . $invoice->id, $data);
+                ->put("/invoice/" . $invoice->id, $update);
         $response->assertStatus(500);
     }
 
