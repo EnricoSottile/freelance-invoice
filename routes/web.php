@@ -16,22 +16,28 @@ Route::get('/', function () {
 });
 
 
-// CUSTOMER
-Route::resource('customer', 'CustomerController')
-        ->only(['index', 'store', 'update', 'destroy']);
+Route::middleware(['auth'])->group(function () {
 
-// INVOICE
-Route::resource('invoice', 'InvoiceController')
-        ->only(['index', 'store', 'update', 'destroy']);
+        // CUSTOMER
+        Route::resource('customer', 'CustomerController')
+                ->only(['index', 'store', 'update', 'destroy']);
 
-// PAYMENT
-Route::resource('payment', 'PaymentController')
-        ->only(['index', 'store', 'update', 'destroy']);
+        // INVOICE
+        Route::resource('invoice', 'InvoiceController')
+                ->only(['index', 'store', 'update', 'destroy']);
 
-        
-// TRASH
-Route::get('restore/{resource}/{id}', 'TrashController@restore')
-        ->name('trash.restore');
+        // PAYMENT
+        Route::resource('payment', 'PaymentController')
+                ->only(['index', 'store', 'update', 'destroy']);
 
-Route::delete('destroy/{resource}/{id}', 'TrashController@destroy')
-        ->name('trash.destroy');
+
+        // TRASH
+        Route::get('restore/{resource}/{id}', 'TrashController@restore')
+                ->name('trash.restore');
+
+        Route::delete('destroy/{resource}/{id}', 'TrashController@destroy')
+                ->name('trash.destroy');
+
+
+});
+

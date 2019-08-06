@@ -25,11 +25,12 @@ class InvoiceTest extends TestCase
     public function testInvoiceIndex()
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        $user = factory(User::class)->create();
         $count = rand(1, 10);
         factory( Invoice::class, $count )
             ->create(['customer_id' => 1, 'user_id' => 1]);
 
-        $response = $this->get('/invoice');
+        $response = $this->actingAs($user)->get('/invoice');
         $response->assertStatus(200);
         $response->assertJsonCount($count);
     }
@@ -42,7 +43,6 @@ class InvoiceTest extends TestCase
      */
     public function testInvoiceStore()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $customer = factory( Customer::class )->create();
 
@@ -124,7 +124,7 @@ class InvoiceTest extends TestCase
 
 
         $id = $invoice->id;
-        $response = $this->delete("/invoice/${id}");
+        $response = $this->actingAs($user)->delete("/invoice/${id}");
         $response->assertStatus(200);
 
         $this->assertSoftDeleted('invoices', [
@@ -150,7 +150,7 @@ class InvoiceTest extends TestCase
                         'registered_date' => Carbon::now()]);
 
         $id = $invoice->id;
-        $response = $this->delete("/invoice/${id}");
+        $response = $this->actingAs($user)->delete("/invoice/${id}");
         $response->assertStatus(500);
     }
 
@@ -178,7 +178,7 @@ class InvoiceTest extends TestCase
                         'payed_date' => Carbon::now()]);
         
         $id = $invoice->id;
-        $response = $this->delete("/invoice/${id}");
+        $response = $this->actingAs($user)->delete("/invoice/${id}");
         $response->assertStatus(500);
         $this->assertDatabaseHas('invoices', ['id' => $id, 'deleted_at' => null]);
     }
@@ -205,7 +205,7 @@ class InvoiceTest extends TestCase
                         'payed_date' => null]);
         
         $id = $invoice->id;
-        $response = $this->delete("/invoice/${id}");
+        $response = $this->actingAs($user)->delete("/invoice/${id}");
         $response->assertStatus(200);
         $this->assertSoftDeleted('invoices', ['id' => $id]);
     }
@@ -219,6 +219,7 @@ class InvoiceTest extends TestCase
     public function testDeletingInvoiceDeletesOwnUnpayedPayments()
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        $user = factory(User::class)->create();
 
         $invoice = factory( Invoice::class )
                     ->create(['customer_id' => 1, 'user_id' => 1, 'registered_date' => null]);
@@ -242,7 +243,7 @@ class InvoiceTest extends TestCase
     public function testRestoringInvoiceRestoresOwnUnpayedPayments()
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
-
+        $user = factory(User::class)->create();
         $invoice = factory( Invoice::class )
                     ->create(['customer_id' => 1, 'user_id' => 1, 'registered_date' => null]);
         $payments = factory( Payment::class, 3)

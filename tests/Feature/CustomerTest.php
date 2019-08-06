@@ -23,10 +23,11 @@ class CustomerTest extends TestCase
      */
     public function testCustomerIndex()
     {
+        $user = factory(User::class)->create();
         $count = rand(1, 10);
         factory( Customer::class, $count )->create();
 
-        $response = $this->get('/customer');
+        $response = $this->actingAs($user)->get('/customer');
         $response->assertStatus(200);
         $response->assertJsonCount($count);
     }
@@ -38,8 +39,9 @@ class CustomerTest extends TestCase
      */
     public function testCustomerStore()
     {
+        $user = factory(User::class)->create();
         $customer = factory( Customer::class )->make();
-        $response = $this->post('/customer', $customer->toArray());
+        $response = $this->actingAs($user)->post('/customer', $customer->toArray());
         $response->assertStatus(200);
         $this->assertDatabaseHas('customers', $customer->toArray());
     }
@@ -52,10 +54,10 @@ class CustomerTest extends TestCase
     public function testCustomerUpdate()
     {
         $data = ['email' => 'test' . rand(10, 100) . '@mail.com'];
-
+        $user = factory(User::class)->create();
         $customer = factory( Customer::class )->create();
         $update = array_merge($customer->toArray(), $data);
-        $response = $this->put("/customer/" . $customer->id, $update);
+        $response = $this->actingAs($user)->put("/customer/" . $customer->id, $update);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('customers', $update);
@@ -69,10 +71,11 @@ class CustomerTest extends TestCase
      */
     public function testCustomerDestroy()
     {
+        $user = factory(User::class)->create();
         $customer = factory( Customer::class )->create();
         $id = $customer->id;
         
-        $response = $this->delete("/customer/${id}");
+        $response = $this->actingAs($user)->delete("/customer/${id}");
         $response->assertStatus(200);
 
         $this->assertSoftDeleted('customers', [
@@ -127,7 +130,7 @@ class CustomerTest extends TestCase
 
         
         
-        $response = $this->delete("/customer/${id}");
+        $response = $this->actingAs($user)->delete("/customer/${id}");
         $response->assertStatus(500);
     }
 
@@ -153,7 +156,7 @@ class CustomerTest extends TestCase
                 'payed_date' => Carbon::now()]);
         
         
-        $response = $this->delete("/customer/${id}");
+        $response = $this->actingAs($user)->delete("/customer/${id}");
         $response->assertStatus(500);
     }
 

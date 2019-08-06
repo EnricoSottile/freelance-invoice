@@ -37,11 +37,13 @@ class PaymentTest extends TestCase
     public function testPaymentIndex()
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        $models = $this->getCommonModels();
+        $user = $models->user;
         $count = rand(1, 10);
         factory( Payment::class, $count )
             ->create(['invoice_id' => 1, ]);
 
-        $response = $this->get('/payment');
+        $response = $this->actingAs($user)->get('/payment');
         $response->assertStatus(200);
         $response->assertJsonCount($count);
     }
@@ -54,7 +56,6 @@ class PaymentTest extends TestCase
      */
     public function testPaymentStore()
     {
-        $this->withoutExceptionHandling();
         $models = $this->getCommonModels();
         $user = $models->user;
         $invoice = $models->invoice;
@@ -129,6 +130,7 @@ class PaymentTest extends TestCase
     public function testPaymentDestroyBeforeRegistration()
     {
         $models = $this->getCommonModels();
+        $user = $models->user;
         $invoice = $models->invoice;
         $payment = factory( Payment::class )
                     ->create([
@@ -136,7 +138,7 @@ class PaymentTest extends TestCase
                         'payed_date' => null]);
 
         $id = $payment->id;
-        $response = $this->delete("/payment/${id}");
+        $response = $this->actingAs($user)->delete("/payment/${id}");
         $response->assertStatus(200);
 
         $this->assertSoftDeleted('payments', [
@@ -153,6 +155,7 @@ class PaymentTest extends TestCase
     public function testInvoiceDestroyAfterRegistration()
     {
         $models = $this->getCommonModels();
+        $user = $models->user;
         $invoice = $models->invoice;
         $payment = factory( Payment::class )
                     ->create([
@@ -160,7 +163,7 @@ class PaymentTest extends TestCase
                         'payed_date' => Carbon::now()]);
 
         $id = $payment->id;
-        $response = $this->delete("/payment/${id}");
+        $response = $this->actingAs($user)->delete("/payment/${id}");
         $response->assertStatus(500);
     }
 

@@ -50,11 +50,13 @@ class TrashTest extends TestCase
      */
     public function testTrashableResourcesCanBeRestored()
     {
+        $user = factory(User::class)->create();
+
         foreach($this->resources as $res) {
             $resName = strtolower( class_basename(get_class($res)) );
             $resId = $res->id;
             $res->delete();
-            $response = $this->get("/restore/${resName}/${resId}");
+            $response = $this->actingAs($user)->get("/restore/${resName}/${resId}");
             $response->assertStatus(200);
 
             $dataCheck = array_merge($res->toArray(), ['deleted_at' => null]);
@@ -71,12 +73,13 @@ class TrashTest extends TestCase
      */
     public function testTrashedResourcesCanBePermanentlyDeleted()
     {
-        $this->withoutExceptionHandling();
+        $user = factory(User::class)->create();
+
         foreach($this->resources as $res) {
             $resName = strtolower( class_basename(get_class($res)) );
             $resId = $res->id;
             $res->delete();
-            $response = $this->delete("/destroy/${resName}/${resId}");
+            $response = $this->actingAs($user)->delete("/destroy/${resName}/${resId}");
             $response->assertStatus(200);
             $this->assertDatabaseMissing($resName . "s", $res->toArray());
         }
