@@ -44,7 +44,7 @@ class InvoiceTest extends TestCase
     public function testInvoiceStore()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
 
         $invoice = factory( Invoice::class )
                     ->make(['customer_id' => $customer->id]);
@@ -66,7 +66,7 @@ class InvoiceTest extends TestCase
     {
         $data = ['net_amount' => rand(100, 10000)];
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         
         $invoice = factory( Invoice::class )
                     ->create([
@@ -91,7 +91,7 @@ class InvoiceTest extends TestCase
     {
         $data = ['net_amount' => rand(100, 10000)];
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
 
         $invoice = factory( Invoice::class )
         ->create([
@@ -114,7 +114,7 @@ class InvoiceTest extends TestCase
     public function testInvoiceDestroyBeforeRegistration()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         
         $invoice = factory( Invoice::class )
                     ->create([
@@ -141,7 +141,7 @@ class InvoiceTest extends TestCase
     public function testInvoiceDestroyAfterRegistration()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         
         $invoice = factory( Invoice::class )
                     ->create([
@@ -165,7 +165,7 @@ class InvoiceTest extends TestCase
     public function testInvoiceCannotBeDestroyedIfHasBeenPayed()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $invoice = factory( Invoice::class)
                     ->create([
                         'customer_id' => $customer->id, 
@@ -174,6 +174,7 @@ class InvoiceTest extends TestCase
         
         $payments = factory( Payment::class, 3)
                     ->create([
+                        'user_id' => $user->id,
                         'invoice_id' => $invoice->id, 
                         'payed_date' => Carbon::now()]);
         
@@ -192,7 +193,7 @@ class InvoiceTest extends TestCase
     public function testInvoiceCanBeDestroyedIfHasUnpayedPayments()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $invoice = factory( Invoice::class)
                     ->create([
                         'customer_id' => $customer->id, 
@@ -201,6 +202,7 @@ class InvoiceTest extends TestCase
         
         $payments = factory( Payment::class, 3)
                     ->create([
+                        'user_id' => $user->id,
                         'invoice_id' => $invoice->id, 
                         'payed_date' => null]);
         
@@ -222,9 +224,10 @@ class InvoiceTest extends TestCase
         $user = factory(User::class)->create();
 
         $invoice = factory( Invoice::class )
-                    ->create(['customer_id' => 1, 'user_id' => 1, 'registered_date' => null]);
+                    ->create(['customer_id' => 1, 'user_id' => $user->id, 'registered_date' => null]);
         $payments = factory( Payment::class, 3)
         ->create([
+            'user_id' => $user->id,
             'invoice_id' => $invoice->id, 
             'payed_date' => null]);
 
@@ -245,9 +248,10 @@ class InvoiceTest extends TestCase
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
         $user = factory(User::class)->create();
         $invoice = factory( Invoice::class )
-                    ->create(['customer_id' => 1, 'user_id' => 1, 'registered_date' => null]);
+                    ->create(['customer_id' => 1, 'user_id' => $user->id, 'registered_date' => null]);
         $payments = factory( Payment::class, 3)
         ->create([
+            'user_id' => $user->id,
             'invoice_id' => $invoice->id, 
             'payed_date' => null]);
 

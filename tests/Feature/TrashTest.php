@@ -25,21 +25,21 @@ class TrashTest extends TestCase
         parent::setUp();
 
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $invoice = factory( Invoice::class )->create([
             'customer_id' => $customer->id, 
             'user_id' => $user->id, 
         ]);
 
         $this->resources = [
-            factory( Customer::class )->create(),
+            factory( Customer::class )->create(['user_id' => $user->id]),
             factory( Invoice::class )
                 ->create([
                     'customer_id' => $customer->id, 
                     'user_id' => $user->id, 
                     'registered_date' => null ]),
             factory( Payment::class )
-                ->create(['invoice_id' => $invoice->id, 'payed_date' => null])
+                ->create(['invoice_id' => $invoice->id, 'user_id' => $user->id, 'payed_date' => null])
         ];
     }
 

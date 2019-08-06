@@ -12,13 +12,25 @@ class CustomerTest extends TestCase
 {
 
     use RefreshDatabase;
+
+     /**
+     * @return Customer $customer 
+     */
+    private function buildCustomer() : Customer {
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+        $customer = factory( Customer::class )
+                    ->make(['user_id' => 1]);
+
+        return $customer;
+    }
     
     /**
      * @return void
      */
     public function testCustomerCanBeCreated()
     {
-        $customer = factory( Customer::class )->make();
+        $customer = $this->buildCustomer();
         $this->assertTrue( $customer->save() );
     }
 
@@ -27,7 +39,7 @@ class CustomerTest extends TestCase
      */
     public function testCustomerCanBeUpdated()
     {
-        $customer = factory( Customer::class )->create();
+        $customer = $this->buildCustomer();
         
         $value_before = $customer->email;
         $customer->email = 'test.new.mail@app.test';
@@ -44,7 +56,8 @@ class CustomerTest extends TestCase
      */
     public function testCustomerCanBeDeleted()
     {
-        $customer = factory( Customer::class )->create();
+        $customer = $this->buildCustomer();
+        $customer->save();
         $this->assertTrue( $customer->delete() );
     }
 
@@ -54,7 +67,8 @@ class CustomerTest extends TestCase
      */
     public function testCustomerCanBePermanentlyDeleted()
     {
-        $customer = factory( Customer::class )->create();        
+        $customer = $this->buildCustomer();      
+        $customer->save();
         $this->assertTrue( $customer->forceDelete() );
     }
 }

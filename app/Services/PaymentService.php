@@ -26,6 +26,7 @@ final class PaymentService {
      */
     public function store(PaymentDto $request) : bool {
         $payment = new Payment();
+        $payment->user_id = Auth::user()->id;
         
         foreach($this->attributes as $a) {
             $getter = 'get' . ucfirst($a);

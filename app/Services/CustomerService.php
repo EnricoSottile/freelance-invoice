@@ -26,6 +26,7 @@ final class CustomerService {
      */
     public function store(CustomerDto $request) : bool {
         $customer = new Customer();
+        $customer->user_id = Auth::user()->id;
 
         foreach($this->attributes as $a) {
             $getter = 'get' . ucfirst($a);

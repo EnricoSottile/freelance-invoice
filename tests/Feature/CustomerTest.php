@@ -25,7 +25,7 @@ class CustomerTest extends TestCase
     {
         $user = factory(User::class)->create();
         $count = rand(1, 10);
-        factory( Customer::class, $count )->create();
+        factory( Customer::class, $count )->create(['user_id' => $user->id]);
 
         $response = $this->actingAs($user)->get('/customer');
         $response->assertStatus(200);
@@ -55,7 +55,7 @@ class CustomerTest extends TestCase
     {
         $data = ['email' => 'test' . rand(10, 100) . '@mail.com'];
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $update = array_merge($customer->toArray(), $data);
         $response = $this->actingAs($user)->put("/customer/" . $customer->id, $update);
 
@@ -72,7 +72,7 @@ class CustomerTest extends TestCase
     public function testCustomerDestroy()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $id = $customer->id;
         
         $response = $this->actingAs($user)->delete("/customer/${id}");
@@ -92,13 +92,14 @@ class CustomerTest extends TestCase
     public function testCustomerDestroyAlsoDestroyesUnregisteredInvoicesAndPayments()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $id = $customer->id;
         $invoice = factory( Invoice::class )
             ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => null]);
         
         $payments = factory( Payment::class, 3)
             ->create([
+                'user_id' => $user->id,
                 'invoice_id' => $invoice->id, 
                 'payed_date' => null]);
 
@@ -123,13 +124,11 @@ class CustomerTest extends TestCase
     public function testCustomerCannotBeDestroyedIfHasRegisteredInvoices()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $id = $customer->id;
         factory( Invoice::class )
             ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => Carbon::now()]);
 
-        
-        
         $response = $this->actingAs($user)->delete("/customer/${id}");
         $response->assertStatus(500);
     }
@@ -145,13 +144,14 @@ class CustomerTest extends TestCase
     public function testCustomerCannotBeDestroyedIfHasRegisteredPayments()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $id = $customer->id;
         $invoice = factory( Invoice::class )
             ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => null]);
 
         factory( Payment::class, 3)
             ->create([
+                'user_id' => $user->id,
                 'invoice_id' => $invoice->id, 
                 'payed_date' => Carbon::now()]);
         
@@ -169,13 +169,14 @@ class CustomerTest extends TestCase
     public function testRestoringCustomerRestoresTrashedInvoicesAndPayments()
     {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $id = $customer->id;
         $invoice = factory( Invoice::class )
             ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => null]);
 
         $payments = factory( Payment::class, 3)
             ->create([
+                'user_id' => $user->id,
                 'invoice_id' => $invoice->id, 
                 'payed_date' => null]);
         

@@ -21,8 +21,8 @@ class PaymentTest extends TestCase
     private function buildPayment() : Payment {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
 
-        $payment = new Payment();
-        $payment->invoice_id = 1;
+        $payment = factory( Payment::class )
+                    ->make(['invoice_id' => 1, 'user_id' => 1, 'payed_date' => null]);
         return $payment;
     }
 
@@ -32,8 +32,6 @@ class PaymentTest extends TestCase
      */
     public function testPaymentCanBeCreated()
     {
-        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
-
         $payment = $this->buildPayment();
         $this->assertTrue( $payment->save() );
     }

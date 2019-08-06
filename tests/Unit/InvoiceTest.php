@@ -14,10 +14,6 @@ class InvoiceTest extends TestCase
 
     use RefreshDatabase;
 
-    const CUSTOMER_ID = 1;
-    const USER_ID = 1;
-
-
     /**
      * @return Invoice $invoice 
      */

@@ -18,7 +18,7 @@ class PaymentTest extends TestCase
 
     private function getCommonModels() {
         $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $invoice = factory( Invoice::class )
                     ->create(['customer_id' => $customer->id, 'user_id' => $user->id]);
 
@@ -41,7 +41,7 @@ class PaymentTest extends TestCase
         $user = $models->user;
         $count = rand(1, 10);
         factory( Payment::class, $count )
-            ->create(['invoice_id' => 1, ]);
+            ->create(['invoice_id' => 1, 'user_id' => $user->id]);
 
         $response = $this->actingAs($user)->get('/payment');
         $response->assertStatus(200);
@@ -86,6 +86,7 @@ class PaymentTest extends TestCase
     
         $payment = factory( Payment::class )
                     ->create([
+                        'user_id' => $user->id,
                         'invoice_id' => $invoice->id, 
                         'payed_date' => null]);
         
@@ -111,6 +112,7 @@ class PaymentTest extends TestCase
     
         $payment = factory( Payment::class )
                     ->create([
+                        'user_id' => $user->id,
                         'invoice_id' => $invoice->id, 
                         'payed_date' => Carbon::now()]);
         
@@ -134,6 +136,7 @@ class PaymentTest extends TestCase
         $invoice = $models->invoice;
         $payment = factory( Payment::class )
                     ->create([
+                        'user_id' => $user->id,
                         'invoice_id' => $invoice->id, 
                         'payed_date' => null]);
 
@@ -159,6 +162,7 @@ class PaymentTest extends TestCase
         $invoice = $models->invoice;
         $payment = factory( Payment::class )
                     ->create([
+                        'user_id' => $user->id,
                         'invoice_id' => $invoice->id, 
                         'payed_date' => Carbon::now()]);
 
