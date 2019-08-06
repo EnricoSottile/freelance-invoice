@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use \Auth;
+use App\Dto\PaymentStoreDto;
+use App\Dto\PaymentUpdateDto;
 use App\Models\Payment;
 
 final class PaymentService {
@@ -23,11 +25,12 @@ final class PaymentService {
      *
      * @return bool
      */
-    public function store(Array $request) : bool {
+    public function store(PaymentStoreDto $request) : bool {
         $payment = new Payment();
         
         foreach($this->attributes as $a) {
-            $payment[$a] = $request[$a];
+            $getter = 'get' . ucfirst($a);
+            $payment[$a] = $request->$getter();
         }
 
         return $payment->save();
@@ -43,11 +46,12 @@ final class PaymentService {
      *
      * @return bool
      */
-    public function update(Array $request, int $id) : bool {
+    public function update(PaymentUpdateDto $request, int $id) : bool {
         $payment = Payment::findOrFail($id);   
         
         foreach($this->attributes as $a) {
-            $payment[$a] = $request[$a] ?? $payment[$a];
+            $getter = 'get' . ucfirst($a);
+            $payment[$a] = $request->$getter() ?? $payment[$a];
         }
 
         return $payment->save();

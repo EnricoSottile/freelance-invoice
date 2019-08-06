@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Dto\PaymentStoreDto;
 
 class StorePayment extends FormRequest
 {
@@ -30,4 +31,20 @@ class StorePayment extends FormRequest
             'payed_date' => 'nullable|date'
         ];
     }
+
+    /**
+     *
+     * @return PaymentStoreDto
+     */
+    public function getDto() : PaymentStoreDto
+    {
+        return new PaymentStoreDto(
+            $this->invoice_id,
+            $this->net_amount,
+            $this->due_date,        
+            $this->payed_date   
+        );
+    }
+
+
 }

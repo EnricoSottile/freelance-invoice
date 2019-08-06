@@ -59,10 +59,12 @@ class PaymentTest extends TestCase
         $invoice = $models->invoice;
 
         $payment = factory( Payment::class )
-            ->make(['invoice_id' => $invoice->id]);   
+            ->make(['invoice_id' => $invoice->id]);
+            
         $response = $this->actingAs($user)
                     ->post('/payment', $payment->toArray());
         
+                    
         $response->assertStatus(200);
         $this->assertDatabaseHas('payments', $payment->toArray());
     }

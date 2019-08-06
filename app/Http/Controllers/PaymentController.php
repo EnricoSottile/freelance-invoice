@@ -30,8 +30,8 @@ class PaymentController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StorePayment $request, PaymentService $paymentService)
-    {
-        $paymentService->store( $request->all() );
+    {        
+        $paymentService->store( $request->getDto() );
         return response()->json();
     }
 
@@ -46,7 +46,8 @@ class PaymentController extends Controller
      */
     public function update(UpdatePayment $request, PaymentService $paymentService, $id)
     {
-        $paymentService->update( $request->all(), $id );
+
+        $paymentService->update( $request->getDto(), $id );
         return response()->json();
     }
 
