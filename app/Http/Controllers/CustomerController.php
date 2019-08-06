@@ -7,6 +7,7 @@ use App\Models\Customer;
 
 use App\Http\Requests\StoreCustomer;
 use App\Http\Requests\UpdateCustomer;
+use App\Services\CustomerService;
 
 class CustomerController extends Controller
 {
@@ -27,16 +28,9 @@ class CustomerController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreCustomer $request)
+    public function store(StoreCustomer $request, CustomerService $customerService)
     {
-        $attributes = ['full_name', 'email', 'phone', 'vat_code'];
-        
-        $customer = new Customer();
-        foreach($attributes as $a) {
-            $customer->{$a} = $request->{$a};
-        }
-        $customer->save();
-
+        $customerService->store( $request->all() );
         return response()->json();
     }
 
@@ -49,17 +43,9 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateCustomer $request, $id)
+    public function update(UpdateCustomer $request, CustomerService $customerService, $id)
     {
-        $customer = Customer::findOrFail($id);        
-        $attributes = ['full_name', 'email', 'phone', 'vat_code'];
-
-        foreach($attributes as $a) {
-            $customer->{$a} = $request->{$a} ?? $customer->{$a};
-        }
-
-        $customer->save();
-
+        $customerService->update( $request->all(), $id );
         return response()->json();
     }
 

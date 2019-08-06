@@ -8,6 +8,7 @@ use App\Models\Payment;
 
 use App\Http\Requests\StorePayment;
 use App\Http\Requests\UpdatePayment;
+use App\Services\PaymentService;
 
 class PaymentController extends Controller
 {
@@ -28,23 +29,9 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StorePayment $request)
+    public function store(StorePayment $request, PaymentService $paymentService)
     {
-        $attributes = [
-            'invoice_id',
-            'net_amount',
-            'due_date',
-            'payed_date',
-        ];
-
-        $payment = new Payment();
-
-        foreach($attributes as $a) {
-            $payment->{$a} = $request->{$a};
-        }
-
-        $payment->save();
-
+        $paymentService->store( $request->all() );
         return response()->json();
     }
 
@@ -57,22 +44,9 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdatePayment $request, $id)
+    public function update(UpdatePayment $request, PaymentService $paymentService, $id)
     {
-        $payment = Payment::findOrFail($id);     
-        $attributes = [
-            'invoice_id',
-            'net_amount',
-            'due_date',
-            'payed_date',
-        ];
-
-        foreach($attributes as $a) {
-            $payment->{$a} = $request->{$a} ?? $payment->{$a};
-        }
-
-        $payment->save();
-
+        $paymentService->update( $request->all(), $id );
         return response()->json();
     }
 

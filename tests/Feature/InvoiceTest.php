@@ -42,6 +42,7 @@ class InvoiceTest extends TestCase
      */
     public function testInvoiceStore()
     {
+        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $customer = factory( Customer::class )->create();
 

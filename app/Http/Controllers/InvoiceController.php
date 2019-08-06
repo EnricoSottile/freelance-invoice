@@ -9,6 +9,8 @@ use \Auth;
 use App\Http\Requests\StoreInvoice;
 use App\Http\Requests\UpdateInvoice;
 
+use App\Services\InvoiceService;
+
 class InvoiceController extends Controller
 {
     /**
@@ -28,29 +30,9 @@ class InvoiceController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreInvoice $request)
+    public function store(StoreInvoice $request, InvoiceService $invoiceService)
     {
-        $attributes = [
-            'customer_id',
-            'number',
-            'net_amount',
-            'tax',
-            'description',
-            'date',
-            'sent_date',
-            'registered_date',
-        ];
-
-
-        $invoice = new Invoice();
-        $invoice->user_id = Auth::user()->id;
-
-        foreach($attributes as $a) {
-            $invoice->{$a} = $request->{$a};
-        }
-
-        $invoice->save();
-
+        $invoiceService->store( $request->all() );
         return response()->json();
     }
 
@@ -63,26 +45,9 @@ class InvoiceController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateInvoice $request, $id)
+    public function update(UpdateInvoice $request, InvoiceService $invoiceService, $id)
     {
-        $invoice = Invoice::findOrFail($id);     
-        $attributes = [
-            'customer_id',
-            'number',
-            'net_amount',
-            'tax',
-            'description',
-            'date',
-            'sent_date',
-            'registered_date',
-        ];
-
-        foreach($attributes as $a) {
-            $invoice->{$a} = $request->{$a} ?? $invoice->{$a};
-        }
-
-        $invoice->save();
-
+        $invoiceService->update( $request->all(), $id );
         return response()->json();
     }
 
