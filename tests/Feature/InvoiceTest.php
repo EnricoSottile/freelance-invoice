@@ -210,6 +210,51 @@ class InvoiceTest extends TestCase
     }
 
 
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testDeletingInvoiceDeletesOwnUnpayedPayments()
+    {
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+        $invoice = factory( Invoice::class )
+                    ->create(['customer_id' => 1, 'user_id' => 1, 'registered_date' => null]);
+        $payments = factory( Payment::class, 3)
+        ->create([
+            'invoice_id' => $invoice->id, 
+            'payed_date' => null]);
+
+        $invoice->delete();
+        foreach($payments as $p) {
+            $this->assertSoftDeleted('payments', $p->toArray());
+        }
+    }
+
+
+        /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testRestoringInvoiceRestoresOwnUnpayedPayments()
+    {
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+
+        $invoice = factory( Invoice::class )
+                    ->create(['customer_id' => 1, 'user_id' => 1, 'registered_date' => null]);
+        $payments = factory( Payment::class, 3)
+        ->create([
+            'invoice_id' => $invoice->id, 
+            'payed_date' => null]);
+
+        $invoice->delete();
+        $invoice->restore();
+        foreach($payments as $p) {
+            $this->assertDatabaseHas('payments', ['id' => $p->id, 'deleted_at' => null]);
+        }
+    }
 
 
 }

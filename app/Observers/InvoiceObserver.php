@@ -22,6 +22,25 @@ class InvoiceObserver
         }
     }
 
+
+    /**
+     * Handle the invoice "restoring" event.
+     * 
+     *
+     * @param  \App\Models\Invoice  $invoice
+     * @return void
+     */
+    public function restoring(Invoice $invoice){
+        $existingInvoice = Invoice::withTrashed()->findOrFail($invoice->id);
+
+        $trashedPayments = $invoice->trashed_payments();
+        if( $trashedPayments->count() ) {
+            $trashedPayments->each(function($p) {
+                $p->restore();
+            });
+        }
+    }
+
    
     /**
      * Handle the invoice "deleting" event.
@@ -37,11 +56,18 @@ class InvoiceObserver
             throw new \Exception('Cannot delete registered invoice');
         }
 
-
-        $hasPayedPayments = $invoice->received_payments()->count();
+        
+        $hasPayedPayments = $invoice->payed_payments()->count();
+        $hasUnpayedPayments = $invoice->unpayed_payments()->count();
         if ($hasPayedPayments) {
             throw new \Exception('Cannot delete invoice with registered payments');
+        } elseif($hasUnpayedPayments && !$hasPayedPayments) {
+            $invoice->unpayed_payments()->each(function($p) {
+                $p->delete();
+            });
         }
+
+        
 
     }
 

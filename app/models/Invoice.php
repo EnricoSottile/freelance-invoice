@@ -24,10 +24,22 @@ class Invoice extends Model
     }
 
 
-    public function received_payments() {
+    public function payed_payments() {
         return $this->payments()->get()->filter(function($p) {
             return $p->isPayed();
         });
-        
+    }
+
+
+    public function unpayed_payments() {
+        return $this->payments()->get()->filter(function($p) {
+            return ! $p->isPayed();
+        });
+    }
+
+    public function trashed_payments() {
+        return $this->payments()->withTrashed()->get()->filter(function($p) {
+            return ! $p->isPayed();
+        });
     }
 }
