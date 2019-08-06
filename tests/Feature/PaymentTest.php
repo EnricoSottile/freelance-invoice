@@ -16,6 +16,19 @@ class PaymentTest extends TestCase
 {
     use RefreshDatabase;
 
+    private function getCommonModels() {
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create();
+        $invoice = factory( Invoice::class )
+                    ->create(['customer_id' => $customer->id, 'user_id' => $user->id]);
+
+        return (Object)[
+            'user' => $user,
+            'customer' => $customer,
+            'invoice' => $invoice,
+        ];
+    }
+
     /**
      * A basic test example.
      *
@@ -41,10 +54,9 @@ class PaymentTest extends TestCase
      */
     public function testPaymentStore()
     {
-        $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create();
-        $invoice = factory( Invoice::class )
-                    ->create(['customer_id' => $customer->id, 'user_id' => $user->id]);
+        $models = $this->getCommonModels();
+        $user = $models->user;
+        $invoice = $models->invoice;
 
         $payment = factory( Payment::class )
             ->make(['invoice_id' => $invoice->id]);   
@@ -63,13 +75,14 @@ class PaymentTest extends TestCase
      */
     public function testPaymentUpdateBeforeRegistration()
     {
-        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        $user = factory(User::class)->create();
+        $models = $this->getCommonModels();
+        $user = $models->user;
+        $invoice = $models->invoice;
         $data = ['net_amount' => rand(100, 10000)];
     
         $payment = factory( Payment::class )
                     ->create([
-                        'invoice_id' => 1, 
+                        'invoice_id' => $invoice->id, 
                         'payed_date' => null]);
         
         $update = array_merge($payment->toArray(), $data);
@@ -87,13 +100,14 @@ class PaymentTest extends TestCase
      */
     public function testPaymentUpdateAfterRegistration() 
     {
-        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
-        $user = factory(User::class)->create();
+        $models = $this->getCommonModels();
+        $user = $models->user;
+        $invoice = $models->invoice;
         $data = ['net_amount' => rand(100, 10000)];
     
         $payment = factory( Payment::class )
                     ->create([
-                        'invoice_id' => 1, 
+                        'invoice_id' => $invoice->id, 
                         'payed_date' => Carbon::now()]);
         
         $update = array_merge($payment->toArray(), $data);
@@ -111,10 +125,11 @@ class PaymentTest extends TestCase
      */
     public function testPaymentDestroyBeforeRegistration()
     {
-        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        $models = $this->getCommonModels();
+        $invoice = $models->invoice;
         $payment = factory( Payment::class )
                     ->create([
-                        'invoice_id' => 1, 
+                        'invoice_id' => $invoice->id, 
                         'payed_date' => null]);
 
         $id = $payment->id;
@@ -134,10 +149,11 @@ class PaymentTest extends TestCase
      */
     public function testInvoiceDestroyAfterRegistration()
     {
-        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        $models = $this->getCommonModels();
+        $invoice = $models->invoice;
         $payment = factory( Payment::class )
                     ->create([
-                        'invoice_id' => 1, 
+                        'invoice_id' => $invoice->id, 
                         'payed_date' => Carbon::now()]);
 
         $id = $payment->id;

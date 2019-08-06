@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 
 use App\Models\Payment;
 
+use App\Http\Requests\StorePayment;
+use App\Http\Requests\UpdatePayment;
+
 class PaymentController extends Controller
 {
      /**
@@ -25,7 +28,7 @@ class PaymentController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(StorePayment $request)
     {
         $attributes = [
             'invoice_id',
@@ -54,7 +57,7 @@ class PaymentController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(UpdatePayment $request, $id)
     {
         $payment = Payment::findOrFail($id);     
         $attributes = [
