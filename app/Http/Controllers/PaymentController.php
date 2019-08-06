@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
+use App\Models\Payment;
+
 class PaymentController extends Controller
 {
      /**
@@ -13,7 +15,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        //
+        return Payment::all()->toJson();
     }
 
 
@@ -25,7 +27,22 @@ class PaymentController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $attributes = [
+            'invoice_id',
+            'net_amount',
+            'due_date',
+            'payed_date',
+        ];
+
+        $payment = new Payment();
+
+        foreach($attributes as $a) {
+            $payment->{$a} = $request->{$a};
+        }
+
+        $payment->save();
+
+        return response()->json();
     }
 
 
@@ -39,7 +56,21 @@ class PaymentController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $payment = Payment::findOrFail($id);     
+        $attributes = [
+            'invoice_id',
+            'net_amount',
+            'due_date',
+            'payed_date',
+        ];
+
+        foreach($attributes as $a) {
+            $payment->{$a} = $request->{$a} ?? $payment->{$a};
+        }
+
+        $payment->save();
+
+        return response()->json();
     }
 
     /**
@@ -50,7 +81,9 @@ class PaymentController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $payment = Payment::findOrFail($id);  
+        $payment->delete();
+        return response()->json();
     }
 
 }

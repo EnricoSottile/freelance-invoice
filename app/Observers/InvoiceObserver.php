@@ -15,9 +15,7 @@ class InvoiceObserver
      * @return void
      */
     public function updating(Invoice $invoice){
-        $existingInvoice = Invoice::withTrashed()->findOrFail($invoice->id);
-
-        if ( $existingInvoice->isRegistered() ) {
+        if ( $invoice->isRegistered() ) {
             throw new \Exception('Cannot update registered invoice');
         }
     }
@@ -31,8 +29,6 @@ class InvoiceObserver
      * @return void
      */
     public function restoring(Invoice $invoice){
-        // $existingInvoice = Invoice::withTrashed()->findOrFail($invoice->id);
-
         $trashedPayments = $invoice->trashed_payments();
         if( $trashedPayments->count() ) {
             $trashedPayments->each(function($p) {
@@ -50,9 +46,8 @@ class InvoiceObserver
      */
     public function deleting(Invoice $invoice)
     {        
-        
-        $existingInvoice = Invoice::withTrashed()->findOrFail($invoice->id);
-        if ( $existingInvoice->isRegistered() ) {
+
+        if ( $invoice->isRegistered() ) {
             throw new \Exception('Cannot delete registered invoice');
         }
 
