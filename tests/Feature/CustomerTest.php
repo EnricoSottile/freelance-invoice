@@ -5,7 +5,11 @@ namespace Tests\Feature;
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 
+use App\User;
 use App\Models\Customer;
+use App\Models\Invoice;
+use App\Models\Payment;
+use \Carbon\Carbon;
 
 class CustomerTest extends TestCase
 {
@@ -75,4 +79,109 @@ class CustomerTest extends TestCase
             'id' => $id,
         ]);
     }
+
+
+        /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testCustomerDestroyAlsoDestroyesUnregisteredInvoicesAndPayments()
+    {
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create();
+        $id = $customer->id;
+        $invoice = factory( Invoice::class )
+            ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => null]);
+        
+        $payments = factory( Payment::class, 3)
+            ->create([
+                'invoice_id' => $invoice->id, 
+                'payed_date' => null]);
+
+        $customer->delete();
+
+        $this->assertSoftDeleted('invoices', [
+            'id' => $invoice->id,
+        ]);
+        foreach($payments as $p) {
+            $this->assertSoftDeleted('payments', [
+                'id' => $p->id,
+            ]); 
+        }
+    }
+
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testCustomerCannotBeDestroyedIfHasRegisteredInvoices()
+    {
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create();
+        $id = $customer->id;
+        factory( Invoice::class )
+            ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => Carbon::now()]);
+
+        
+        
+        $response = $this->delete("/customer/${id}");
+        $response->assertStatus(500);
+    }
+
+
+    /**
+     * A basic test example.
+     * The problem here is that an invoice can be payed 
+     * even if it has not been registered yet
+     *
+     * @return void
+     */
+    public function testCustomerCannotBeDestroyedIfHasRegisteredPayments()
+    {
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create();
+        $id = $customer->id;
+        $invoice = factory( Invoice::class )
+            ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => null]);
+
+        factory( Payment::class, 3)
+            ->create([
+                'invoice_id' => $invoice->id, 
+                'payed_date' => Carbon::now()]);
+        
+        
+        $response = $this->delete("/customer/${id}");
+        $response->assertStatus(500);
+    }
+
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testRestoringCustomerRestoresTrashedInvoicesAndPayments()
+    {
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create();
+        $id = $customer->id;
+        $invoice = factory( Invoice::class )
+            ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => null]);
+
+        $payments = factory( Payment::class, 3)
+            ->create([
+                'invoice_id' => $invoice->id, 
+                'payed_date' => null]);
+        
+        $customer->delete();
+        $customer->restore();
+        $this->assertDatabaseHas('invoices', ['id' => $invoice->id, 'deleted_at' => null]);
+        foreach($payments as $p) {
+            $this->assertDatabaseHas('payments', ['id' => $p->id, 'deleted_at' => null]);
+        }
+    }
+
 }

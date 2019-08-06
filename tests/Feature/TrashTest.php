@@ -17,7 +17,7 @@ class TrashTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * [] of Model entities to test
+     * Array[] of Model entities to test
      */
     private $resources;
 

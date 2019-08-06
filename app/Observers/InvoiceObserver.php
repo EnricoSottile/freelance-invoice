@@ -31,7 +31,7 @@ class InvoiceObserver
      * @return void
      */
     public function restoring(Invoice $invoice){
-        $existingInvoice = Invoice::withTrashed()->findOrFail($invoice->id);
+        // $existingInvoice = Invoice::withTrashed()->findOrFail($invoice->id);
 
         $trashedPayments = $invoice->trashed_payments();
         if( $trashedPayments->count() ) {
@@ -60,14 +60,13 @@ class InvoiceObserver
         $hasPayedPayments = $invoice->payed_payments()->count();
         $hasUnpayedPayments = $invoice->unpayed_payments()->count();
         if ($hasPayedPayments) {
-            throw new \Exception('Cannot delete invoice with registered payments');
-        } elseif($hasUnpayedPayments && !$hasPayedPayments) {
+            throw new \Exception('Cannot delete invoice with payed payments');
+        } elseif($hasUnpayedPayments) {
             $invoice->unpayed_payments()->each(function($p) {
                 $p->delete();
             });
         }
 
-        
 
     }
 

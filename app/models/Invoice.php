@@ -38,8 +38,6 @@ class Invoice extends Model
     }
 
     public function trashed_payments() {
-        return $this->payments()->withTrashed()->get()->filter(function($p) {
-            return ! $p->isPayed();
-        });
+        return $this->payments()->onlyTrashed()->get();
     }
 }
