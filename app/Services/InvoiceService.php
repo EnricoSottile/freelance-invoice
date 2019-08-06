@@ -4,6 +4,7 @@ namespace App\Services;
 
 use \Auth;
 use App\Models\Invoice;
+use App\Dto\InvoiceDto;
 
 final class InvoiceService {
 
@@ -27,13 +28,14 @@ final class InvoiceService {
      *
      * @return bool
      */
-    public function store(Array $request) : bool {
+    public function store(InvoiceDto $request) : bool {
 
         $invoice = new Invoice();
         $invoice->user_id = Auth::user()->id;
 
         foreach($this->attributes as $a) {
-            $invoice[$a] = $request[$a];
+            $getter = 'get' . ucfirst($a);
+            $invoice[$a] = $request->$getter();
         }
 
         return $invoice->save();
@@ -49,11 +51,12 @@ final class InvoiceService {
      *
      * @return bool
      */
-    public function update(Array $request, int $id) : bool {
+    public function update(InvoiceDto $request, int $id) : bool {
         $invoice = Invoice::findOrFail($id);   
         
         foreach($this->attributes as $a) {
-            $invoice[$a] = $request[$a] ?? $invoice[$a];
+            $getter = 'get' . ucfirst($a);
+            $invoice[$a] = $request->$getter() ?? $invoice[$a];
         }
 
         return $invoice->save();

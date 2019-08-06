@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Dto\InvoiceDto;
 
 class StoreInvoice extends FormRequest
 {
@@ -33,5 +34,19 @@ class StoreInvoice extends FormRequest
             'sent_date' => 'nullable|date',
             'registered_date' => 'nullable|date',
         ];
+    }
+
+    public function getDto() : InvoiceDto 
+    {
+        return new InvoiceDto(
+            $this->customer_id,
+            $this->number,
+            $this->net_amount,
+            $this->tax,
+            $this->description,
+            $this->date,
+            $this->sent_date,
+            $this->registered_date
+        );
     }
 }

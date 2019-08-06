@@ -3,6 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use App\Dto\CustomerDto;
 
 class StoreCustomer extends FormRequest
 {
@@ -29,5 +30,15 @@ class StoreCustomer extends FormRequest
             'phone' => 'string|nullable',
             'vat_code' => 'string|nullable'
         ];
+    }
+
+    public function getDto() : CustomerDto
+    {
+        return new CustomerDto(
+            $this->full_name,
+            $this->email,
+            $this->phone,
+            $this->vat_code
+        );
     }
 }

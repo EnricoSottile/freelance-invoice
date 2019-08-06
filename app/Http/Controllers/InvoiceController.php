@@ -32,7 +32,7 @@ class InvoiceController extends Controller
      */
     public function store(StoreInvoice $request, InvoiceService $invoiceService)
     {
-        $invoiceService->store( $request->all() );
+        $invoiceService->store( $request->getDto() );
         return response()->json();
     }
 
@@ -47,7 +47,7 @@ class InvoiceController extends Controller
      */
     public function update(UpdateInvoice $request, InvoiceService $invoiceService, $id)
     {
-        $invoiceService->update( $request->all(), $id );
+        $invoiceService->update( $request->getDto(), $id );
         return response()->json();
     }
 

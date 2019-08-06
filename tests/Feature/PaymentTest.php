@@ -54,6 +54,7 @@ class PaymentTest extends TestCase
      */
     public function testPaymentStore()
     {
+        $this->withoutExceptionHandling();
         $models = $this->getCommonModels();
         $user = $models->user;
         $invoice = $models->invoice;

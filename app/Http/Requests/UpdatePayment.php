@@ -3,7 +3,7 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use App\Dto\PaymentUpdateDto;
+use App\Dto\PaymentDto;
 
 class UpdatePayment extends FormRequest
 {
@@ -34,11 +34,11 @@ class UpdatePayment extends FormRequest
 
     /**
      *
-     * @return PaymentUpdateDto
+     * @return PaymentDto
      */
-    public function getDto() : PaymentUpdateDto
+    public function getDto() : PaymentDto
     {
-        return new PaymentUpdateDto(
+        return new PaymentDto(
             $this->invoice_id,
             $this->net_amount,
             $this->due_date,        

@@ -2,7 +2,7 @@
 
 namespace App\Dto;
 
-final class PaymentStoreDto {
+final class PaymentDto {
     
     protected $invoice_id;
     protected $net_amount;

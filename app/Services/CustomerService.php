@@ -5,6 +5,8 @@ namespace App\Services;
 use \Auth;
 use App\Models\Customer;
 
+use App\Dto\CustomerDto;
+
 final class CustomerService {
 
     
@@ -22,11 +24,12 @@ final class CustomerService {
      *
      * @return bool
      */
-    public function store(Array $request) : bool {
+    public function store(CustomerDto $request) : bool {
         $customer = new Customer();
 
         foreach($this->attributes as $a) {
-            $customer[$a] = $request[$a];
+            $getter = 'get' . ucfirst($a);
+            $customer[$a] = $request->$getter();
         }
 
         return $customer->save();
@@ -42,11 +45,12 @@ final class CustomerService {
      *
      * @return bool
      */
-    public function update(Array $request, int $id) : bool {
+    public function update(CustomerDto $request, int $id) : bool {
         $customer = Customer::findOrFail($id);   
         
         foreach($this->attributes as $a) {
-            $customer[$a] = $request[$a] ?? $customer[$a];
+            $getter = 'get' . ucfirst($a);
+            $customer[$a] = $request->$getter() ?? $customer[$a];
         }
 
         return $customer->save();

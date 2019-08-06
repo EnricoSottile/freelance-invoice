@@ -30,7 +30,7 @@ class CustomerController extends Controller
      */
     public function store(StoreCustomer $request, CustomerService $customerService)
     {
-        $customerService->store( $request->all() );
+        $customerService->store( $request->getDto() );
         return response()->json();
     }
 
@@ -45,7 +45,7 @@ class CustomerController extends Controller
      */
     public function update(UpdateCustomer $request, CustomerService $customerService, $id)
     {
-        $customerService->update( $request->all(), $id );
+        $customerService->update( $request->getDto(), $id );
         return response()->json();
     }
 
