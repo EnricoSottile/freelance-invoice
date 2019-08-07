@@ -16,6 +16,7 @@ Route::get('/', function () {
 });
 
 
+
 Route::middleware(['auth'])->group(function () {
 
         // CUSTOMER
