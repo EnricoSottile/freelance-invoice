@@ -1,23 +1,46 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Customer index</div>
+    <div>
+        <div>Customer index</div>
 
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
-            </div>
+        <div>
+            
+            <ul>
+                <li v-for="customer in customers" v-bind:key="customer.id">
+                    <router-link :to="{ name: 'customer.show', params: { customer: customer.id }}">
+                        {{ customer.id }} - {{ customer.full_name }}
+                    </router-link>
+                </li>
+            </ul>
+            
         </div>
+
     </div>
 </template>
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+        
+        mounted(){
+            this.getCustomers(this.$route);
+        },
+
+        beforeRouteUpdate (to, from, next) {
+            this.getCustomers(to);
+            next();
+        },
+
+
+        data(){
+            return {
+                customers: [],
+            }
+        },
+
+        methods: {
+            async getCustomers(route){
+                const { data } = await axios.get(route.path);
+                this.customers = data;
+            },
+        },
     }
 </script>

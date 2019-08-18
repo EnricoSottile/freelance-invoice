@@ -8,11 +8,11 @@ import CustomerShow from './components/customer/CustomerShow'
 const routes = [
 
     // CUSTOMER
-    { path: '/customer', component: CustomerIndex },
-    { path: '/customer/:customer', component: CustomerShow },
+    { path: '/customer', name: 'customer.index', component: CustomerIndex },
+    { path: '/customer/:customer', name: 'customer.show', component: CustomerShow },
 
 
-    
+
 ]
 
 window.router = new VueRouter({

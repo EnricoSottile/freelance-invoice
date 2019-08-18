@@ -41,10 +41,10 @@ class CustomerController extends Controller
      * @param  int  $id
      * @return Customer
      */
-    public function show($id) : Customer
+    public function show($id)
     {
         $customer = Customer::withTrashed()->findOrFail($id);
-        return $customer;
+        return $customer->toJson();
     }
 
 

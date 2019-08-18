@@ -1,23 +1,41 @@
 <template>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Customer show</div>
+    <div>
+        <div>Customer show</div>
 
-                    <div class="card-body">
-                        I'm an example component.
-                    </div>
-                </div>
-            </div>
+        <div>
+            <pre>{{ customer }}</pre>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        mounted() {
-            console.log('Component mounted.')
-        }
+
+        mounted(){
+            this.getCustomer(this.$route);
+        },
+
+        beforeRouteUpdate (to, from, next) {
+            this.getCustomer(to);
+            next();
+        },
+
+
+        data(){
+            return {
+                customer: {},
+            }
+        },
+
+        methods: {
+            async getCustomer(route){
+                const { data } = await axios.get(route.path);
+                this.customer = data;
+            },
+        },
+
+
+
+
     }
 </script>
