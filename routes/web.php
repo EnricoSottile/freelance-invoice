@@ -33,10 +33,10 @@ Route::middleware(['auth'])->group(function () {
 
 
         // TRASH
-        Route::get('restore/{resource}/{id}', 'TrashController@restore')
+        Route::get('trash/restore/{resource}/{id}', 'TrashController@restore')
                 ->name('trash.restore');
 
-        Route::delete('destroy/{resource}/{id}', 'TrashController@destroy')
+        Route::delete('trash/destroy/{resource}/{id}', 'TrashController@destroy')
                 ->name('trash.destroy');
 
 
