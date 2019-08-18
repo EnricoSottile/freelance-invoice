@@ -21,7 +21,7 @@ Route::middleware(['auth'])->group(function () {
 
         // CUSTOMER
         Route::resource('customer', 'CustomerController')
-                ->only(['index', 'store', 'update', 'destroy']);
+                ->only(['index', 'store', 'show', 'update', 'destroy']);
 
         // INVOICE
         Route::resource('invoice', 'InvoiceController')

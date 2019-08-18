@@ -35,6 +35,19 @@ class CustomerController extends Controller
     }
 
 
+    /**
+     * Show the resource
+     *
+     * @param  int  $id
+     * @return Customer
+     */
+    public function show($id) : Customer
+    {
+        $customer = Customer::withTrashed()->findOrFail($id);
+        return $customer;
+    }
+
+
 
     /**
      * Update the specified resource in storage.
