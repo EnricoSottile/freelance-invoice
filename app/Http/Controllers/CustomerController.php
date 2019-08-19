@@ -29,7 +29,7 @@ class CustomerController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(StoreCustomer $request, CustomerService $customerService)
-    {
+    {        
         $customerService->store( $request->getDto() );
         return response()->json();
     }

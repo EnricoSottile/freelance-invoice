@@ -9,27 +9,31 @@
 </template>
 
 <script>
+    import Customer from '../../classes/Customer'
+
     export default {
 
+
         mounted(){
-            this.getCustomer(this.$route);
+            this.getCustomer(this.$route.params.customer);
         },
 
         beforeRouteUpdate (to, from, next) {
-            this.getCustomer(to);
+            this.getCustomer(to.params.customer);
             next();
         },
 
 
         data(){
             return {
+                customerClass: new Customer(),
                 customer: {},
             }
         },
 
         methods: {
-            async getCustomer(route){
-                const { data } = await axios.get(route.path);
+            async getCustomer(customerId){
+                const { data } = await this.customerClass.show(customerId);
                 this.customer = data;
             },
         },

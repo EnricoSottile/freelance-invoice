@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 
 // Route::middleware(['auth'])->group(function () {
-Route::middleware(['web'])->group(function () {
+Route::prefix('app')->middleware(['web'])->group(function () {
 
         // CUSTOMER
         Route::resource('customer', 'CustomerController')

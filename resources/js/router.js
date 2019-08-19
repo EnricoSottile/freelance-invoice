@@ -11,8 +11,6 @@ const routes = [
     { path: '/customer', name: 'customer.index', component: CustomerIndex },
     { path: '/customer/:customer', name: 'customer.show', component: CustomerShow },
 
-
-
 ]
 
 window.router = new VueRouter({

@@ -1874,6 +1874,7 @@ module.exports = function isBuffer (obj) {
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _classes_Customer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../classes/Customer */ "./resources/js/classes/Customer.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -1899,16 +1900,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    this.getCustomers(this.$route);
+    this.getCustomers();
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-    this.getCustomers(to);
+    this.getCustomers();
     next();
   },
   data: function data() {
     return {
+      customerClass: new _classes_Customer__WEBPACK_IMPORTED_MODULE_1__["default"](),
       customers: []
     };
   },
@@ -1916,7 +1922,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getCustomers: function () {
       var _getCustomers = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(route) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
         var _ref, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
@@ -1924,7 +1930,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get(route.path);
+                return this.customerClass.index();
 
               case 2:
                 _ref = _context.sent;
@@ -1939,7 +1945,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         }, _callee, this);
       }));
 
-      function getCustomers(_x) {
+      function getCustomers() {
         return _getCustomers.apply(this, arguments);
       }
 
@@ -1961,6 +1967,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var _classes_Customer__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../classes/Customer */ "./resources/js/classes/Customer.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -1977,16 +1984,18 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
-    this.getCustomer(this.$route);
+    this.getCustomer(this.$route.params.customer);
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-    this.getCustomer(to);
+    this.getCustomer(to.params.customer);
     next();
   },
   data: function data() {
     return {
+      customerClass: new _classes_Customer__WEBPACK_IMPORTED_MODULE_1__["default"](),
       customer: {}
     };
   },
@@ -1994,7 +2003,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     getCustomer: function () {
       var _getCustomer = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(route) {
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee(customerId) {
         var _ref, data;
 
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
@@ -2002,7 +2011,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
             switch (_context.prev = _context.next) {
               case 0:
                 _context.next = 2;
-                return axios.get(route.path);
+                return this.customerClass.show(customerId);
 
               case 2:
                 _ref = _context.sent;
@@ -3252,6 +3261,19 @@ var render = function() {
     _c("div", [_vm._v("Customer index")]),
     _vm._v(" "),
     _c("div", [
+      _c(
+        "button",
+        {
+          on: {
+            click: function($event) {
+              $event.preventDefault()
+              return _vm.storeCustomer()
+            }
+          }
+        },
+        [_vm._v("add")]
+      ),
+      _vm._v(" "),
       _c(
         "ul",
         _vm._l(_vm.customers, function(customer) {
@@ -18318,6 +18340,65 @@ if (token) {
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
+
+/***/ }),
+
+/***/ "./resources/js/classes/Customer.js":
+/*!******************************************!*\
+  !*** ./resources/js/classes/Customer.js ***!
+  \******************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var BASE_URI = 'app/customer';
+
+var Customer =
+/*#__PURE__*/
+function () {
+  function Customer() {
+    _classCallCheck(this, Customer);
+  }
+
+  _createClass(Customer, [{
+    key: "index",
+    value: function index() {
+      return axios.get(BASE_URI);
+    }
+  }, {
+    key: "store",
+    value: function store(data) {
+      return axios.post(BASE_URI, data);
+    }
+  }, {
+    key: "show",
+    value: function show(customerId) {
+      var uri = "".concat(BASE_URI, "/").concat(customerId);
+      return axios.get(uri);
+    }
+  }, {
+    key: "update",
+    value: function update(customer) {
+      return axios.put(BASE_URI, data);
+    }
+  }, {
+    key: "destroy",
+    value: function destroy(customerId) {
+      return axios["delete"](BASE_URI);
+    }
+  }]);
+
+  return Customer;
+}();
+
+/* harmony default export */ __webpack_exports__["default"] = (Customer);
 
 /***/ }),
 
