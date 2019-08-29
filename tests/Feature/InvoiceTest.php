@@ -30,7 +30,7 @@ class InvoiceTest extends TestCase
         factory( Invoice::class, $count )
             ->create(['customer_id' => 1, 'user_id' => 1]);
 
-        $response = $this->actingAs($user)->get('/invoice');
+        $response = $this->actingAs($user)->get(route('invoice.index'));
         $response->assertStatus(200);
         $response->assertJsonCount($count);
     }
@@ -50,7 +50,7 @@ class InvoiceTest extends TestCase
                     ->make(['customer_id' => $customer->id]);
 
         $response = $this->actingAs($user)
-                    ->post('/invoice', $invoice->toArray());
+                    ->post(route('invoice.store'), $invoice->toArray());
         
         $response->assertStatus(200);
         $this->assertDatabaseHas('invoices', $invoice->toArray());
@@ -76,7 +76,7 @@ class InvoiceTest extends TestCase
         
         $update = array_merge($invoice->toArray(), $data);
         $response = $this->actingAs($user)
-                    ->put("/invoice/" . $invoice->id, $update);
+                    ->put(route('invoice.update', $invoice->id), $update);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('invoices', $update);
@@ -101,7 +101,7 @@ class InvoiceTest extends TestCase
 
         $update = array_merge($invoice->toArray(), $data);
         $response = $this->actingAs($user)
-                ->put("/invoice/" . $invoice->id, $update);
+                ->put(route('invoice.update', $invoice->id), $update);
         $response->assertStatus(500);
     }
 
@@ -124,7 +124,7 @@ class InvoiceTest extends TestCase
 
 
         $id = $invoice->id;
-        $response = $this->actingAs($user)->delete("/invoice/${id}");
+        $response = $this->actingAs($user)->delete(route('invoice.destroy', $id));
         $response->assertStatus(200);
 
         $this->assertSoftDeleted('invoices', [
@@ -150,7 +150,7 @@ class InvoiceTest extends TestCase
                         'registered_date' => Carbon::now()]);
 
         $id = $invoice->id;
-        $response = $this->actingAs($user)->delete("/invoice/${id}");
+        $response = $this->actingAs($user)->delete(route('invoice.destroy', $id));
         $response->assertStatus(500);
     }
 
@@ -179,7 +179,7 @@ class InvoiceTest extends TestCase
                         'payed_date' => Carbon::now()]);
         
         $id = $invoice->id;
-        $response = $this->actingAs($user)->delete("/invoice/${id}");
+        $response = $this->actingAs($user)->delete(route('invoice.destroy', $id));
         $response->assertStatus(500);
         $this->assertDatabaseHas('invoices', ['id' => $id, 'deleted_at' => null]);
     }
@@ -207,7 +207,7 @@ class InvoiceTest extends TestCase
                         'payed_date' => null]);
         
         $id = $invoice->id;
-        $response = $this->actingAs($user)->delete("/invoice/${id}");
+        $response = $this->actingAs($user)->delete(route('invoice.destroy', $id));
         $response->assertStatus(200);
         $this->assertSoftDeleted('invoices', ['id' => $id]);
     }

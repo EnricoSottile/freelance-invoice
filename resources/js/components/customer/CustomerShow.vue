@@ -5,13 +5,19 @@
         <div>
             <pre>{{ customer }}</pre>
         </div>
+
+        <invoice-index></invoice-index>
     </div>
 </template>
 
 <script>
     import Customer from '../../classes/Customer'
+    import InvoiceIndex from '../invoice/InvoiceIndex'
 
     export default {
+        components: {
+            'invoice-index': InvoiceIndex
+        },
 
 
         mounted(){

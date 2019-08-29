@@ -43,7 +43,7 @@ class PaymentTest extends TestCase
         factory( Payment::class, $count )
             ->create(['invoice_id' => 1, 'user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->get('/payment');
+        $response = $this->actingAs($user)->get(route('payment.index'));
         $response->assertStatus(200);
         $response->assertJsonCount($count);
     }
@@ -64,7 +64,7 @@ class PaymentTest extends TestCase
             ->make(['invoice_id' => $invoice->id]);
             
         $response = $this->actingAs($user)
-                    ->post('/payment', $payment->toArray());
+                    ->post(route('payment.store'), $payment->toArray());
         
                     
         $response->assertStatus(200);
@@ -92,7 +92,7 @@ class PaymentTest extends TestCase
         
         $update = array_merge($payment->toArray(), $data);
         $response = $this->actingAs($user)
-                    ->put("/payment/" . $payment->id, $update);
+                    ->put(route('payment.update', $payment->id), $update);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('payments', $update);
@@ -118,7 +118,7 @@ class PaymentTest extends TestCase
         
         $update = array_merge($payment->toArray(), $data);
         $response = $this->actingAs($user)
-                    ->put("/payment/" . $payment->id, $update);
+                    ->put(route('payment.update', $payment->id), $update);
 
         $response->assertStatus(500);
     }
@@ -141,7 +141,7 @@ class PaymentTest extends TestCase
                         'payed_date' => null]);
 
         $id = $payment->id;
-        $response = $this->actingAs($user)->delete("/payment/${id}");
+        $response = $this->actingAs($user)->delete(route('payment.destroy', $id));
         $response->assertStatus(200);
 
         $this->assertSoftDeleted('payments', [
@@ -167,7 +167,7 @@ class PaymentTest extends TestCase
                         'payed_date' => Carbon::now()]);
 
         $id = $payment->id;
-        $response = $this->actingAs($user)->delete("/payment/${id}");
+        $response = $this->actingAs($user)->delete(route('payment.destroy', $id));
         $response->assertStatus(500);
     }
 

@@ -39,6 +39,21 @@ class InvoiceController extends Controller
 
 
     /**
+     * Show the resource
+     *
+     * @param  int  $id
+     * @return Invoice
+     */
+    public function show($id)
+    {
+        $invoice = Invoice::withTrashed()->findOrFail($id);
+        return $invoice->toJson();
+    }
+
+
+
+
+    /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request

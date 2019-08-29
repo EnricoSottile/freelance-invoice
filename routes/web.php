@@ -25,7 +25,7 @@ Route::prefix('app')->middleware(['web'])->group(function () {
 
         // INVOICE
         Route::resource('invoice', 'InvoiceController')
-                ->only(['index', 'store', 'update', 'destroy']);
+                ->only(['index', 'store', 'show', 'update', 'destroy']);
 
         // PAYMENT
         Route::resource('payment', 'PaymentController')

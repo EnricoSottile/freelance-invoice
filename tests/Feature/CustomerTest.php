@@ -27,7 +27,8 @@ class CustomerTest extends TestCase
         $count = rand(1, 10);
         factory( Customer::class, $count )->create(['user_id' => $user->id]);
 
-        $response = $this->actingAs($user)->get('/customer');
+
+        $response = $this->actingAs($user)->get( route('customer.index') );
         $response->assertStatus(200);
         $response->assertJsonCount($count);
     }
@@ -41,7 +42,7 @@ class CustomerTest extends TestCase
     {
         $user = factory(User::class)->create();
         $customer = factory( Customer::class )->make();
-        $response = $this->actingAs($user)->post('/customer', $customer->toArray());
+        $response = $this->actingAs($user)->post( route('customer.store') , $customer->toArray());
         $response->assertStatus(200);
         $this->assertDatabaseHas('customers', $customer->toArray());
     }
@@ -57,7 +58,7 @@ class CustomerTest extends TestCase
         $user = factory(User::class)->create();
         $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $update = array_merge($customer->toArray(), $data);
-        $response = $this->actingAs($user)->put("/customer/" . $customer->id, $update);
+        $response = $this->actingAs($user)->put( route('customer.update', $customer->id), $update);
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('customers', $update);
@@ -75,7 +76,7 @@ class CustomerTest extends TestCase
         $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $id = $customer->id;
         
-        $response = $this->actingAs($user)->delete("/customer/${id}");
+        $response = $this->actingAs($user)->delete( route('customer.destroy', $id));
         $response->assertStatus(200);
 
         $this->assertSoftDeleted('customers', [
@@ -129,7 +130,7 @@ class CustomerTest extends TestCase
         factory( Invoice::class )
             ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => Carbon::now()]);
 
-        $response = $this->actingAs($user)->delete("/customer/${id}");
+        $response = $this->actingAs($user)->delete(route('customer.destroy', $id));
         $response->assertStatus(500);
     }
 
@@ -156,7 +157,7 @@ class CustomerTest extends TestCase
                 'payed_date' => Carbon::now()]);
         
         
-        $response = $this->actingAs($user)->delete("/customer/${id}");
+        $response = $this->actingAs($user)->delete(route('customer.destroy', $id));
         $response->assertStatus(500);
     }
 
