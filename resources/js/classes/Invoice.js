@@ -10,6 +10,11 @@ class Invoice {
         return axios.get(BASE_URI);  
     }
 
+    payments(invoiceId){
+        const uri = `${BASE_URI}/${invoiceId}/payment`;
+        return axios.get(uri)
+    }
+
     store(data){
         return axios.post(BASE_URI, data);
     }

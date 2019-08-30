@@ -22,10 +22,22 @@ Route::prefix('app')->middleware(['web'])->group(function () {
         // CUSTOMER
         Route::resource('customer', 'CustomerController')
                 ->only(['index', 'store', 'show', 'update', 'destroy']);
+                
+                // CUSTOMER INVOICES
+                Route::get('customer/{customer}/invoice', 'CustomerInvoiceController@index')
+                        ->name('customer.invoice.index');
+
+
 
         // INVOICE
         Route::resource('invoice', 'InvoiceController')
                 ->only(['index', 'store', 'show', 'update', 'destroy']);
+
+                // INVOICE PAYMENTS
+                Route::get('invoice/{invoice}/payment', 'InvoicePaymentController@index')
+                        ->name('invoice.payment.index');
+
+
 
         // PAYMENT
         Route::resource('payment', 'PaymentController')
@@ -39,10 +51,6 @@ Route::prefix('app')->middleware(['web'])->group(function () {
         Route::delete('trash/destroy/{resource}/{id}', 'TrashController@destroy')
                 ->name('trash.destroy');
 
-
-        // CUSTOMER INVOICES
-        Route::get('customer/{customer}/invoice', 'CustomerInvoiceController@index')
-                ->name('customer.invoice.index');
 
 });
 

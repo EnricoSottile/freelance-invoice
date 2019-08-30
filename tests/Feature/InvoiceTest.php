@@ -264,4 +264,31 @@ class InvoiceTest extends TestCase
     }
 
 
+
+       /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testInvoicePaymentsCanBeRetrieved()
+    {
+        $count = 6;
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
+        $id = $customer->id;
+        $invoice = factory( Invoice::class )
+            ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => Carbon::now()]);
+
+        factory( Payment::class, $count)
+        ->create([
+            'user_id' => $user->id,
+            'invoice_id' => $invoice->id, 
+            'payed_date' => null]);
+
+        $response = $this->actingAs($user)->get(route('invoice.payment.index', $invoice->id));
+        $response->assertStatus(200);
+        $response->assertJsonCount( $count );
+    }
+
+
 }

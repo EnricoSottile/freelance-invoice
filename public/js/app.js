@@ -2264,6 +2264,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _classes_Invoice__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../classes/Invoice */ "./resources/js/classes/Invoice.js");
+/* harmony import */ var _payment_PaymentIndex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../payment/PaymentIndex */ "./resources/js/components/payment/PaymentIndex.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2286,6 +2287,18 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2298,17 +2311,24 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
     }
   },
+  components: {
+    'payment-index': _payment_PaymentIndex__WEBPACK_IMPORTED_MODULE_2__["default"]
+  },
   mounted: function mounted() {
     this.getInvoice(this.invoiceId);
+    this.getInvoicePayments(this.invoiceId);
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
     this.getInvoice(this.invoiceId);
+    this.getInvoicePayments(this.invoiceId);
     next();
   },
   data: function data() {
     return {
       invoiceClass: new _classes_Invoice__WEBPACK_IMPORTED_MODULE_1__["default"](),
-      invoice: {}
+      invoice: {},
+      invoiceIsReady: false,
+      paymentsAreReady: false
     };
   },
   methods: {
@@ -2329,8 +2349,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 _ref = _context.sent;
                 data = _ref.data;
                 this.invoice = data;
+                this.invoiceIsReady = true;
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -2344,27 +2365,61 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
       return getInvoice;
     }(),
-    destroyInvoice: function () {
-      var _destroyInvoice = _asyncToGenerator(
+    getInvoicePayments: function () {
+      var _getInvoicePayments = _asyncToGenerator(
       /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var response;
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(invoiceId) {
+        var _ref2, data;
+
         return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
           while (1) {
             switch (_context2.prev = _context2.next) {
               case 0:
                 _context2.next = 2;
-                return this.invoiceClass.destroy(this.invoiceId);
+                return this.invoiceClass.payments(invoiceId);
 
               case 2:
-                response = _context2.sent;
+                _ref2 = _context2.sent;
+                data = _ref2.data;
+                this.payments = data;
+                console.log(data);
+                this.paymentsAreReady = true;
 
-              case 3:
+              case 7:
               case "end":
                 return _context2.stop();
             }
           }
         }, _callee2, this);
+      }));
+
+      function getInvoicePayments(_x2) {
+        return _getInvoicePayments.apply(this, arguments);
+      }
+
+      return getInvoicePayments;
+    }(),
+    destroyInvoice: function () {
+      var _destroyInvoice = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return this.invoiceClass.destroy(this.invoiceId);
+
+              case 2:
+                response = _context3.sent;
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
       }));
 
       function destroyInvoice() {
@@ -4045,19 +4100,36 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", [_vm._v("Invoice show")]),
-    _vm._v(" "),
-    _c("div", [
-      _c("pre", [_vm._v(_vm._s(_vm.invoice))]),
+  return _c(
+    "div",
+    [
+      _c("div", [_vm._v("Invoice show")]),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.destroyInvoice } }, [_vm._v("Delete")]),
+      _c("div", [
+        _c("pre", [_vm._v(_vm._s(_vm.invoice))]),
+        _vm._v(" "),
+        _c("button", { on: { click: _vm.destroyInvoice } }, [_vm._v("Delete")]),
+        _vm._v(" "),
+        _c("br"),
+        _c("br"),
+        _c("br")
+      ]),
       _vm._v(" "),
-      _c("br"),
-      _c("br"),
-      _c("br")
-    ])
-  ])
+      _vm.invoiceIsReady
+        ? [
+            _vm.paymentsAreReady
+              ? _c("payment-index", {
+                  attrs: {
+                    shouldHandleOwnLoading: false,
+                    filteredPayments: _vm.payments
+                  }
+                })
+              : _vm._e()
+          ]
+        : _vm._e()
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -19280,6 +19352,12 @@ function () {
     key: "index",
     value: function index() {
       return axios.get(BASE_URI);
+    }
+  }, {
+    key: "payments",
+    value: function payments(invoiceId) {
+      var uri = "".concat(BASE_URI, "/").concat(invoiceId, "/payment");
+      return axios.get(uri);
     }
   }, {
     key: "store",
