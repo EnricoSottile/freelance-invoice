@@ -51,6 +51,8 @@
             },
             async destroyPayment(){
                 const response = await this.paymentClass.destroy(this.paymentId);
+                alert("payment was deleted");
+                router.go(-1)
             }
         },
 

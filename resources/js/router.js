@@ -13,6 +13,7 @@ import PaymentShow from './components/payment/PaymentShow'
 
 const routes = [
 
+
     // CUSTOMER
     { path: '/customer', name: 'customer.index', component: CustomerIndex },
     { 
@@ -55,4 +56,6 @@ const routes = [
 window.router = new VueRouter({
     routes
 })
+
+
 

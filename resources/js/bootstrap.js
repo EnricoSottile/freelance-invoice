@@ -5,6 +5,8 @@
  */
 
 
+
+
 window.axios = require('axios');
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 let token = document.head.querySelector('meta[name="csrf-token"]');
@@ -14,11 +16,29 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+// TODO: better handling of errors
 window.axios.interceptors.response.use( response => response,  error => {
-    
-    if (error.response && error.response.data && error.response.data.message) {
-        alert(error.response.data.message);
+
+    if (error.response && error.response.status) {
+
+        if (error.response.status === 404) {
+            // missing resource
+            if (error.response && error.response.data && error.response.data.message) {
+                alert(error.response.data.message);
+            }
+            router.push('/home')
+        }
+
+
+        if (error.response.status === 403) {
+            // error in deleting
+            if (error.response && error.response.data && error.response.data.message) {
+                alert(error.response.data.message);
+            }
+        }
+
     }
+
 
     return Promise.reject(error);
   });

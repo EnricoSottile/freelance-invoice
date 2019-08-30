@@ -80,6 +80,8 @@
             },
             async destroyInvoice(){
                 const response = await this.invoiceClass.destroy(this.invoiceId);
+                alert("invoice was deleted");
+                router.go(-1)
             }
         },
 

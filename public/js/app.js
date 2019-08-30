@@ -2118,8 +2118,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
               case 2:
                 response = _context3.sent;
+                alert("customer was deleted");
+                router.go(-1);
 
-              case 3:
+              case 5:
               case "end":
                 return _context3.stop();
             }
@@ -2413,8 +2415,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
               case 2:
                 response = _context3.sent;
+                alert("invoice was deleted");
+                router.go(-1);
 
-              case 3:
+              case 5:
               case "end":
                 return _context3.stop();
             }
@@ -2653,8 +2657,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
               case 2:
                 response = _context2.sent;
+                alert("payment was deleted");
+                router.go(-1);
 
-              case 3:
+              case 5:
               case "end":
                 return _context2.stop();
             }
@@ -19245,13 +19251,28 @@ if (token) {
   window.axios.defaults.headers.common['X-CSRF-TOKEN'] = token.content;
 } else {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
-}
+} // TODO: better handling of errors
+
 
 window.axios.interceptors.response.use(function (response) {
   return response;
 }, function (error) {
-  if (error.response && error.response.data && error.response.data.message) {
-    alert(error.response.data.message);
+  if (error.response && error.response.status) {
+    if (error.response.status === 404) {
+      // missing resource
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      }
+
+      router.push('/home');
+    }
+
+    if (error.response.status === 403) {
+      // error in deleting
+      if (error.response && error.response.data && error.response.data.message) {
+        alert(error.response.data.message);
+      }
+    }
   }
 
   return Promise.reject(error);

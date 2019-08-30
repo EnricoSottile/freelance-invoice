@@ -79,6 +79,8 @@
             },
             async destroyCustomer(){
                 const response = await this.customerClass.destroy(this.customerId);
+                alert("customer was deleted");
+                router.go(-1)
             }
         },
 
