@@ -102,7 +102,8 @@ class InvoiceTest extends TestCase
         $update = array_merge($invoice->toArray(), $data);
         $response = $this->actingAs($user)
                 ->put(route('invoice.update', $invoice->id), $update);
-        $response->assertStatus(500);
+        
+        $response->assertStatus(403);
     }
 
 
@@ -151,7 +152,7 @@ class InvoiceTest extends TestCase
 
         $id = $invoice->id;
         $response = $this->actingAs($user)->delete(route('invoice.destroy', $id));
-        $response->assertStatus(500);
+        $response->assertStatus(403);
     }
 
 
@@ -180,7 +181,7 @@ class InvoiceTest extends TestCase
         
         $id = $invoice->id;
         $response = $this->actingAs($user)->delete(route('invoice.destroy', $id));
-        $response->assertStatus(500);
+        $response->assertStatus(403);
         $this->assertDatabaseHas('invoices', ['id' => $id, 'deleted_at' => null]);
     }
 

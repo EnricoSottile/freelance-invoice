@@ -131,7 +131,7 @@ class CustomerTest extends TestCase
             ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => Carbon::now()]);
 
         $response = $this->actingAs($user)->delete(route('customer.destroy', $id));
-        $response->assertStatus(500);
+        $response->assertStatus(403);
     }
 
 
@@ -158,7 +158,7 @@ class CustomerTest extends TestCase
         
         
         $response = $this->actingAs($user)->delete(route('customer.destroy', $id));
-        $response->assertStatus(500);
+        $response->assertStatus(403);
     }
 
 

@@ -12,6 +12,12 @@ class Customer extends Model
 {
     use SoftDeletes;
 
+    public function canBeDestroyed(){
+        $invoices = $this->registered_invoices()->count();
+        $payments = $this->payed_payments()->count();
+        return $invoices === 0 && $payments === 0;
+    }
+
 
     public function invoices(){
         return $this->hasMany(Invoice::class);

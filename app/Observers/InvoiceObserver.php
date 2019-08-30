@@ -16,7 +16,7 @@ class InvoiceObserver
      */
     public function updating(Invoice $invoice){
         if ( $invoice->isRegistered() ) {
-            throw new \Exception('Cannot update registered invoice');
+            abort(403, 'Cannot update registered invoice');
         }
     }
 
@@ -48,14 +48,14 @@ class InvoiceObserver
     {        
 
         if ( $invoice->isRegistered() ) {
-            throw new \Exception('Cannot delete registered invoice');
+            abort(403, 'Cannot delete registered invoice');
         }
 
         
         $hasPayedPayments = $invoice->payed_payments()->count();
         $hasUnpayedPayments = $invoice->unpayed_payments()->count();
         if ($hasPayedPayments) {
-            throw new \Exception('Cannot delete invoice with payed payments');
+            abort(403, 'Cannot delete invoice with payed payments');
         } elseif($hasUnpayedPayments) {
             $invoice->unpayed_payments()->each(function($p) {
                 $p->delete();

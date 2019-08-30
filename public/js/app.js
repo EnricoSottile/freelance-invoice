@@ -2000,6 +2000,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2084,11 +2087,10 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
               case 2:
                 _ref2 = _context2.sent;
                 data = _ref2.data;
-                console.log(data);
                 this.invoices = data;
                 this.invoicesAreReady = true;
 
-              case 7:
+              case 6:
               case "end":
                 return _context2.stop();
             }
@@ -2101,6 +2103,35 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
       }
 
       return getCustomerInvoices;
+    }(),
+    destroyCustomer: function () {
+      var _destroyCustomer = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee3() {
+        var response;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee3$(_context3) {
+          while (1) {
+            switch (_context3.prev = _context3.next) {
+              case 0:
+                _context3.next = 2;
+                return this.customerClass.destroy(this.customerId);
+
+              case 2:
+                response = _context3.sent;
+
+              case 3:
+              case "end":
+                return _context3.stop();
+            }
+          }
+        }, _callee3, this);
+      }));
+
+      function destroyCustomer() {
+        return _destroyCustomer.apply(this, arguments);
+      }
+
+      return destroyCustomer;
     }()
   }
 });
@@ -3614,7 +3645,17 @@ var render = function() {
     [
       _c("div", [_vm._v("Customer show")]),
       _vm._v(" "),
-      _c("div", [_c("pre", [_vm._v(_vm._s(_vm.customer))])]),
+      _c("div", [
+        _c("pre", [_vm._v(_vm._s(_vm.customer))]),
+        _vm._v(" "),
+        _c("button", { on: { click: _vm.destroyCustomer } }, [
+          _vm._v("Delete")
+        ]),
+        _vm._v(" "),
+        _c("br"),
+        _c("br"),
+        _c("br")
+      ]),
       _vm._v(" "),
       _vm.customerIsReady
         ? [
@@ -18738,6 +18779,16 @@ if (token) {
   console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+window.axios.interceptors.response.use(function (response) {
+  return response;
+}, function (error) {
+  if (error.response && error.response.data && error.response.data.message) {
+    alert(error.response.data.message);
+  }
+
+  return Promise.reject(error);
+});
+
 /***/ }),
 
 /***/ "./resources/js/classes/Customer.js":
@@ -18794,7 +18845,7 @@ function () {
   }, {
     key: "destroy",
     value: function destroy(customerId) {
-      return axios["delete"](BASE_URI);
+      return axios["delete"]("".concat(BASE_URI, "/").concat(customerId));
     }
   }]);
 

@@ -16,17 +16,9 @@ class CustomerObserver
      */
     public function deleting(Customer $customer)
     {
-        $hasRegisteredInvoices = $customer->registered_invoices()->count();
-        if ($hasRegisteredInvoices) {
-            throw new \Exception('Cannot delete customer with registered invoices');
-        }
-
-        $hasPayedPayments = $customer->payed_payments()->count();
-        if ($hasPayedPayments) {
-            // The problem here is that an invoice can be payed 
-            // even if it has not been registered yet,
-            // therefore payed payment can exists without a registered invoice
-            throw new \Exception('Cannot delete customer with payed payments');
+        $canBeDestroyed = $customer->canBeDestroyed();
+        if ($canBeDestroyed === false) {
+            abort(403, 'This customer cannot be deleted');
         }
 
         $hasUnregisteredInvoices = $customer->unregistered_invoices()->count();

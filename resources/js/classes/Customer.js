@@ -29,7 +29,7 @@ class Customer {
     }
 
     destroy(customerId){
-        return axios.delete(BASE_URI);        
+        return axios.delete(`${BASE_URI}/${customerId}`);        
     }
 
 

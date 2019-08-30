@@ -16,7 +16,7 @@ class PaymentObserver
     public function updating(Payment $payment){
 
         if ( $payment->isPayed() ) {
-            throw new \Exception('Cannot update registered payment');
+            abort(403, 'Cannot update registered payment');
         }
     }
 
@@ -30,7 +30,7 @@ class PaymentObserver
     public function deleting(Payment $payment)
     {        
         if ( $payment->isPayed() ) {
-            throw new \Exception('Cannot delete registered payment');
+            abort(403, 'Cannot delete registered payment');
         }
     }
 }

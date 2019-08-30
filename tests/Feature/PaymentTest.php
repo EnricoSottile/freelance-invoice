@@ -120,7 +120,7 @@ class PaymentTest extends TestCase
         $response = $this->actingAs($user)
                     ->put(route('payment.update', $payment->id), $update);
 
-        $response->assertStatus(500);
+                    $response->assertStatus(403);
     }
 
 
@@ -168,7 +168,7 @@ class PaymentTest extends TestCase
 
         $id = $payment->id;
         $response = $this->actingAs($user)->delete(route('payment.destroy', $id));
-        $response->assertStatus(500);
+        $response->assertStatus(403);
     }
 
 }

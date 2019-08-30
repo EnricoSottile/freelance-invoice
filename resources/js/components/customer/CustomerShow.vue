@@ -4,6 +4,9 @@
 
         <div>
             <pre>{{ customer }}</pre>
+
+            <button @click="destroyCustomer">Delete</button>
+            <br/><br/><br/>
         </div>
 
         <template v-if="customerIsReady">
@@ -71,10 +74,12 @@
             },
             async getCustomerInvoices(customerId){
                 const { data } = await this.customerClass.invoices(customerId);
-                console.log(data);
                 this.invoices = data;
                 this.invoicesAreReady = true;
             },
+            async destroyCustomer(){
+                const response = await this.customerClass.destroy(this.customerId);
+            }
         },
 
 

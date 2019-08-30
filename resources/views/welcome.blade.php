@@ -26,7 +26,23 @@
                 </div>
             @endif --}}
 
-            <div id="app">                
+            <div id="app">   
+                <nav>
+                    <ul>
+                        <li>
+                            <router-link :to="{ name: 'customer.index'}">
+                                    Customers
+                            </router-link>
+                        </li>
+                        <li>
+                            <router-link :to="{ name: 'invoice.index'}">
+                                    Invoices
+                            </router-link>
+                        </li>
+                    </ul>
+
+                </nav>
+                
                 <router-view></router-view>
             </div> 
 
