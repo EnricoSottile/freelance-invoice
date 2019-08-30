@@ -3,7 +3,7 @@
         <div>Customer index</div>
 
         <div>
-            <button @click.prevent="storeCustomer()">add</button>
+            <button id="storeCustomer" @click.prevent="storeCustomer()">add</button>
 
             
             <ul>

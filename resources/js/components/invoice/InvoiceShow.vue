@@ -6,7 +6,7 @@
             <pre>{{ invoice }}</pre>
 
 
-            <button @click="destroyInvoice">Delete</button>
+            <button id="destroyInvoice" @click="destroyInvoice">Delete</button>
             <br/><br/><br/>
         </div>
 
@@ -60,6 +60,7 @@
             return {
                 invoiceClass: new Invoice(),
                 invoice: {},
+                payments: [],
                 invoiceIsReady: false,
                 paymentsAreReady: false,
             }
@@ -74,8 +75,6 @@
             async getInvoicePayments(invoiceId){
                 const { data } = await this.invoiceClass.payments(invoiceId);
                 this.payments = data;
-    console.log(data);
-
                 this.paymentsAreReady = true;
             },
             async destroyInvoice(){

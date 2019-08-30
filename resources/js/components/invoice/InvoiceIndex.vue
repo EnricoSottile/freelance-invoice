@@ -3,7 +3,7 @@
         <div>Invoice index</div>
 
         <div>
-            <button @click.prevent="storeInvoice()">add</button>
+            <button id="storeInvoice" @click.prevent="storeInvoice()">add</button>
 
             
             <ul>

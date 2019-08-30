@@ -5,7 +5,7 @@
         <div>
             <pre>{{ customer }}</pre>
 
-            <button @click="destroyCustomer">Delete</button>
+            <button id="destroyCustomer" @click="destroyCustomer">Delete</button>
             <br/><br/><br/>
         </div>
 
@@ -79,7 +79,7 @@
             },
             async destroyCustomer(){
                 const response = await this.customerClass.destroy(this.customerId);
-                alert("customer was deleted");
+                window.alert("customer was deleted");
                 router.go(-1)
             }
         },

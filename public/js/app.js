@@ -2118,7 +2118,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
               case 2:
                 response = _context3.sent;
-                alert("customer was deleted");
+                window.alert("customer was deleted");
                 router.go(-1);
 
               case 5:
@@ -2329,6 +2329,7 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
     return {
       invoiceClass: new _classes_Invoice__WEBPACK_IMPORTED_MODULE_1__["default"](),
       invoice: {},
+      payments: [],
       invoiceIsReady: false,
       paymentsAreReady: false
     };
@@ -2384,10 +2385,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 _ref2 = _context2.sent;
                 data = _ref2.data;
                 this.payments = data;
-                console.log(data);
                 this.paymentsAreReady = true;
 
-              case 7:
+              case 6:
               case "end":
                 return _context2.stop();
             }
@@ -3906,6 +3906,7 @@ var render = function() {
       _c(
         "button",
         {
+          attrs: { id: "storeCustomer" },
           on: {
             click: function($event) {
               $event.preventDefault()
@@ -3982,9 +3983,14 @@ var render = function() {
       _c("div", [
         _c("pre", [_vm._v(_vm._s(_vm.customer))]),
         _vm._v(" "),
-        _c("button", { on: { click: _vm.destroyCustomer } }, [
-          _vm._v("Delete")
-        ]),
+        _c(
+          "button",
+          {
+            attrs: { id: "destroyCustomer" },
+            on: { click: _vm.destroyCustomer }
+          },
+          [_vm._v("Delete")]
+        ),
         _vm._v(" "),
         _c("br"),
         _c("br"),
@@ -4036,6 +4042,7 @@ var render = function() {
       _c(
         "button",
         {
+          attrs: { id: "storeInvoice" },
           on: {
             click: function($event) {
               $event.preventDefault()
@@ -4114,7 +4121,14 @@ var render = function() {
       _c("div", [
         _c("pre", [_vm._v(_vm._s(_vm.invoice))]),
         _vm._v(" "),
-        _c("button", { on: { click: _vm.destroyInvoice } }, [_vm._v("Delete")]),
+        _c(
+          "button",
+          {
+            attrs: { id: "destroyInvoice" },
+            on: { click: _vm.destroyInvoice }
+          },
+          [_vm._v("Delete")]
+        ),
         _vm._v(" "),
         _c("br"),
         _c("br"),
@@ -19372,6 +19386,7 @@ function () {
   _createClass(Invoice, [{
     key: "index",
     value: function index() {
+      console.log("--index--");
       return axios.get(BASE_URI);
     }
   }, {

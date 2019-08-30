@@ -3,7 +3,8 @@ const BASE_URI = 'app/customer';
 
 class Customer {
 
-    constructor(){}
+    constructor(){
+    }
 
 
     index(){
