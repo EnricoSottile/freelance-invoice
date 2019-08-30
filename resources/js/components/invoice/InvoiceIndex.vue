@@ -10,7 +10,7 @@
                 
                 <li v-for="invoice in invoices" v-bind:key="invoice.id">
                     <router-link :to="{ name: 'invoice.show', params: { invoiceId: invoice.id }}">
-                        {{ invoice.id }} - {{ invoice.number }}
+                        {{ invoice.id }} - {{ invoice.number }} - {{ invoice.registered_date }}
                     </router-link>
                 </li>
             </ul>
@@ -57,7 +57,7 @@
         methods: {
             async getInvoices(){
                 if (this.shouldHandleOwnLoading) {
-                    const { data } = await this.invoiceClass.index( this.query );
+                    const { data } = await this.invoiceClass.index();
                     this.invoices = data;
                 } else {
                     this.invoices = this.filteredInvoices;

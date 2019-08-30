@@ -1,0 +1,61 @@
+<template>
+    <div>
+        <div>Payment show</div>
+
+        <div>
+            <pre>{{ payment }}</pre>
+
+
+            <button @click="destroyPayment">Delete</button>
+            <br/><br/><br/>
+        </div>
+    </div>
+</template>
+
+<script>
+    import Payment from '../../classes/Payment'
+
+    export default {
+        props: {
+            paymentId: {
+                required: true,
+                validator(value) {
+                    const type = typeof(value);
+                    return type === 'string' || type === 'number';
+                }
+            },
+        },
+
+
+        mounted(){
+            this.getPayment(this.paymentId);
+        },
+
+        beforeRouteUpdate (to, from, next) {
+            this.getPayment(this.paymentId);
+            next();
+        },
+
+
+        data(){
+            return {
+                paymentClass: new Payment(),
+                payment: {},
+            }
+        },
+
+        methods: {
+            async getPayment(paymentId){
+                const { data } = await this.paymentClass.show(paymentId);
+                this.payment = data;
+            },
+            async destroyPayment(){
+                const response = await this.paymentClass.destroy(this.paymentId);
+            }
+        },
+
+
+
+
+    }
+</script>

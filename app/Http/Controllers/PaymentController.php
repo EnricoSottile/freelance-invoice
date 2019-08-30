@@ -35,6 +35,18 @@ class PaymentController extends Controller
         return response()->json();
     }
 
+    /**
+     * Show the resource
+     *
+     * @param  int  $id
+     * @return Payment
+     */
+    public function show($id)
+    {
+        $payment = Payment::findOrFail($id);
+        return $payment->toJson();
+    }
+
 
 
     /**

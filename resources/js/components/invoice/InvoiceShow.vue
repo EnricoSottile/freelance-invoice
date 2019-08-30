@@ -4,6 +4,10 @@
 
         <div>
             <pre>{{ invoice }}</pre>
+
+
+            <button @click="destroyInvoice">Delete</button>
+            <br/><br/><br/>
         </div>
     </div>
 </template>
@@ -45,6 +49,9 @@
                 const { data } = await this.invoiceClass.show(invoiceId);
                 this.invoice = data;
             },
+            async destroyInvoice(){
+                const response = await this.invoiceClass.destroy(this.invoiceId);
+            }
         },
 
 

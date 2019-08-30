@@ -29,7 +29,7 @@ Route::prefix('app')->middleware(['web'])->group(function () {
 
         // PAYMENT
         Route::resource('payment', 'PaymentController')
-                ->only(['index', 'store', 'update', 'destroy']);
+                ->only(['index', 'store', 'show',  'update', 'destroy']);
 
 
         // TRASH

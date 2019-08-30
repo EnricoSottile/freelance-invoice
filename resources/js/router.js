@@ -7,6 +7,9 @@ import CustomerShow from './components/customer/CustomerShow'
 import InvoiceIndex from './components/invoice/InvoiceIndex'
 import InvoiceShow from './components/invoice/InvoiceShow'
 
+import PaymentIndex from './components/payment/PaymentIndex'
+import PaymentShow from './components/payment/PaymentShow'
+
 
 const routes = [
 
@@ -29,6 +32,21 @@ const routes = [
         path: '/invoice/:invoiceId', 
         name: 'invoice.show', 
         component: InvoiceShow, 
+        props: true
+    },
+
+
+    // PAYMENT
+    { 
+        path: '/payment', 
+        name: 'payment.index', 
+        component: PaymentIndex,
+        props: {shouldHandleOwnLoading: true}
+    },
+    { 
+        path: '/payment/:paymentId', 
+        name: 'payment.show', 
+        component: PaymentShow, 
         props: true
     },
 

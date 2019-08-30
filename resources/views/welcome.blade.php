@@ -31,12 +31,17 @@
                     <ul>
                         <li>
                             <router-link :to="{ name: 'customer.index'}">
-                                    Customers
+                                Customers
                             </router-link>
                         </li>
                         <li>
                             <router-link :to="{ name: 'invoice.index'}">
-                                    Invoices
+                                Invoices
+                            </router-link>
+                        </li>
+                        <li>
+                            <router-link :to="{ name: 'payment.index'}">
+                                Payments
                             </router-link>
                         </li>
                     </ul>

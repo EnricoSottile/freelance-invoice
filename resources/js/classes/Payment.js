@@ -1,7 +1,7 @@
 
-const BASE_URI = 'app/invoice';
+const BASE_URI = 'app/payment';
 
-class Invoice {
+class Payment {
 
     constructor(){}
 
@@ -14,8 +14,8 @@ class Invoice {
         return axios.post(BASE_URI, data);
     }
 
-    show(invoiceId){
-        const uri = `${BASE_URI}/${invoiceId}`;
+    show(paymentId){
+        const uri = `${BASE_URI}/${paymentId}`;
         return axios.get(uri);        
     }
 
@@ -23,11 +23,11 @@ class Invoice {
         return axios.put(BASE_URI, data);
     }
 
-    destroy(invoiceId){
-        return axios.delete(`${BASE_URI}/${invoiceId}`);        
+    destroy(paymentId){
+        return axios.delete(`${BASE_URI}/${paymentId}`);        
     }
 
 
 }
 
-export default Invoice
+export default Payment
