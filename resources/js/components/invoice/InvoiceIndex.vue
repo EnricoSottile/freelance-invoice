@@ -3,13 +3,13 @@
         <div>Invoice index</div>
 
         <div>
-            <button @click.prevent="storeCustomer()">add</button>
+            <button @click.prevent="storeInvoice()">add</button>
 
             
             <ul>
                 
                 <li v-for="invoice in invoices" v-bind:key="invoice.id">
-                    <router-link :to="{ name: 'invoice.show', params: { invoice: invoice.id }}">
+                    <router-link :to="{ name: 'invoice.show', params: { invoiceId: invoice.id }}">
                         {{ invoice.id }} - {{ invoice.number }}
                     </router-link>
                 </li>
@@ -25,7 +25,18 @@
     
 
     export default {
-        
+
+        props: {
+            shouldHandleOwnLoading: {
+                type: Boolean,
+                required: true,
+            },
+            filteredInvoices: {
+                type: Array,
+                required: false,
+            },
+        },
+
         mounted(){
             this.getInvoices();
         },
@@ -45,9 +56,16 @@
 
         methods: {
             async getInvoices(){
-                const { data } = await this.invoiceClass.index();
-                this.invoices = data;
+                if (this.shouldHandleOwnLoading) {
+                    const { data } = await this.invoiceClass.index( this.query );
+                    this.invoices = data;
+                } else {
+                    this.invoices = this.filteredInvoices;
+                }
             },
+            storeInvoice(){
+
+            }
         },
     }
 </script>

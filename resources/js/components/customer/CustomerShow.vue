@@ -6,7 +6,17 @@
             <pre>{{ customer }}</pre>
         </div>
 
-        <invoice-index></invoice-index>
+        <template v-if="customerIsReady">
+
+            <invoice-index 
+                v-if="invoicesAreReady" 
+                :shouldHandleOwnLoading="false" 
+                :filteredInvoices="invoices">
+            </invoice-index>
+
+        </template>
+
+        
     </div>
 </template>
 
@@ -15,17 +25,30 @@
     import InvoiceIndex from '../invoice/InvoiceIndex'
 
     export default {
+        props: {
+            customerId: {
+                required: true,
+                validator(value) {
+                    const type = typeof(value);
+                    return type === 'string' || type === 'number';
+                }
+            },
+        },
+
         components: {
             'invoice-index': InvoiceIndex
         },
 
 
         mounted(){
-            this.getCustomer(this.$route.params.customer);
-        },
+            this.getCustomer(this.customerId);
+            this.getCustomerInvoices(this.customerId);
+        }, 
 
         beforeRouteUpdate (to, from, next) {
-            this.getCustomer(to.params.customer);
+            this.getCustomer(this.customerId);
+            this.getCustomerInvoices(this.customerId);
+
             next();
         },
 
@@ -34,6 +57,9 @@
             return {
                 customerClass: new Customer(),
                 customer: {},
+                invoices: [],
+                customerIsReady: false,
+                invoicesAreReady: false,
             }
         },
 
@@ -41,6 +67,13 @@
             async getCustomer(customerId){
                 const { data } = await this.customerClass.show(customerId);
                 this.customer = data;
+                this.customerIsReady = true;
+            },
+            async getCustomerInvoices(customerId){
+                const { data } = await this.customerClass.invoices(customerId);
+                console.log(data);
+                this.invoices = data;
+                this.invoicesAreReady = true;
             },
         },
 

@@ -9,7 +9,7 @@
             <ul>
                 
                 <li v-for="customer in customers" v-bind:key="customer.id">
-                    <router-link :to="{ name: 'customer.show', params: { customer: customer.id }}">
+                    <router-link :to="{ name: 'customer.show', params: { customerId: customer.id }}">
                         {{ customer.id }} - {{ customer.full_name }}
                     </router-link>
                 </li>
@@ -48,6 +48,9 @@
                 const { data } = await this.customerClass.index();
                 this.customers = data;
             },
+            storeCustomer(){
+                
+            }
         },
     }
 </script>

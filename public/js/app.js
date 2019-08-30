@@ -1950,7 +1950,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return getCustomers;
-    }()
+    }(),
+    storeCustomer: function storeCustomer() {}
   }
 });
 
@@ -1975,6 +1976,18 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -1990,20 +2003,35 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    customerId: {
+      required: true,
+      validator: function validator(value) {
+        var type = _typeof(value);
+
+        return type === 'string' || type === 'number';
+      }
+    }
+  },
   components: {
     'invoice-index': _invoice_InvoiceIndex__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
   mounted: function mounted() {
-    this.getCustomer(this.$route.params.customer);
+    this.getCustomer(this.customerId);
+    this.getCustomerInvoices(this.customerId);
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-    this.getCustomer(to.params.customer);
+    this.getCustomer(this.customerId);
+    this.getCustomerInvoices(this.customerId);
     next();
   },
   data: function data() {
     return {
       customerClass: new _classes_Customer__WEBPACK_IMPORTED_MODULE_1__["default"](),
-      customer: {}
+      customer: {},
+      invoices: [],
+      customerIsReady: false,
+      invoicesAreReady: false
     };
   },
   methods: {
@@ -2024,8 +2052,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _ref = _context.sent;
                 data = _ref.data;
                 this.customer = data;
+                this.customerIsReady = true;
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -2038,6 +2067,40 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return getCustomer;
+    }(),
+    getCustomerInvoices: function () {
+      var _getCustomerInvoices = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2(customerId) {
+        var _ref2, data;
+
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.customerClass.invoices(customerId);
+
+              case 2:
+                _ref2 = _context2.sent;
+                data = _ref2.data;
+                console.log(data);
+                this.invoices = data;
+                this.invoicesAreReady = true;
+
+              case 7:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function getCustomerInvoices(_x2) {
+        return _getCustomerInvoices.apply(this, arguments);
+      }
+
+      return getCustomerInvoices;
     }()
   }
 });
@@ -2086,6 +2149,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    shouldHandleOwnLoading: {
+      type: Boolean,
+      required: true
+    },
+    filteredInvoices: {
+      type: Array,
+      required: false
+    }
+  },
   mounted: function mounted() {
     this.getInvoices();
   },
@@ -2110,15 +2183,25 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                _context.next = 2;
-                return this.invoiceClass.index();
+                if (!this.shouldHandleOwnLoading) {
+                  _context.next = 8;
+                  break;
+                }
 
-              case 2:
+                _context.next = 3;
+                return this.invoiceClass.index(this.query);
+
+              case 3:
                 _ref = _context.sent;
                 data = _ref.data;
                 this.invoices = data;
+                _context.next = 9;
+                break;
 
-              case 5:
+              case 8:
+                this.invoices = this.filteredInvoices;
+
+              case 9:
               case "end":
                 return _context.stop();
             }
@@ -2131,7 +2214,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return getInvoices;
-    }()
+    }(),
+    storeInvoice: function storeInvoice() {}
   }
 });
 
@@ -2155,6 +2239,8 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 //
 //
 //
@@ -2167,11 +2253,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    invoiceId: {
+      required: true,
+      validator: function validator(value) {
+        var type = _typeof(value);
+
+        return type === 'string' || type === 'number';
+      }
+    }
+  },
   mounted: function mounted() {
-    this.getInvoice(this.$route.params.invoice);
+    this.getInvoice(this.invoiceId);
   },
   beforeRouteUpdate: function beforeRouteUpdate(to, from, next) {
-    this.getInvoice(to.params.invoice);
+    this.getInvoice(this.invoiceId);
     next();
   },
   data: function data() {
@@ -3468,7 +3564,7 @@ var render = function() {
                   attrs: {
                     to: {
                       name: "customer.show",
-                      params: { customer: customer.id }
+                      params: { customerId: customer.id }
                     }
                   }
                 },
@@ -3520,9 +3616,20 @@ var render = function() {
       _vm._v(" "),
       _c("div", [_c("pre", [_vm._v(_vm._s(_vm.customer))])]),
       _vm._v(" "),
-      _c("invoice-index")
+      _vm.customerIsReady
+        ? [
+            _vm.invoicesAreReady
+              ? _c("invoice-index", {
+                  attrs: {
+                    shouldHandleOwnLoading: false,
+                    filteredInvoices: _vm.invoices
+                  }
+                })
+              : _vm._e()
+          ]
+        : _vm._e()
     ],
-    1
+    2
   )
 }
 var staticRenderFns = []
@@ -3557,7 +3664,7 @@ var render = function() {
           on: {
             click: function($event) {
               $event.preventDefault()
-              return _vm.storeCustomer()
+              return _vm.storeInvoice()
             }
           }
         },
@@ -3577,7 +3684,7 @@ var render = function() {
                   attrs: {
                     to: {
                       name: "invoice.show",
-                      params: { invoice: invoice.id }
+                      params: { invoiceId: invoice.id }
                     }
                   }
                 },
@@ -18663,6 +18770,12 @@ function () {
       return axios.get(BASE_URI);
     }
   }, {
+    key: "invoices",
+    value: function invoices(customerId) {
+      var uri = "".concat(BASE_URI, "/").concat(customerId, "/invoice");
+      return axios.get(uri);
+    }
+  }, {
     key: "store",
     value: function store(data) {
       return axios.post(BASE_URI, data);
@@ -18719,7 +18832,6 @@ function () {
   _createClass(Invoice, [{
     key: "index",
     value: function index() {
-      console.log(window.location);
       return axios.get(BASE_URI);
     }
   }, {
@@ -19054,18 +19166,23 @@ var routes = [// CUSTOMER
   name: 'customer.index',
   component: _components_customer_CustomerIndex__WEBPACK_IMPORTED_MODULE_1__["default"]
 }, {
-  path: '/customer/:customer',
+  path: '/customer/:customerId',
   name: 'customer.show',
-  component: _components_customer_CustomerShow__WEBPACK_IMPORTED_MODULE_2__["default"]
+  component: _components_customer_CustomerShow__WEBPACK_IMPORTED_MODULE_2__["default"],
+  props: true
 }, // INVOICE
 {
   path: '/invoice',
   name: 'invoice.index',
-  component: _components_invoice_InvoiceIndex__WEBPACK_IMPORTED_MODULE_3__["default"]
+  component: _components_invoice_InvoiceIndex__WEBPACK_IMPORTED_MODULE_3__["default"],
+  props: {
+    shouldHandleOwnLoading: true
+  }
 }, {
-  path: '/invoice/:invoice',
+  path: '/invoice/:invoiceId',
   name: 'invoice.show',
-  component: _components_invoice_InvoiceShow__WEBPACK_IMPORTED_MODULE_4__["default"]
+  component: _components_invoice_InvoiceShow__WEBPACK_IMPORTED_MODULE_4__["default"],
+  props: true
 }];
 window.router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes: routes

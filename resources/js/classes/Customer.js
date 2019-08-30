@@ -10,6 +10,11 @@ class Customer {
         return axios.get(BASE_URI);  
     }
 
+    invoices(customerId){
+        const uri = `${BASE_URI}/${customerId}/invoice`;
+        return axios.get(uri)
+    }
+
     store(data){
         return axios.post(BASE_URI, data);
     }

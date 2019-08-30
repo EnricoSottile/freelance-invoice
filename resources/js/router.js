@@ -12,11 +12,25 @@ const routes = [
 
     // CUSTOMER
     { path: '/customer', name: 'customer.index', component: CustomerIndex },
-    { path: '/customer/:customer', name: 'customer.show', component: CustomerShow },
+    { 
+        path: '/customer/:customerId', 
+        name: 'customer.show', 
+        component: CustomerShow, props: true 
+    },
 
     // INVOICE
-    { path: '/invoice', name: 'invoice.index', component: InvoiceIndex },
-    { path: '/invoice/:invoice', name: 'invoice.show', component: InvoiceShow },
+    { 
+        path: '/invoice', 
+        name: 'invoice.index', 
+        component: InvoiceIndex,
+        props: {shouldHandleOwnLoading: true}
+    },
+    { 
+        path: '/invoice/:invoiceId', 
+        name: 'invoice.show', 
+        component: InvoiceShow, 
+        props: true
+    },
 
 ]
 

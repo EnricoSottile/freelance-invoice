@@ -12,14 +12,23 @@
     import Invoice from '../../classes/Invoice'
 
     export default {
+        props: {
+            invoiceId: {
+                required: true,
+                validator(value) {
+                    const type = typeof(value);
+                    return type === 'string' || type === 'number';
+                }
+            },
+        },
 
 
         mounted(){
-            this.getInvoice(this.$route.params.invoice);
+            this.getInvoice(this.invoiceId);
         },
 
         beforeRouteUpdate (to, from, next) {
-            this.getInvoice(to.params.invoice);
+            this.getInvoice(this.invoiceId);
             next();
         },
 

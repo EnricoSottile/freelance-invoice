@@ -18,7 +18,7 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         return Invoice::all()->toJson();
     }
@@ -46,7 +46,7 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        $invoice = Invoice::withTrashed()->findOrFail($id);
+        $invoice = Invoice::findOrFail($id);
         return $invoice->toJson();
     }
 

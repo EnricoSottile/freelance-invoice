@@ -40,5 +40,9 @@ Route::prefix('app')->middleware(['web'])->group(function () {
                 ->name('trash.destroy');
 
 
+        // CUSTOMER INVOICES
+        Route::get('customer/{customer}/invoice', 'CustomerInvoiceController@index')
+                ->name('customer.invoice.index');
+
 });
 
