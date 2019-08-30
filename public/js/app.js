@@ -2607,7 +2607,8 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
   data: function data() {
     return {
       paymentClass: new _classes_Payment__WEBPACK_IMPORTED_MODULE_1__["default"](),
-      payment: {}
+      payment: {},
+      paymentIsReady: false
     };
   },
   methods: {
@@ -2628,8 +2629,9 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
                 _ref = _context.sent;
                 data = _ref.data;
                 this.payment = data;
+                this.paymentIsReady = true;
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -4256,7 +4258,11 @@ var render = function() {
     _c("div", [
       _c("pre", [_vm._v(_vm._s(_vm.payment))]),
       _vm._v(" "),
-      _c("button", { on: { click: _vm.destroyPayment } }, [_vm._v("Delete")]),
+      _c(
+        "button",
+        { attrs: { id: "destroyPayment" }, on: { click: _vm.destroyPayment } },
+        [_vm._v("Delete")]
+      ),
       _vm._v(" "),
       _c("br"),
       _c("br"),

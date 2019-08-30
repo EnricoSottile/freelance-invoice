@@ -6,7 +6,7 @@
             <pre>{{ payment }}</pre>
 
 
-            <button @click="destroyPayment">Delete</button>
+            <button id="destroyPayment" @click="destroyPayment">Delete</button>
             <br/><br/><br/>
         </div>
     </div>
@@ -41,6 +41,7 @@
             return {
                 paymentClass: new Payment(),
                 payment: {},
+                paymentIsReady: false
             }
         },
 
@@ -48,6 +49,7 @@
             async getPayment(paymentId){
                 const { data } = await this.paymentClass.show(paymentId);
                 this.payment = data;
+                this.paymentIsReady = true;
             },
             async destroyPayment(){
                 const response = await this.paymentClass.destroy(this.paymentId);

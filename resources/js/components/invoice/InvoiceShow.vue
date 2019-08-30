@@ -8,7 +8,7 @@
 
             <button id="destroyInvoice" @click="destroyInvoice">Delete</button>
             <br/><br/><br/>
-        </div>
+        </div>  
 
         <template v-if="invoiceIsReady">
 
