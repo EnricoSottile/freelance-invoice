@@ -189,4 +189,26 @@ class CustomerTest extends TestCase
         }
     }
 
+
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testCustomerInvoicesCanBeRetrieved()
+    {
+        $count = 5;
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
+        $id = $customer->id;
+        factory( Invoice::class, $count )
+            ->create(['customer_id' => $id, 'user_id' => $user->id, 'registered_date' => Carbon::now()]);
+
+        
+        $response = $this->actingAs($user)->get(route('customer.invoice.index', $id));
+        $response->assertStatus(200);
+        $response->assertJsonCount( $count );
+    }
+
 }
