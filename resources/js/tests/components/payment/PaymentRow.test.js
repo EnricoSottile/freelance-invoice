@@ -14,6 +14,7 @@ const mockPayment = {
 };
 
 paymentClass.destroy = jest.fn().mockReturnValue("response");
+paymentClass.update = jest.fn().mockReturnValue(mockPayment);
 
 const wrapper = shallowMount(PaymentRow, {
   propsData: {payment: mockPayment, paymentClass},
@@ -31,12 +32,18 @@ describe('PaymentRow', () => {
 
   test('initial data params are correct', () => {
     const data = wrapper.vm._data;
-    const expectedData = [];
+    const expectedData = ['paymentBeingEdited'];
 
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
 
     expect( wrapper.vm.paymentClass ).toBeInstanceOf(Payment);
+    expect( wrapper.vm.paymentBeingEdited ).toBeNull();
     expect( wrapper.vm.payment ).toEqual(mockPayment);
+  })
+
+  test('computed return correct bool', () => {
+    expect(wrapper.vm.isEditable).toBeTruthy();
+    expect(wrapper.vm.isDestroyable).toBeTruthy();
   })
 
 
@@ -50,6 +57,34 @@ describe('PaymentRow', () => {
     await expect(wrapper.vm.paymentClass.destroy).toBeCalled();
     expect( wrapper.emitted('paymentWasDeleted')[0]).toEqual(["response"])
   })
+
+
+
+  test('edit button works correctly', async() => {
+    const btnEdit = wrapper.find('#editPayment');
+    btnEdit.trigger('click');
+    expect( wrapper.vm.paymentBeingEdited).toEqual(mockPayment)
+  })
+
+
+  test('update button works correctly', async() => {
+    window.alert = () => {};
+    const btnUpdate = wrapper.find('#updatePayment');
+
+    btnUpdate.trigger('click');
+    await expect(wrapper.vm.paymentClass.update).toBeCalled();
+    expect( wrapper.emitted('paymentWasUpdated')[0]).toEqual([mockPayment])
+    await expect( wrapper.vm.paymentBeingEdited).toBeNull();
+  })
+
+  test('cancel button works correctly', async() => {
+    const btnEdit = wrapper.find('#editPayment');
+    btnEdit.trigger('click');
+
+    const btnCancel = wrapper.find('#cancelEditPayment');
+    btnCancel.trigger('click');
+    expect( wrapper.vm.paymentBeingEdited).toEqual(null)
+  });
 
 
 

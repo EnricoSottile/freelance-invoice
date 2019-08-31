@@ -74,7 +74,6 @@ describe('PaymentRow', () => {
 
     const btnCancel = wrapper.find('#cancelNewPayment');
     btnCancel.trigger('click');
-    await expect(wrapper.vm.paymentClass.create).toBeCalled();
     expect( wrapper.vm.newPayment).toEqual(null)
   });
 
