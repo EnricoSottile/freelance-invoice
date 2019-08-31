@@ -85,7 +85,7 @@
             },
             handlePaymentWasDeleted(event, paymentId) {
                 alert("payment was deleted");
-                console.log(event)
+                // console.log(event)
                 this.payments = this.payments.filter(payment => payment.id !== paymentId);
             }
         },

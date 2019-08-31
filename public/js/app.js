@@ -2573,8 +2573,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return getPayments;
     }(),
     handlePaymentWasDeleted: function handlePaymentWasDeleted(event, paymentId) {
-      alert("payment was deleted");
-      console.log(event);
+      alert("payment was deleted"); // console.log(event)
+
       this.payments = this.payments.filter(function (payment) {
         return payment.id !== paymentId;
       });
