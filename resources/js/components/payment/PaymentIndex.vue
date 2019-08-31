@@ -3,20 +3,30 @@
         <div>Payment index</div>
 
         <div>
-            <button @click.prevent="storePayment()">add</button>
 
             <p v-if="!paymentsAreReady">Loading</p>
 
-            
-            <ul>
-                
-                <li v-for="payment in payments" v-bind:key="payment.id">
-                    <router-link :to="{ name: 'payment.show', params: { paymentId: payment.id }}">
-                        {{ payment.id }} - {{ payment.number }} - {{ payment.payed_date }}
-                    </router-link>
-                </li>
-            </ul>
-            
+            <table>
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>User id</th>
+                        <th>Invoice id</th>
+                        <th>net_amount</th>
+                        <th>due_date</th>
+                        <th>payed_date</th>
+                        <th>delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <payment-row 
+                        v-for="payment in payments" 
+                        :payment="payment" 
+                        v-on:paymentWasDeleted="handlePaymentWasDeleted($event, payment.id)"
+                        v-bind:key="payment.id">
+                    </payment-row>
+                </tbody>
+            </table>
         </div>
 
     </div>
@@ -24,6 +34,7 @@
 
 <script>
     import Payment from '../../classes/Payment'
+    import PaymentRow from './PaymentRow'
     
 
     export default {
@@ -37,6 +48,10 @@
                 type: Array,
                 required: false,
             },
+        },
+
+        components: {
+            'payment-row': PaymentRow
         },
 
         mounted(){
@@ -68,8 +83,10 @@
 
                 this.paymentsAreReady = true;
             },
-            storePayment(){
-
+            handlePaymentWasDeleted(event, paymentId) {
+                alert("payment was deleted");
+                console.log(event)
+                this.payments = this.payments.filter(payment => payment.id !== paymentId);
             }
         },
     }

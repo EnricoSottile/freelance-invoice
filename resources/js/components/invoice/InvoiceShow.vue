@@ -12,6 +12,8 @@
 
         <template v-if="invoiceIsReady">
 
+            <!-- <button id="addPayment" @click.prevent="addPayment()">add new payment</button> -->
+
             <payment-index 
                 v-if="paymentsAreReady" 
                 :shouldHandleOwnLoading="false" 
@@ -81,7 +83,8 @@
                 const response = await this.invoiceClass.destroy(this.invoiceId);
                 alert("invoice was deleted");
                 router.go(-1)
-            }
+            },
+
         },
 
 
@@ -89,3 +92,4 @@
 
     }
 </script>
+

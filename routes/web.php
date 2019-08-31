@@ -17,7 +17,10 @@ Route::get('/', function () {
 
 
 // Route::middleware(['auth'])->group(function () {
-Route::prefix('app')->middleware(['web'])->group(function () {
+Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
+
+        // TODO
+        \Auth::loginUsingId(1);
 
         // CUSTOMER
         Route::resource('customer', 'CustomerController')

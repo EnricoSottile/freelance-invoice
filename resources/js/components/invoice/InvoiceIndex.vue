@@ -3,8 +3,6 @@
         <div>Invoice index</div>
 
         <div>
-            <button id="storeInvoice" @click.prevent="storeInvoice()">add</button>
-
             <p v-if="!invoicesAreReady">Loading</p>
             
             <ul>
@@ -66,9 +64,6 @@
                 }
 
                 this.invoicesAreReady = true;
-            },
-            storeInvoice(){
-
             }
         },
     }
