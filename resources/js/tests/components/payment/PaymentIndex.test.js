@@ -47,11 +47,23 @@ describe('PaymentIndex with own loading', () => {
     expect(wrapper.isVueInstance()).toBeTruthy()    
   })
 
+  test('has correct initial data keys', () => {
+    const data = wrapper.vm._data;
+    const expectedData = [
+      'paymentClass', 
+      'payments', 
+      'paymentsAreReady'
+    ];
+
+    expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
+})
+
   test('loads data correctly', () => {
     expect(wrapper.vm.paymentClass.index).toBeCalled()
     expect(wrapper.vm.payments).toEqual(getPaymentsObj)
+    expect(wrapper.vm.paymentsAreReady).toBeTruthy()
   })
 
 })
 
-
+   

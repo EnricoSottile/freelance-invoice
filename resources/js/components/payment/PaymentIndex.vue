@@ -5,6 +5,8 @@
         <div>
             <button @click.prevent="storePayment()">add</button>
 
+            <p v-if="!paymentsAreReady">Loading</p>
+
             
             <ul>
                 
@@ -51,6 +53,7 @@
             return {
                 paymentClass: new Payment(),
                 payments: [],
+                paymentsAreReady: false,
             }
         },
 
@@ -62,6 +65,8 @@
                 } else {
                     this.payments = this.filteredPayments;
                 }
+
+                this.paymentsAreReady = true;
             },
             storePayment(){
 

@@ -5,6 +5,7 @@
         <div>
             <button id="storeInvoice" @click.prevent="storeInvoice()">add</button>
 
+            <p v-if="!invoicesAreReady">Loading</p>
             
             <ul>
                 
@@ -51,6 +52,7 @@
             return {
                 invoiceClass: new Invoice(),
                 invoices: [],
+                invoicesAreReady: false
             }
         },
 
@@ -62,6 +64,8 @@
                 } else {
                     this.invoices = this.filteredInvoices;
                 }
+
+                this.invoicesAreReady = true;
             },
             storeInvoice(){
 

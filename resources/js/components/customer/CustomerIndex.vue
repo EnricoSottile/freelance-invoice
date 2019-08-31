@@ -5,9 +5,9 @@
         <div>
             <button id="storeCustomer" @click.prevent="storeCustomer()">add</button>
 
-            
+            <p v-if="!customersAreReady">Loading</p>
+
             <ul>
-                
                 <li v-for="customer in customers" v-bind:key="customer.id">
                     <router-link :to="{ name: 'customer.show', params: { customerId: customer.id }}">
                         {{ customer.id }} - {{ customer.full_name }}
@@ -40,6 +40,7 @@
             return {
                 customerClass: new Customer(),
                 customers: [],
+                customersAreReady: false
             }
         },
 
@@ -47,6 +48,7 @@
             async getCustomers(){
                 const { data } = await this.customerClass.index();
                 this.customers = data;
+                this.customersAreReady = true;
             },
             storeCustomer(){
                 

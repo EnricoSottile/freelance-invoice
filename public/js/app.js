@@ -1915,7 +1915,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       customerClass: new _classes_Customer__WEBPACK_IMPORTED_MODULE_1__["default"](),
-      customers: []
+      customers: [],
+      customersAreReady: false
     };
   },
   methods: {
@@ -1936,8 +1937,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 _ref = _context.sent;
                 data = _ref.data;
                 this.customers = data;
+                this.customersAreReady = true;
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -2180,6 +2182,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2202,7 +2205,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       invoiceClass: new _classes_Invoice__WEBPACK_IMPORTED_MODULE_1__["default"](),
-      invoices: []
+      invoices: [],
+      invoicesAreReady: false
     };
   },
   methods: {
@@ -2235,6 +2239,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.invoices = this.filteredInvoices;
 
               case 9:
+                this.invoicesAreReady = true;
+
+              case 10:
               case "end":
                 return _context.stop();
             }
@@ -2477,6 +2484,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2499,7 +2508,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
   data: function data() {
     return {
       paymentClass: new _classes_Payment__WEBPACK_IMPORTED_MODULE_1__["default"](),
-      payments: []
+      payments: [],
+      paymentsAreReady: false
     };
   },
   methods: {
@@ -2532,6 +2542,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 this.payments = this.filteredPayments;
 
               case 9:
+                this.paymentsAreReady = true;
+
+              case 10:
               case "end":
                 return _context.stop();
             }
@@ -3919,6 +3932,8 @@ var render = function() {
         [_vm._v("add")]
       ),
       _vm._v(" "),
+      !_vm.customersAreReady ? _c("p", [_vm._v("Loading")]) : _vm._e(),
+      _vm._v(" "),
       _c(
         "ul",
         _vm._l(_vm.customers, function(customer) {
@@ -4054,6 +4069,8 @@ var render = function() {
         },
         [_vm._v("add")]
       ),
+      _vm._v(" "),
+      !_vm.invoicesAreReady ? _c("p", [_vm._v("Loading")]) : _vm._e(),
       _vm._v(" "),
       _c(
         "ul",
@@ -4191,6 +4208,8 @@ var render = function() {
         },
         [_vm._v("add")]
       ),
+      _vm._v(" "),
+      !_vm.paymentsAreReady ? _c("p", [_vm._v("Loading")]) : _vm._e(),
       _vm._v(" "),
       _c(
         "ul",
@@ -19392,7 +19411,6 @@ function () {
   _createClass(Invoice, [{
     key: "index",
     value: function index() {
-      console.log("--index--");
       return axios.get(BASE_URI);
     }
   }, {

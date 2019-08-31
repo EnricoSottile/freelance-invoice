@@ -7,7 +7,6 @@ class Invoice {
 
 
     index(){
-        console.log("--index--");
         return axios.get(BASE_URI);  
     }
 

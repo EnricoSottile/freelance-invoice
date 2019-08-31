@@ -35,6 +35,7 @@ describe('InvoiceIndex without own loading', () => {
   test('loads data correctly', () => {
     expect(wrapper.vm.invoiceClass.index).not.toBeCalled()
     expect(wrapper.vm.invoices).toEqual(invoices)
+    expect(wrapper.vm.invoicesAreReady).toBeTruthy()
   })
 
 })
@@ -50,6 +51,19 @@ describe('InvoiceIndex with own loading', () => {
   test('loads data correctly', () => {
     expect(wrapper.vm.invoiceClass.index).toBeCalled()
     expect(wrapper.vm.invoices).toEqual(getInvoicesObj)
+    expect(wrapper.vm.invoicesAreReady).toBeTruthy()
+  })
+
+
+  test('has correct initial data keys', () => {
+      const data = wrapper.vm._data;
+      const expectedData = [
+        'invoiceClass', 
+        'invoices', 
+        'invoicesAreReady'
+      ];
+  
+      expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
   })
 
 })

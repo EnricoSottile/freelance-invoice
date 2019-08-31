@@ -36,6 +36,7 @@ describe('CustomerIndex', () => {
     const expectedData = [
       'customerClass', 
       'customers', 
+      'customersAreReady'
     ];
 
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
