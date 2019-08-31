@@ -28,7 +28,7 @@
                             <th>net_amount</th>
                             <th>due_date</th>
                             <th>payed_date</th>
-                            <th>delete</th>
+                            <th>actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -36,6 +36,7 @@
                             v-for="payment in payments" 
                             :paymentClass="paymentClass"
                             :payment="payment" 
+                            v-on:paymentWasUpdated="handlePaymentWasUpdated"
                             v-on:paymentWasDeleted="handlePaymentWasDeleted($event, payment.id)"
                             v-bind:key="payment.id">
                         </payment-row>
@@ -116,6 +117,11 @@
             },
             handlePaymentWasSaved(event) {
                 this.payments.push(event.data.payment);
+            },
+            handlePaymentWasUpdated(event) {
+                const payment = event.data.payment;
+                const index = this.payments.findIndex(p => p.id === payment.id);
+                Vue.set(this.payments, index, payment);
             }
         },
     }

@@ -30,8 +30,8 @@ class Payment {
     //     return axios.get(uri);        
     // }
 
-    update(invoice){
-        return axios.put(BASE_URI, data);
+    update(paymentId, data){
+        return axios.put(`${BASE_URI}/${paymentId}`, data);
     }
 
     destroy(paymentId){

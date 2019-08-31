@@ -10,7 +10,7 @@ const mockPayment = {
   'invoice_id': 1, 
   'net_amount': 100, 
   'due_date': '2019-09-07 00:00:00', 
-  'payed_date': '2019-09-07 00:00:00'
+  'payed_date': null
 };
 
 paymentClass.destroy = jest.fn().mockReturnValue("response");

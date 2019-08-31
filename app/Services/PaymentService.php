@@ -34,7 +34,6 @@ final class PaymentService {
         }
 
         $payment->save();
-
         return $payment;
     }
 
@@ -46,9 +45,9 @@ final class PaymentService {
      * @param  mixed $request
      * @param  mixed $id
      *
-     * @return bool
+     * @return Payment
      */
-    public function update(PaymentDto $request, int $id) : bool {
+    public function update(PaymentDto $request, int $id) : Payment {
         $payment = Payment::findOrFail($id);   
         
         foreach($this->attributes as $a) {
@@ -56,7 +55,8 @@ final class PaymentService {
             $payment[$a] = $request->$getter() ?? $payment[$a];
         }
 
-        return $payment->save();
+        $payment->save();
+        return $payment;
     }
 
 

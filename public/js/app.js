@@ -2610,6 +2610,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
 
 
 
@@ -2705,6 +2706,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     handlePaymentWasSaved: function handlePaymentWasSaved(event) {
       this.payments.push(event.data.payment);
+    },
+    handlePaymentWasUpdated: function handlePaymentWasUpdated(event) {
+      var payment = event.data.payment;
+      var index = this.payments.findIndex(function (p) {
+        return p.id === payment.id;
+      });
+      Vue.set(this.payments, index, payment);
     }
   }
 });
@@ -2724,10 +2732,41 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 
 
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2752,6 +2791,19 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     paymentClass: {
       required: true,
       type: Object
+    }
+  },
+  data: function data() {
+    return {
+      paymentBeingEdited: null
+    };
+  },
+  computed: {
+    isEditable: function isEditable() {
+      return this.payment.payed_date === null;
+    },
+    isDestroyable: function isDestroyable() {
+      return this.payment.payed_date === null;
     }
   },
   methods: {
@@ -2784,7 +2836,47 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       }
 
       return destroyPayment;
-    }()
+    }(),
+    editPayment: function editPayment() {
+      var paymentBeingEdited = _objectSpread({}, this.payment);
+
+      this.paymentBeingEdited = paymentBeingEdited;
+    },
+    updatePayment: function () {
+      var _updatePayment = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var payment;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.paymentClass.update(this.payment.id, this.paymentBeingEdited);
+
+              case 2:
+                payment = _context2.sent;
+                this.$emit('paymentWasUpdated', payment);
+                this.paymentBeingEdited = null;
+                alert('payment was updated');
+
+              case 6:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function updatePayment() {
+        return _updatePayment.apply(this, arguments);
+      }
+
+      return updatePayment;
+    }(),
+    cancelEditPayment: function cancelEditPayment(event, paymentId) {
+      this.paymentBeingEdited = null;
+    }
   }
 });
 
@@ -4419,6 +4511,7 @@ var render = function() {
                     key: payment.id,
                     attrs: { paymentClass: _vm.paymentClass, payment: payment },
                     on: {
+                      paymentWasUpdated: _vm.handlePaymentWasUpdated,
                       paymentWasDeleted: function($event) {
                         return _vm.handlePaymentWasDeleted($event, payment.id)
                       }
@@ -4452,7 +4545,7 @@ var staticRenderFns = [
         _vm._v(" "),
         _c("th", [_vm._v("payed_date")]),
         _vm._v(" "),
-        _c("th", [_vm._v("delete")])
+        _c("th", [_vm._v("actions")])
       ])
     ])
   }
@@ -4478,27 +4571,164 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("tr", [
-    _c("td", [_vm._v(_vm._s(_vm.payment.id))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.payment.user_id))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.payment.invoice_id))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.payment.net_amount))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.payment.due_date))]),
-    _vm._v(" "),
-    _c("td", [_vm._v(_vm._s(_vm.payment.payed_date))]),
-    _vm._v(" "),
-    _c("td", [
-      _c(
-        "button",
-        { attrs: { id: "destroyPayment" }, on: { click: _vm.destroyPayment } },
-        [_vm._v("Delete")]
-      )
-    ])
-  ])
+  return _c(
+    "tr",
+    [
+      _c("td", [_vm._v(_vm._s(_vm.payment.id))]),
+      _vm._v(" "),
+      _c("td", [_vm._v(_vm._s(_vm.payment.user_id))]),
+      _vm._v(" "),
+      _c("td", [_vm._v(_vm._s(_vm.payment.invoice_id))]),
+      _vm._v(" "),
+      !_vm.paymentBeingEdited
+        ? [
+            _c("td", [_vm._v(_vm._s(_vm.payment.net_amount))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.payment.due_date))]),
+            _vm._v(" "),
+            _c("td", [_vm._v(_vm._s(_vm.payment.payed_date))]),
+            _vm._v(" "),
+            _c("td", [
+              _vm.isEditable
+                ? _c(
+                    "button",
+                    {
+                      attrs: { id: "editPayment" },
+                      on: { click: _vm.editPayment }
+                    },
+                    [_vm._v("Edit")]
+                  )
+                : _vm._e(),
+              _vm._v(" "),
+              _vm.isDestroyable
+                ? _c(
+                    "button",
+                    {
+                      attrs: { id: "destroyPayment" },
+                      on: { click: _vm.destroyPayment }
+                    },
+                    [_vm._v("Delete")]
+                  )
+                : _vm._e()
+            ])
+          ]
+        : [
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.paymentBeingEdited.net_amount,
+                    expression: "paymentBeingEdited.net_amount"
+                  }
+                ],
+                attrs: {
+                  name: "net_amount",
+                  placeholder: "Net amount",
+                  type: "number"
+                },
+                domProps: { value: _vm.paymentBeingEdited.net_amount },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.paymentBeingEdited,
+                      "net_amount",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.paymentBeingEdited.due_date,
+                    expression: "paymentBeingEdited.due_date"
+                  }
+                ],
+                attrs: {
+                  name: "due_date",
+                  placeholder: "Due date",
+                  type: "date"
+                },
+                domProps: { value: _vm.paymentBeingEdited.due_date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.paymentBeingEdited,
+                      "due_date",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.paymentBeingEdited.payed_date,
+                    expression: "paymentBeingEdited.payed_date"
+                  }
+                ],
+                attrs: {
+                  name: "payed_date",
+                  placeholder: "Payed date",
+                  type: "date"
+                },
+                domProps: { value: _vm.paymentBeingEdited.payed_date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(
+                      _vm.paymentBeingEdited,
+                      "payed_date",
+                      $event.target.value
+                    )
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("td", [
+              _c(
+                "button",
+                {
+                  attrs: { id: "updatePayment" },
+                  on: { click: _vm.updatePayment }
+                },
+                [_vm._v("Update")]
+              ),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  attrs: { id: "cancelEditPayment" },
+                  on: { click: _vm.cancelEditPayment }
+                },
+                [_vm._v("Cancel")]
+              )
+            ])
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -19712,8 +19942,8 @@ function () {
 
   }, {
     key: "update",
-    value: function update(invoice) {
-      return axios.put(BASE_URI, data);
+    value: function update(paymentId, data) {
+      return axios.put("".concat(BASE_URI, "/").concat(paymentId), data);
     }
   }, {
     key: "destroy",

@@ -59,8 +59,8 @@ class PaymentController extends Controller
     public function update(UpdatePayment $request, PaymentService $paymentService, $id)
     {
 
-        $paymentService->update( $request->getDto(), $id );
-        return response()->json();
+        $payment = $paymentService->update( $request->getDto(), $id );
+        return response()->json(['payment' => $payment]);
     }
 
     /**
