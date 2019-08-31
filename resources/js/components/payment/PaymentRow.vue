@@ -11,24 +11,19 @@
         </td>
     </tr>
 
-
 </template>
 
 <script>
-    import Payment from '../../classes/Payment'
 
     export default {
         props: {
             payment: {
                 required: true,
                 type: Object
-            }
-        },
-
-
-        data(){
-            return {
-                paymentClass: new Payment(),
+            },
+            paymentClass: {
+                required: true,
+                type: Object
             }
         },
 
@@ -38,8 +33,6 @@
                 this.$emit('paymentWasDeleted', response);
             }
         },
-
-
 
 
     }

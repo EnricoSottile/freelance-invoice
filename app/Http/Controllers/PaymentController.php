@@ -31,8 +31,8 @@ class PaymentController extends Controller
      */
     public function store(StorePayment $request, PaymentService $paymentService)
     {        
-        $paymentService->store( $request->getDto() );
-        return response()->json();
+        $payment = $paymentService->store( $request->getDto() );
+        return response()->json(['payment' => $payment]);
     }
 
     /**

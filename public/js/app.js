@@ -2305,7 +2305,6 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 //
 //
 //
-//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2496,6 +2495,27 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2506,6 +2526,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     filteredPayments: {
       type: Array,
+      required: false
+    },
+    invoice: {
+      type: Object,
       required: false
     }
   },
@@ -2523,8 +2547,14 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       paymentClass: new _classes_Payment__WEBPACK_IMPORTED_MODULE_1__["default"](),
       payments: [],
-      paymentsAreReady: false
+      paymentsAreReady: false,
+      newPayment: null
     };
+  },
+  computed: {
+    canAddNewPayment: function canAddNewPayment() {
+      return this.invoice && this.invoice.id;
+    }
   },
   methods: {
     getPayments: function () {
@@ -2573,11 +2603,48 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
       return getPayments;
     }(),
     handlePaymentWasDeleted: function handlePaymentWasDeleted(event, paymentId) {
-      alert("payment was deleted"); // console.log(event)
-
+      alert("payment was deleted");
       this.payments = this.payments.filter(function (payment) {
         return payment.id !== paymentId;
       });
+    },
+    addNewPayment: function addNewPayment() {
+      var newPayment = this.paymentClass.create(this.invoice.id);
+      this.newPayment = newPayment;
+    },
+    saveNewPayment: function () {
+      var _saveNewPayment = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
+        var payment;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
+          while (1) {
+            switch (_context2.prev = _context2.next) {
+              case 0:
+                _context2.next = 2;
+                return this.paymentClass.store(this.newPayment);
+
+              case 2:
+                payment = _context2.sent;
+                this.payments.push(payment);
+                this.newPayment = null;
+
+              case 5:
+              case "end":
+                return _context2.stop();
+            }
+          }
+        }, _callee2, this);
+      }));
+
+      function saveNewPayment() {
+        return _saveNewPayment.apply(this, arguments);
+      }
+
+      return saveNewPayment;
+    }(),
+    cancelNewPayment: function cancelNewPayment(event, paymentId) {
+      this.newPayment = null;
     }
   }
 });
@@ -2595,7 +2662,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _classes_Payment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../classes/Payment */ "./resources/js/classes/Payment.js");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2617,19 +2683,16 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     payment: {
       required: true,
       type: Object
+    },
+    paymentClass: {
+      required: true,
+      type: Object
     }
-  },
-  data: function data() {
-    return {
-      paymentClass: new _classes_Payment__WEBPACK_IMPORTED_MODULE_1__["default"]()
-    };
   },
   methods: {
     destroyPayment: function () {
@@ -4119,6 +4182,7 @@ var render = function() {
               ? _c("payment-index", {
                   attrs: {
                     shouldHandleOwnLoading: false,
+                    invoice: _vm.invoice,
                     filteredPayments: _vm.payments
                   }
                 })
@@ -4151,33 +4215,133 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", [_vm._v("Payment index")]),
-    _vm._v(" "),
-    _c("div", [
-      !_vm.paymentsAreReady ? _c("p", [_vm._v("Loading")]) : _vm._e(),
+  return _c(
+    "div",
+    [
+      _c("h1", [_vm._v("Payment index")]),
       _vm._v(" "),
-      _c("table", [
-        _vm._m(0),
-        _vm._v(" "),
-        _c(
-          "tbody",
-          _vm._l(_vm.payments, function(payment) {
-            return _c("payment-row", {
-              key: payment.id,
-              attrs: { payment: payment },
-              on: {
-                paymentWasDeleted: function($event) {
-                  return _vm.handlePaymentWasDeleted($event, payment.id)
-                }
-              }
-            })
-          }),
-          1
-        )
-      ])
-    ])
-  ])
+      !_vm.paymentsAreReady
+        ? _c("p", [_vm._v("Loading")])
+        : [
+            _vm.canAddNewPayment && !_vm.newPayment
+              ? _c(
+                  "button",
+                  {
+                    attrs: { id: "addPayment" },
+                    on: {
+                      click: function($event) {
+                        $event.preventDefault()
+                        return _vm.addNewPayment()
+                      }
+                    }
+                  },
+                  [_vm._v("\n                add new payment\n            ")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.newPayment
+              ? [
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newPayment.net_amount,
+                        expression: "newPayment.net_amount"
+                      }
+                    ],
+                    attrs: {
+                      name: "net_amount",
+                      placeholder: "Net amount",
+                      type: "number"
+                    },
+                    domProps: { value: _vm.newPayment.net_amount },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.newPayment,
+                          "net_amount",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    directives: [
+                      {
+                        name: "model",
+                        rawName: "v-model",
+                        value: _vm.newPayment.due_date,
+                        expression: "newPayment.due_date"
+                      }
+                    ],
+                    attrs: {
+                      name: "due_date",
+                      placeholder: "Due date",
+                      type: "date"
+                    },
+                    domProps: { value: _vm.newPayment.due_date },
+                    on: {
+                      input: function($event) {
+                        if ($event.target.composing) {
+                          return
+                        }
+                        _vm.$set(
+                          _vm.newPayment,
+                          "due_date",
+                          $event.target.value
+                        )
+                      }
+                    }
+                  }),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      attrs: { id: "saveNewPayment" },
+                      on: { click: _vm.saveNewPayment }
+                    },
+                    [_vm._v("Save")]
+                  ),
+                  _vm._v(" "),
+                  _c(
+                    "button",
+                    {
+                      attrs: { id: "cancelNewPayment" },
+                      on: { click: _vm.cancelNewPayment }
+                    },
+                    [_vm._v("Cancel")]
+                  )
+                ]
+              : _vm._e(),
+            _vm._v(" "),
+            _c("table", [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "tbody",
+                _vm._l(_vm.payments, function(payment) {
+                  return _c("payment-row", {
+                    key: payment.id,
+                    attrs: { paymentClass: _vm.paymentClass, payment: payment },
+                    on: {
+                      paymentWasDeleted: function($event) {
+                        return _vm.handlePaymentWasDeleted($event, payment.id)
+                      }
+                    }
+                  })
+                }),
+                1
+              )
+            ])
+          ]
+    ],
+    2
+  )
 }
 var staticRenderFns = [
   function() {
@@ -19436,16 +19600,26 @@ function () {
       return axios.get(BASE_URI);
     }
   }, {
+    key: "create",
+    value: function create(invoiceId) {
+      return {
+        id: null,
+        user_id: null,
+        invoice_id: invoiceId,
+        net_amount: null,
+        due_date: null,
+        payed_date: null
+      };
+    }
+  }, {
     key: "store",
     value: function store(data) {
       return axios.post(BASE_URI, data);
-    }
-  }, {
-    key: "show",
-    value: function show(paymentId) {
-      var uri = "".concat(BASE_URI, "/").concat(paymentId);
-      return axios.get(uri);
-    }
+    } // show(paymentId){
+    //     const uri = `${BASE_URI}/${paymentId}`;
+    //     return axios.get(uri);        
+    // }
+
   }, {
     key: "update",
     value: function update(invoice) {

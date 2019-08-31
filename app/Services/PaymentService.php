@@ -22,9 +22,9 @@ final class PaymentService {
      *
      * @param  mixed $request
      *
-     * @return bool
+     * @return Payment
      */
-    public function store(PaymentDto $request) : bool {
+    public function store(PaymentDto $request) : Payment  {
         $payment = new Payment();
         $payment->user_id = Auth::user()->id;
         
@@ -33,7 +33,9 @@ final class PaymentService {
             $payment[$a] = $request->$getter();
         }
 
-        return $payment->save();
+        $payment->save();
+
+        return $payment;
     }
 
 

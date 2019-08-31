@@ -12,11 +12,10 @@
 
         <template v-if="invoiceIsReady">
 
-            <!-- <button id="addPayment" @click.prevent="addPayment()">add new payment</button> -->
-
             <payment-index 
                 v-if="paymentsAreReady" 
                 :shouldHandleOwnLoading="false" 
+                :invoice="invoice"
                 :filteredPayments="payments">
             </payment-index>
 

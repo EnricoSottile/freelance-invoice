@@ -10,14 +10,25 @@ class Payment {
         return axios.get(BASE_URI);  
     }
 
+    create(invoiceId){
+        return {
+            id: null,
+            user_id: null,
+            invoice_id: invoiceId,
+            net_amount: null,
+            due_date: null,
+            payed_date: null
+        }
+    }
+
     store(data){
         return axios.post(BASE_URI, data);
     }
 
-    show(paymentId){
-        const uri = `${BASE_URI}/${paymentId}`;
-        return axios.get(uri);        
-    }
+    // show(paymentId){
+    //     const uri = `${BASE_URI}/${paymentId}`;
+    //     return axios.get(uri);        
+    // }
 
     update(invoice){
         return axios.put(BASE_URI, data);
