@@ -9,18 +9,11 @@
 
 
                 <!-- ADD NEW PAYMENT -->
-                <button id="addPayment" 
-                    v-if="canAddNewPayment && !newPayment" 
-                    @click.prevent="addNewPayment()">
-                    add new payment
-                </button>
-                
-                <template v-if="newPayment">
-                    <input v-model="newPayment.net_amount" name="net_amount" placeholder="Net amount" type="number"/>
-                    <input v-model="newPayment.due_date" name="due_date" placeholder="Due date" type="date"/>
-                    <button id="saveNewPayment" @click="saveNewPayment">Save</button>
-                    <button id="cancelNewPayment" @click="cancelNewPayment">Cancel</button>
-                </template>
+                <add-payment 
+                    :invoice="invoice"
+                    :paymentClass="paymentClass"
+                    v-on:paymentWasSaved="handlePaymentWasSaved">
+                </add-payment>
 
 
 
@@ -56,6 +49,7 @@
 <script>
     import Payment from '../../classes/Payment'
     import PaymentRow from './PaymentRow'
+    import AddPayment from './AddPayment'
     
 
     export default {
@@ -76,7 +70,8 @@
         },
 
         components: {
-            'payment-row': PaymentRow
+            'payment-row': PaymentRow,
+            'add-payment': AddPayment
         },
 
         mounted(){
@@ -94,7 +89,6 @@
                 paymentClass: new Payment(),
                 payments: [],
                 paymentsAreReady: false,
-                newPayment: null
             }
         },
 
@@ -119,17 +113,8 @@
                 alert("payment was deleted");
                 this.payments = this.payments.filter(payment => payment.id !== paymentId);
             },
-            addNewPayment(){
-                const newPayment = this.paymentClass.create(this.invoice.id);
-                this.newPayment = newPayment;
-            },
-            async saveNewPayment(){
-                const payment = await this.paymentClass.store(this.newPayment);
-                this.payments.push(payment);
-                this.newPayment = null;
-            },
-            cancelNewPayment(event, paymentId) {
-                this.newPayment = null;
+            handlePaymentWasSaved(event) {
+                this.payments.push(event.data.payment);
             }
         },
     }

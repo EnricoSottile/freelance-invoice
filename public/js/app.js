@@ -2442,6 +2442,109 @@ function _typeof(obj) { if (typeof Symbol === "function" && typeof Symbol.iterat
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/AddPayment.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/payment/AddPayment.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @babel/runtime/regenerator */ "./node_modules/@babel/runtime/regenerator/index.js");
+/* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
+
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
+
+function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    paymentClass: {
+      required: true,
+      type: Object
+    },
+    invoice: {
+      type: Object,
+      required: false
+    }
+  },
+  data: function data() {
+    return {
+      newPayment: null
+    };
+  },
+  computed: {
+    canAddNewPayment: function canAddNewPayment() {
+      return this.invoice && this.invoice.id;
+    }
+  },
+  methods: {
+    addNewPayment: function addNewPayment() {
+      var newPayment = this.paymentClass.create(this.invoice.id);
+      this.newPayment = newPayment;
+    },
+    saveNewPayment: function () {
+      var _saveNewPayment = _asyncToGenerator(
+      /*#__PURE__*/
+      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee() {
+        var payment;
+        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                _context.next = 2;
+                return this.paymentClass.store(this.newPayment);
+
+              case 2:
+                payment = _context.sent;
+                this.$emit('paymentWasSaved', payment);
+                this.newPayment = null;
+
+              case 5:
+              case "end":
+                return _context.stop();
+            }
+          }
+        }, _callee, this);
+      }));
+
+      function saveNewPayment() {
+        return _saveNewPayment.apply(this, arguments);
+      }
+
+      return saveNewPayment;
+    }(),
+    cancelNewPayment: function cancelNewPayment(event, paymentId) {
+      this.newPayment = null;
+    }
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/PaymentIndex.vue?vue&type=script&lang=js&":
 /*!*******************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/payment/PaymentIndex.vue?vue&type=script&lang=js& ***!
@@ -2455,6 +2558,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(_babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _classes_Payment__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../classes/Payment */ "./resources/js/classes/Payment.js");
 /* harmony import */ var _PaymentRow__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./PaymentRow */ "./resources/js/components/payment/PaymentRow.vue");
+/* harmony import */ var _AddPayment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./AddPayment */ "./resources/js/components/payment/AddPayment.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -2509,13 +2613,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2534,7 +2632,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     }
   },
   components: {
-    'payment-row': _PaymentRow__WEBPACK_IMPORTED_MODULE_2__["default"]
+    'payment-row': _PaymentRow__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'add-payment': _AddPayment__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
   mounted: function mounted() {
     this.getPayments();
@@ -2547,8 +2646,7 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     return {
       paymentClass: new _classes_Payment__WEBPACK_IMPORTED_MODULE_1__["default"](),
       payments: [],
-      paymentsAreReady: false,
-      newPayment: null
+      paymentsAreReady: false
     };
   },
   computed: {
@@ -2608,43 +2706,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         return payment.id !== paymentId;
       });
     },
-    addNewPayment: function addNewPayment() {
-      var newPayment = this.paymentClass.create(this.invoice.id);
-      this.newPayment = newPayment;
-    },
-    saveNewPayment: function () {
-      var _saveNewPayment = _asyncToGenerator(
-      /*#__PURE__*/
-      _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.mark(function _callee2() {
-        var payment;
-        return _babel_runtime_regenerator__WEBPACK_IMPORTED_MODULE_0___default.a.wrap(function _callee2$(_context2) {
-          while (1) {
-            switch (_context2.prev = _context2.next) {
-              case 0:
-                _context2.next = 2;
-                return this.paymentClass.store(this.newPayment);
-
-              case 2:
-                payment = _context2.sent;
-                this.payments.push(payment);
-                this.newPayment = null;
-
-              case 5:
-              case "end":
-                return _context2.stop();
-            }
-          }
-        }, _callee2, this);
-      }));
-
-      function saveNewPayment() {
-        return _saveNewPayment.apply(this, arguments);
-      }
-
-      return saveNewPayment;
-    }(),
-    cancelNewPayment: function cancelNewPayment(event, paymentId) {
-      this.newPayment = null;
+    handlePaymentWasSaved: function handlePaymentWasSaved(event) {
+      this.payments.push(event.data.payment);
     }
   }
 });
@@ -4200,6 +4263,122 @@ render._withStripped = true
 
 /***/ }),
 
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/AddPayment.vue?vue&type=template&id=f285870e&":
+/*!*********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/payment/AddPayment.vue?vue&type=template&id=f285870e& ***!
+  \*********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _vm.canAddNewPayment && !_vm.newPayment
+        ? _c(
+            "button",
+            {
+              attrs: { id: "addPayment" },
+              on: {
+                click: function($event) {
+                  $event.preventDefault()
+                  return _vm.addNewPayment()
+                }
+              }
+            },
+            [_vm._v("\n        add new payment\n    ")]
+          )
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.newPayment
+        ? [
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newPayment.net_amount,
+                  expression: "newPayment.net_amount"
+                }
+              ],
+              attrs: {
+                name: "net_amount",
+                placeholder: "Net amount",
+                type: "number"
+              },
+              domProps: { value: _vm.newPayment.net_amount },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.newPayment, "net_amount", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newPayment.due_date,
+                  expression: "newPayment.due_date"
+                }
+              ],
+              attrs: {
+                name: "due_date",
+                placeholder: "Due date",
+                type: "date"
+              },
+              domProps: { value: _vm.newPayment.due_date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.newPayment, "due_date", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                attrs: { id: "saveNewPayment" },
+                on: { click: _vm.saveNewPayment }
+              },
+              [_vm._v("Save")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                attrs: { id: "cancelNewPayment" },
+                on: { click: _vm.cancelNewPayment }
+              },
+              [_vm._v("Cancel")]
+            )
+          ]
+        : _vm._e()
+    ],
+    2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
 /***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/PaymentIndex.vue?vue&type=template&id=7d621b80&":
 /*!***********************************************************************************************************************************************************************************************************************!*\
   !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/payment/PaymentIndex.vue?vue&type=template&id=7d621b80& ***!
@@ -4223,101 +4402,10 @@ var render = function() {
       !_vm.paymentsAreReady
         ? _c("p", [_vm._v("Loading")])
         : [
-            _vm.canAddNewPayment && !_vm.newPayment
-              ? _c(
-                  "button",
-                  {
-                    attrs: { id: "addPayment" },
-                    on: {
-                      click: function($event) {
-                        $event.preventDefault()
-                        return _vm.addNewPayment()
-                      }
-                    }
-                  },
-                  [_vm._v("\n                add new payment\n            ")]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.newPayment
-              ? [
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.newPayment.net_amount,
-                        expression: "newPayment.net_amount"
-                      }
-                    ],
-                    attrs: {
-                      name: "net_amount",
-                      placeholder: "Net amount",
-                      type: "number"
-                    },
-                    domProps: { value: _vm.newPayment.net_amount },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.newPayment,
-                          "net_amount",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c("input", {
-                    directives: [
-                      {
-                        name: "model",
-                        rawName: "v-model",
-                        value: _vm.newPayment.due_date,
-                        expression: "newPayment.due_date"
-                      }
-                    ],
-                    attrs: {
-                      name: "due_date",
-                      placeholder: "Due date",
-                      type: "date"
-                    },
-                    domProps: { value: _vm.newPayment.due_date },
-                    on: {
-                      input: function($event) {
-                        if ($event.target.composing) {
-                          return
-                        }
-                        _vm.$set(
-                          _vm.newPayment,
-                          "due_date",
-                          $event.target.value
-                        )
-                      }
-                    }
-                  }),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      attrs: { id: "saveNewPayment" },
-                      on: { click: _vm.saveNewPayment }
-                    },
-                    [_vm._v("Save")]
-                  ),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      attrs: { id: "cancelNewPayment" },
-                      on: { click: _vm.cancelNewPayment }
-                    },
-                    [_vm._v("Cancel")]
-                  )
-                ]
-              : _vm._e(),
+            _c("add-payment", {
+              attrs: { invoice: _vm.invoice, paymentClass: _vm.paymentClass },
+              on: { paymentWasSaved: _vm.handlePaymentWasSaved }
+            }),
             _vm._v(" "),
             _c("table", [
               _vm._m(0),
@@ -19910,6 +19998,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceShow_vue_vue_type_template_id_c354fc66___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceShow_vue_vue_type_template_id_c354fc66___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/payment/AddPayment.vue":
+/*!********************************************************!*\
+  !*** ./resources/js/components/payment/AddPayment.vue ***!
+  \********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _AddPayment_vue_vue_type_template_id_f285870e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./AddPayment.vue?vue&type=template&id=f285870e& */ "./resources/js/components/payment/AddPayment.vue?vue&type=template&id=f285870e&");
+/* harmony import */ var _AddPayment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./AddPayment.vue?vue&type=script&lang=js& */ "./resources/js/components/payment/AddPayment.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _AddPayment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _AddPayment_vue_vue_type_template_id_f285870e___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _AddPayment_vue_vue_type_template_id_f285870e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/payment/AddPayment.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/payment/AddPayment.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************!*\
+  !*** ./resources/js/components/payment/AddPayment.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddPayment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./AddPayment.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/AddPayment.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_AddPayment_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/payment/AddPayment.vue?vue&type=template&id=f285870e&":
+/*!***************************************************************************************!*\
+  !*** ./resources/js/components/payment/AddPayment.vue?vue&type=template&id=f285870e& ***!
+  \***************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddPayment_vue_vue_type_template_id_f285870e___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./AddPayment.vue?vue&type=template&id=f285870e& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/AddPayment.vue?vue&type=template&id=f285870e&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddPayment_vue_vue_type_template_id_f285870e___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_AddPayment_vue_vue_type_template_id_f285870e___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
