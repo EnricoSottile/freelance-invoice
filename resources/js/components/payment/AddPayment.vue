@@ -3,7 +3,7 @@
 
         <!-- ADD NEW PAYMENT -->
         <button id="addPayment" 
-            v-if="canAddNewPayment && !newPayment" 
+            v-if="!newPayment" 
             @click.prevent="addNewPayment()">
             add new payment
         </button>
@@ -30,11 +30,10 @@
             },
             invoice: {
                 type: Object,
-                required: false,
+                required: true,
             }
         },
 
- 
 
         data(){
             return {
@@ -42,11 +41,7 @@
             }
         },
 
-        computed: {
-            canAddNewPayment(){
-                return this.invoice && this.invoice.id
-            }
-        },
+
 
         methods: {
             addNewPayment(){
@@ -57,6 +52,7 @@
                 const payment = await this.paymentClass.store(this.newPayment);
                 this.$emit('paymentWasSaved', payment);
                 this.newPayment = null;
+                alert('payment was added');
             },
             cancelNewPayment(event, paymentId) {
                 this.newPayment = null;

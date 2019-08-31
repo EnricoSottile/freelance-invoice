@@ -9,7 +9,8 @@
 
 
                 <!-- ADD NEW PAYMENT -->
-                <add-payment 
+                <add-payment
+                    v-if="invoice"
                     :invoice="invoice"
                     :paymentClass="paymentClass"
                     v-on:paymentWasSaved="handlePaymentWasSaved">

@@ -16,13 +16,7 @@ const mockPayment = {
 paymentClass.destroy = jest.fn().mockReturnValue("response");
 
 const wrapper = shallowMount(PaymentRow, {
-  propsData: {payment: mockPayment},
-  // methods: {  },
-  data: function() {
-    return {
-      paymentClass
-    }
-  }
+  propsData: {payment: mockPayment, paymentClass},
 });
 
 
@@ -37,9 +31,7 @@ describe('PaymentRow', () => {
 
   test('initial data params are correct', () => {
     const data = wrapper.vm._data;
-    const expectedData = [
-      'paymentClass', 
-    ];
+    const expectedData = [];
 
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
 

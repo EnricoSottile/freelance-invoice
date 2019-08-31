@@ -2488,18 +2488,13 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     invoice: {
       type: Object,
-      required: false
+      required: true
     }
   },
   data: function data() {
     return {
       newPayment: null
     };
-  },
-  computed: {
-    canAddNewPayment: function canAddNewPayment() {
-      return this.invoice && this.invoice.id;
-    }
   },
   methods: {
     addNewPayment: function addNewPayment() {
@@ -2522,8 +2517,9 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 payment = _context.sent;
                 this.$emit('paymentWasSaved', payment);
                 this.newPayment = null;
+                alert('payment was added');
 
-              case 5:
+              case 6:
               case "end":
                 return _context.stop();
             }
@@ -2565,6 +2561,7 @@ function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try
 
 function _asyncToGenerator(fn) { return function () { var self = this, args = arguments; return new Promise(function (resolve, reject) { var gen = fn.apply(self, args); function _next(value) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value); } function _throw(err) { asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err); } _next(undefined); }); }; }
 
+//
 //
 //
 //
@@ -4281,7 +4278,7 @@ var render = function() {
   return _c(
     "div",
     [
-      _vm.canAddNewPayment && !_vm.newPayment
+      !_vm.newPayment
         ? _c(
             "button",
             {
@@ -4402,10 +4399,15 @@ var render = function() {
       !_vm.paymentsAreReady
         ? _c("p", [_vm._v("Loading")])
         : [
-            _c("add-payment", {
-              attrs: { invoice: _vm.invoice, paymentClass: _vm.paymentClass },
-              on: { paymentWasSaved: _vm.handlePaymentWasSaved }
-            }),
+            _vm.invoice
+              ? _c("add-payment", {
+                  attrs: {
+                    invoice: _vm.invoice,
+                    paymentClass: _vm.paymentClass
+                  },
+                  on: { paymentWasSaved: _vm.handlePaymentWasSaved }
+                })
+              : _vm._e(),
             _vm._v(" "),
             _c("table", [
               _vm._m(0),

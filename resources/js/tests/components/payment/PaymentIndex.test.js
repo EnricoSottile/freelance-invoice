@@ -7,10 +7,10 @@ const paymentClass = new Payment();
 const getPaymentsObj = [{id:1}, {id:2}];
 paymentClass.index = jest.fn().mockReturnValue({data: getPaymentsObj});
 
-const mount = (shouldHandleOwnLoading = true, filteredPayments = null) => {
+const mount = (shouldHandleOwnLoading = true, filteredPayments = null, invoice = null) => {
  return shallowMount(PaymentIndex, {
     stubs: ['router-link'],
-    propsData: {shouldHandleOwnLoading, filteredPayments},
+    propsData: {shouldHandleOwnLoading, filteredPayments, invoice},
     data: function() {
       return {
         paymentClass
@@ -27,8 +27,9 @@ let wrapper;
 describe('PaymentIndex without own loading', () => {
   
   const payments = [{id:3}, {id:4}];
+  const invoice = {id: 1};
   test('is a Vue instance', () => {
-    wrapper = mount(false, payments);
+    wrapper = mount(false, payments, invoice);
     expect(wrapper.isVueInstance()).toBeTruthy()
   })
 
@@ -78,6 +79,21 @@ describe('PaymentIndex with own loading', () => {
 
       expect(wrapper.vm.payments).toEqual([{id:1},{id:3},{id:4}]);
   })
+
+
+  test('correctly adds the new payment to the array', () => {
+    window.alert = () => {};
+    wrapper.vm.payments = [
+      {id:1},
+      {id:2},
+      {id:3},
+    ];     
+
+    const newPayment = { data: {payment: {id: 4}}};
+
+    wrapper.vm.handlePaymentWasSaved(newPayment);
+    expect(wrapper.vm.payments).toEqual([{id:1},{id:2},{id:3},{id:4}]);
+})
 
 })
 
