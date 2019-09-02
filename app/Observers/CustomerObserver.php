@@ -16,7 +16,8 @@ class CustomerObserver
      */
     public function deleting(Customer $customer)
     {
-        $canBeDestroyed = $customer->canBeDestroyed();
+        $existingCustomer = Customer::withTrashed()->find($customer->id);
+        $canBeDestroyed = $existingCustomer->canBeDestroyed();
         if ($canBeDestroyed === false) {
             abort(403, 'This customer cannot be deleted');
         }
