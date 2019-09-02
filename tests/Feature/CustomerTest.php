@@ -45,6 +45,7 @@ class CustomerTest extends TestCase
         $response = $this->actingAs($user)->post( route('customer.store') , $customer->toArray());
         $response->assertStatus(200);
         $this->assertDatabaseHas('customers', $customer->toArray());
+        $response->assertJsonStructure(['customer']);
     }
 
     /**
@@ -62,6 +63,7 @@ class CustomerTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('customers', $update);
+        $response->assertJsonStructure(['customer']);
     }
 
 

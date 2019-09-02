@@ -22,9 +22,9 @@ final class CustomerService {
      *
      * @param  mixed $request
      *
-     * @return bool
+     * @return Customer
      */
-    public function store(CustomerDto $request) : bool {
+    public function store(CustomerDto $request) : Customer {
         $customer = new Customer();
         $customer->user_id = Auth::user()->id;
 
@@ -33,7 +33,8 @@ final class CustomerService {
             $customer[$a] = $request->$getter();
         }
 
-        return $customer->save();
+        $customer->save();
+        return $customer;
     }
 
 
@@ -44,9 +45,9 @@ final class CustomerService {
      * @param  mixed $request
      * @param  mixed $id
      *
-     * @return bool
+     * @return Customer
      */
-    public function update(CustomerDto $request, int $id) : bool {
+    public function update(CustomerDto $request, int $id) : Customer {
         $customer = Customer::findOrFail($id);   
         
         foreach($this->attributes as $a) {
@@ -54,7 +55,8 @@ final class CustomerService {
             $customer[$a] = $request->$getter() ?? $customer[$a];
         }
 
-        return $customer->save();
+        $customer->save();
+        return $customer;
     }
 
 

@@ -54,6 +54,7 @@ class InvoiceTest extends TestCase
         
         $response->assertStatus(200);
         $this->assertDatabaseHas('invoices', $invoice->toArray());
+        $response->assertJsonStructure(['invoice']);
     }
 
 
@@ -80,6 +81,7 @@ class InvoiceTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('invoices', $update);
+        $response->assertJsonStructure(['invoice']);
     }
 
     /**

@@ -69,6 +69,7 @@ class PaymentTest extends TestCase
                     
         $response->assertStatus(200);
         $this->assertDatabaseHas('payments', $payment->toArray());
+        $response->assertJsonStructure(['payment']);
     }
 
 
@@ -96,6 +97,7 @@ class PaymentTest extends TestCase
 
         $response->assertStatus(200);
         $this->assertDatabaseHas('payments', $update);
+        $response->assertJsonStructure(['payment']);
     }
 
     /**

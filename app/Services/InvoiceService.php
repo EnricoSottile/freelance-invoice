@@ -26,9 +26,9 @@ final class InvoiceService {
      *
      * @param  mixed $request
      *
-     * @return bool
+     * @return Invoice
      */
-    public function store(InvoiceDto $request) : bool {
+    public function store(InvoiceDto $request) : Invoice {
 
         $invoice = new Invoice();
         $invoice->user_id = Auth::user()->id;
@@ -38,7 +38,8 @@ final class InvoiceService {
             $invoice[$a] = $request->$getter();
         }
 
-        return $invoice->save();
+        $invoice->save();
+        return $invoice;
     }
 
 
@@ -49,9 +50,9 @@ final class InvoiceService {
      * @param  mixed $request
      * @param  mixed $id
      *
-     * @return bool
+     * @return Invoice
      */
-    public function update(InvoiceDto $request, int $id) : bool {
+    public function update(InvoiceDto $request, int $id) : Invoice {
         $invoice = Invoice::findOrFail($id);   
         
         foreach($this->attributes as $a) {
@@ -59,7 +60,8 @@ final class InvoiceService {
             $invoice[$a] = $request->$getter() ?? $invoice[$a];
         }
 
-        return $invoice->save();
+        $invoice->save();
+        return $invoice;
     }
 
 
