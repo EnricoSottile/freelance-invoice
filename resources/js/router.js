@@ -5,6 +5,7 @@ import CustomerIndex from './components/customer/CustomerIndex'
 import CustomerShow from './components/customer/CustomerShow'
 
 import InvoiceIndex from './components/invoice/InvoiceIndex'
+import InvoiceCreate from './components/invoice/InvoiceCreate'
 import InvoiceShow from './components/invoice/InvoiceShow'
 
 import PaymentIndex from './components/payment/PaymentIndex'
@@ -26,6 +27,11 @@ const routes = [
         name: 'invoice.index', 
         component: InvoiceIndex,
         props: {shouldHandleOwnLoading: true}
+    },
+    { 
+        path: '/invoice/create', 
+        name: 'invoice.create', 
+        component: InvoiceCreate, 
     },
     { 
         path: '/invoice/:invoiceId', 

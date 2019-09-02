@@ -10,6 +10,19 @@ class Invoice {
         return axios.get(BASE_URI);  
     }
 
+    create(customerId = null){
+        return {
+            customer_id: customerId,
+            number: null,
+            net_amount: null,
+            tax: null,
+            description: null,
+            date: null,
+            sent_date: null,
+            registered_date: null
+        }
+    }
+
     payments(invoiceId){
         const uri = `${BASE_URI}/${invoiceId}/payment`;
         return axios.get(uri)
