@@ -10,8 +10,8 @@
             <td>{{payment.due_date}}</td>
             <td>{{payment.payed_date}}</td>
             <td>
-                <button v-if="isEditable" id="editPayment" @click="editPayment">Edit</button>
-                <button v-if="isDestroyable" id="destroyPayment" @click="destroyPayment">Delete</button>
+                <button v-if="isEditable" :id="`editPayment_${payment.id}`" @click="editPayment">Edit</button>
+                <button v-if="isDestroyable" :id="`destroyPayment_${payment.id}`" @click="destroyPayment">Delete</button>
             </td>
 
         </template>
@@ -27,8 +27,8 @@
                 <input v-model="paymentBeingEdited.payed_date" name="payed_date" placeholder="Payed date" type="date"/>
             </td>
             <td>
-                <button id="updatePayment" @click="updatePayment">Update</button>
-                <button id="cancelEditPayment" @click="cancelEditPayment">Cancel</button>
+                <button :id="`updatePayment_${payment.id}`" @click="updatePayment">Update</button>
+                <button :id="`cancelEditPayment_${payment.id}`" @click="cancelEditPayment">Cancel</button>
             </td>
 
         </template>

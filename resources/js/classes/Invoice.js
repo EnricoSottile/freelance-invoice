@@ -24,8 +24,8 @@ class Invoice {
         return axios.get(uri);        
     }
 
-    update(invoice){
-        return axios.put(BASE_URI, data);
+    update(invoiceId, data){
+        return axios.put(`${BASE_URI}/${invoiceId}`, data);
     }
 
     destroy(invoiceId){

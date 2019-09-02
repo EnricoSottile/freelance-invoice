@@ -4,12 +4,13 @@ import InvoiceShow from '../../../components/invoice/InvoiceShow'
 import Invoice from '../../../classes/Invoice'
 const invoiceClass = new Invoice();
 
-const getInvoiceObj = {'id': 1};
+const getInvoiceObj = {'id': 1,registered_date: null};
 const getInvoicePaymentsArr = [{id:1}, {id:2}];
-
+const mockUpdatedInvoice ={id:1, foo: 'bar', registered_date: null}
 invoiceClass.show = jest.fn().mockReturnValue({data: getInvoiceObj});
 invoiceClass.payments = jest.fn().mockReturnValue({data: getInvoicePaymentsArr});
 invoiceClass.destroy = jest.fn();
+invoiceClass.update = jest.fn().mockReturnValue({data: {invoice: mockUpdatedInvoice}});
 
 const wrapper = shallowMount(InvoiceShow, {
   propsData: {invoiceId: 1},
@@ -43,6 +44,7 @@ describe('InvoiceShow', () => {
       'payments', 
       'invoiceIsReady',
       'paymentsAreReady',
+      'invoiceBeingEdited'
     ];
 
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
@@ -52,6 +54,12 @@ describe('InvoiceShow', () => {
     expect( wrapper.vm.payments ).toEqual(getInvoicePaymentsArr);
     expect( wrapper.vm.invoiceIsReady ).toBeTruthy();
     expect( wrapper.vm.paymentsAreReady ).toBeTruthy();
+  })
+
+  test('computed return correct bool', () => {
+    expect(wrapper.vm.hasPayedPayments).toBeFalsy();
+    expect(wrapper.vm.isEditable).toBeTruthy();
+    expect(wrapper.vm.isDestroyable).toBeTruthy();
   })
 
 
@@ -64,6 +72,34 @@ describe('InvoiceShow', () => {
     btn.trigger('click')
     expect(wrapper.vm.invoiceClass.destroy).toBeCalled();
   })
+
+
+  test('edit button works correctly', async() => {
+    const btnEdit = wrapper.find('#editInvoice');
+    btnEdit.trigger('click');
+    expect( wrapper.vm.invoiceBeingEdited).toEqual(getInvoiceObj)
+  })
+
+
+  test('update button works correctly', async() => {
+    window.alert = () => {};
+    const btnUpdate = wrapper.find('#updateInvoice');
+
+    btnUpdate.trigger('click');
+    
+    await expect(wrapper.vm.invoiceClass.update).toBeCalled();
+    await expect( wrapper.vm.invoiceBeingEdited).toBeNull();
+    await expect( wrapper.vm.invoice).toEqual(mockUpdatedInvoice);
+  })
+
+  test('cancel button works correctly', async() => {
+    const btnEdit = wrapper.find('#editInvoice');
+    btnEdit.trigger('click');
+
+    const btnCancel = wrapper.find('#cancelEditInvoice');
+    btnCancel.trigger('click');
+    expect( wrapper.vm.invoiceBeingEdited).toEqual(null)
+  });
 
 
 })
