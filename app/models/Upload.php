@@ -9,7 +9,7 @@ class Upload extends Model
     //
 
     protected $fillable = [
-        'name', 'path'
+        'name', 'path', 'user_id'
     ];
 
     public function uploadable()

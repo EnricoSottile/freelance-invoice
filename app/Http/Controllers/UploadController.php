@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\Upload;
+use \Auth;
 
 class UploadController extends Controller
 {
@@ -39,12 +39,11 @@ class UploadController extends Controller
 
         $name = $request->file('image')->store('');
         $resource->uploads()->create([
-            'user_id' => \Auth::user()->id,
+            'user_id' => Auth::user()->id,
             'name' => $name,
-            'path' => ''
+            'path' => '' // TODO
         ]);
 
- 
         return response()->json(['uploads' => $resource->uploads()->get()]);
     }
 

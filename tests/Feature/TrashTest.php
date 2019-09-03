@@ -51,7 +51,6 @@ class TrashTest extends TestCase
     public function testTrashableResourcesCanBeRestored()
     {
         $user = factory(User::class)->create();
-
         foreach($this->resources as $res) {
             $resName = strtolower( class_basename(get_class($res)) );
             $resId = $res->id;
