@@ -5,7 +5,7 @@
 
         <div v-if="customersAreReady">
             <select v-model="invoice.customer_id">
-                <option default selected>Choose a customer</option>
+                <option default selected value="">Choose a customer</option>
                 <option 
                     v-bind:key="customer.id" 
                     v-for="customer in customers" 

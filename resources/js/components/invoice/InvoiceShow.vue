@@ -3,7 +3,17 @@
         <div>Invoice show</div>
 
         <div v-if="invoiceBeingEdited">
-            <input v-model="invoiceBeingEdited.customer_id" name="customer_id" placeholder="Customer id" type="number"/><br/>
+            <select v-model="invoiceBeingEdited.customer_id">
+                <option default selected value="">Choose a customer</option>
+                <option 
+                    v-bind:key="customer.id" 
+                    v-for="customer in customers" 
+                    :value="customer.id">
+                    {{ customer.full_name }}
+                    </option>
+            </select>
+            {{ invoiceBeingEdited.customer_id }}
+            <br/>
             <input v-model="invoiceBeingEdited.number" name="number" placeholder="Number" type="number"/><br/>
             <input v-model="invoiceBeingEdited.net_amount" name="net_amount" placeholder="Net amount" type="number"/><br/>
             <input v-model="invoiceBeingEdited.tax" name="tax" placeholder="Tax" type="number"/><br/>
@@ -61,12 +71,14 @@
         mounted(){
             this.getInvoice(this.invoiceId);
             this.getInvoicePayments(this.invoiceId);
+            this.getCustomers();
         },
 
         beforeRouteUpdate (to, from, next) {
             const invoiceId = to.params.invoiceId;
             this.getInvoice(invoiceId);
             this.getInvoicePayments(invoiceId);
+            this.getCustomers();
             next();
         },
 
@@ -76,8 +88,10 @@
                 invoiceClass: new Invoice(),
                 invoice: {},
                 payments: [],
+                customers: [],
                 invoiceIsReady: false,
                 paymentsAreReady: false,
+                customersAreReady: false,
                 invoiceBeingEdited: null,
 
             }
@@ -108,6 +122,11 @@
                 const { data } = await this.invoiceClass.payments(invoiceId);
                 this.payments = data;
                 this.paymentsAreReady = true;
+            },
+            async getCustomers(){
+                const { data } = await this.invoiceClass.customers();
+                this.customers = data;
+                this.customersAreReady = true;
             },
             async destroyInvoice(){
                 const response = await this.invoiceClass.destroy(this.invoiceId);

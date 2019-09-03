@@ -7,10 +7,12 @@ const invoiceClass = new Invoice();
 const getInvoiceObj = {'id': 1,registered_date: null};
 const getInvoicePaymentsArr = [{id:1}, {id:2}];
 const mockUpdatedInvoice ={id:1, foo: 'bar', registered_date: null}
+const mockData = [{id:1}, {id:2}]
 invoiceClass.show = jest.fn().mockReturnValue({data: getInvoiceObj});
 invoiceClass.payments = jest.fn().mockReturnValue({data: getInvoicePaymentsArr});
 invoiceClass.destroy = jest.fn();
 invoiceClass.update = jest.fn().mockReturnValue({data: {invoice: mockUpdatedInvoice}});
+invoiceClass.customers = jest.fn().mockReturnValue({data: mockData});
 
 const wrapper = shallowMount(InvoiceShow, {
   propsData: {invoiceId: 1},
@@ -42,9 +44,11 @@ describe('InvoiceShow', () => {
       'invoiceClass', 
       'invoice', 
       'payments', 
+      'customers', 
       'invoiceIsReady',
       'paymentsAreReady',
-      'invoiceBeingEdited'
+      'customersAreReady',
+      'invoiceBeingEdited',
     ];
 
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
@@ -52,8 +56,11 @@ describe('InvoiceShow', () => {
     expect( wrapper.vm.invoiceClass ).toBeInstanceOf(Invoice);
     expect( wrapper.vm.invoice ).toEqual(getInvoiceObj);
     expect( wrapper.vm.payments ).toEqual(getInvoicePaymentsArr);
+    expect( wrapper.vm.customers ).toEqual(mockData);
     expect( wrapper.vm.invoiceIsReady ).toBeTruthy();
     expect( wrapper.vm.paymentsAreReady ).toBeTruthy();
+    expect( wrapper.vm.customersAreReady ).toBeTruthy();
+    expect( wrapper.vm.invoiceBeingEdited ).toBeNull();
   })
 
   test('computed return correct bool', () => {

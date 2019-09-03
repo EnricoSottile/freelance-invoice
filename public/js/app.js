@@ -2448,6 +2448,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2469,12 +2479,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   mounted() {
     this.getInvoice(this.invoiceId);
     this.getInvoicePayments(this.invoiceId);
+    this.getCustomers();
   },
 
   beforeRouteUpdate(to, from, next) {
     const invoiceId = to.params.invoiceId;
     this.getInvoice(invoiceId);
     this.getInvoicePayments(invoiceId);
+    this.getCustomers();
     next();
   },
 
@@ -2483,8 +2495,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       invoiceClass: new _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"](),
       invoice: {},
       payments: [],
+      customers: [],
       invoiceIsReady: false,
       paymentsAreReady: false,
+      customersAreReady: false,
       invoiceBeingEdited: null
     };
   },
@@ -2518,6 +2532,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } = await this.invoiceClass.payments(invoiceId);
       this.payments = data;
       this.paymentsAreReady = true;
+    },
+
+    async getCustomers() {
+      const {
+        data
+      } = await this.invoiceClass.customers();
+      this.customers = data;
+      this.customersAreReady = true;
     },
 
     async destroyInvoice() {
@@ -3806,9 +3828,11 @@ var render = function() {
               }
             },
             [
-              _c("option", { attrs: { default: "", selected: "" } }, [
-                _vm._v("Choose a customer")
-              ]),
+              _c(
+                "option",
+                { attrs: { default: "", selected: "", value: "" } },
+                [_vm._v("Choose a customer")]
+              ),
               _vm._v(" "),
               _vm._l(_vm.customers, function(customer) {
                 return _c(
@@ -4143,34 +4167,63 @@ var render = function() {
       _vm._v(" "),
       _vm.invoiceBeingEdited
         ? _c("div", [
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.invoiceBeingEdited.customer_id,
-                  expression: "invoiceBeingEdited.customer_id"
-                }
-              ],
-              attrs: {
-                name: "customer_id",
-                placeholder: "Customer id",
-                type: "number"
-              },
-              domProps: { value: _vm.invoiceBeingEdited.customer_id },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.invoiceBeingEdited.customer_id,
+                    expression: "invoiceBeingEdited.customer_id"
                   }
-                  _vm.$set(
-                    _vm.invoiceBeingEdited,
-                    "customer_id",
-                    $event.target.value
-                  )
+                ],
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.invoiceBeingEdited,
+                      "customer_id",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
                 }
-              }
-            }),
+              },
+              [
+                _c(
+                  "option",
+                  { attrs: { default: "", selected: "", value: "" } },
+                  [_vm._v("Choose a customer")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.customers, function(customer) {
+                  return _c(
+                    "option",
+                    { key: customer.id, domProps: { value: customer.id } },
+                    [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(customer.full_name) +
+                          "\n                "
+                      )
+                    ]
+                  )
+                })
+              ],
+              2
+            ),
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.invoiceBeingEdited.customer_id) +
+                "\n        "
+            ),
             _c("br"),
             _vm._v(" "),
             _c("input", {
