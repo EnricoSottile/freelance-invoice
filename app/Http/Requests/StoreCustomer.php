@@ -25,10 +25,10 @@ class StoreCustomer extends FormRequest
     public function rules()
     {
         return [
-            'full_name' => 'required|string',
-            'email' => 'email|nullable',
-            'phone' => 'string|nullable',
-            'vat_code' => 'string|nullable'
+            'full_name' => 'required|string|max:100',
+            'email' => 'email|nullable|max:100',
+            'phone' => 'string|nullable|max:100',
+            'vat_code' => 'string|nullable|max:100'
         ];
     }
 

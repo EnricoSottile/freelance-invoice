@@ -33,7 +33,7 @@ class StorePayment extends FormRequest
                     $query->where('user_id', \Auth::user()->id);
                 }),
             ],
-            'net_amount' => 'required|between:0,99999999.99',
+            'net_amount' => 'required|numeric|between:0,99999999.99',
             'due_date' => 'nullable|date',
             'payed_date' => 'nullable|date'
         ];
