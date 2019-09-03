@@ -2050,6 +2050,21 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2068,22 +2083,32 @@ __webpack_require__.r(__webpack_exports__);
   mounted() {
     this.invoice = this.invoiceClass.create();
     this.setCustomer(this.customerId);
+    this.getCustomers();
   },
 
   beforeRouteUpdate(to, from, next) {
     const customerId = to.params.customerId;
     this.invoice = this.invoiceClass.create();
     this.setCustomer(customerId);
+    this.getCustomers();
     next();
   },
 
   data() {
     return {
       invoiceClass: new _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"](),
-      invoice: {}
+      invoice: {},
+      customers: [],
+      customersAreReady: false
     };
   },
 
+  computed: {
+    getCustomer() {
+      return 'name';
+    }
+
+  },
   methods: {
     async saveNewInvoice() {
       const {
@@ -2098,6 +2123,14 @@ __webpack_require__.r(__webpack_exports__);
           invoiceId: invoice.id
         }
       });
+    },
+
+    async getCustomers() {
+      const {
+        data
+      } = await this.invoiceClass.customers();
+      this.customers = data;
+      this.customersAreReady = true;
     },
 
     setCustomer(customerId) {
@@ -3329,195 +3362,241 @@ var render = function() {
   return _c("div", [
     _c("div", [_vm._v("Invoice create")]),
     _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.invoice.customer_id,
-          expression: "invoice.customer_id"
-        }
-      ],
-      attrs: {
-        name: "customer_id",
-        placeholder: "Customer id",
-        type: "number"
-      },
-      domProps: { value: _vm.invoice.customer_id },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.invoice, "customer_id", $event.target.value)
-        }
-      }
-    }),
-    _c("br"),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.invoice.number,
-          expression: "invoice.number"
-        }
-      ],
-      attrs: { name: "number", placeholder: "Number", type: "number" },
-      domProps: { value: _vm.invoice.number },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.invoice, "number", $event.target.value)
-        }
-      }
-    }),
-    _c("br"),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.invoice.net_amount,
-          expression: "invoice.net_amount"
-        }
-      ],
-      attrs: { name: "net_amount", placeholder: "Net amount", type: "number" },
-      domProps: { value: _vm.invoice.net_amount },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.invoice, "net_amount", $event.target.value)
-        }
-      }
-    }),
-    _c("br"),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.invoice.tax,
-          expression: "invoice.tax"
-        }
-      ],
-      attrs: { name: "tax", placeholder: "Tax", type: "number" },
-      domProps: { value: _vm.invoice.tax },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.invoice, "tax", $event.target.value)
-        }
-      }
-    }),
-    _c("br"),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.invoice.description,
-          expression: "invoice.description"
-        }
-      ],
-      attrs: { name: "description", placeholder: "Description", type: "text" },
-      domProps: { value: _vm.invoice.description },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.invoice, "description", $event.target.value)
-        }
-      }
-    }),
-    _c("br"),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.invoice.date,
-          expression: "invoice.date"
-        }
-      ],
-      attrs: { name: "date", placeholder: "Date", type: "date" },
-      domProps: { value: _vm.invoice.date },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.invoice, "date", $event.target.value)
-        }
-      }
-    }),
-    _c("br"),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.invoice.sent_date,
-          expression: "invoice.sent_date"
-        }
-      ],
-      attrs: { name: "sent_date", placeholder: "Sent date", type: "date" },
-      domProps: { value: _vm.invoice.sent_date },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.invoice, "sent_date", $event.target.value)
-        }
-      }
-    }),
-    _c("br"),
-    _vm._v(" "),
-    _c("input", {
-      directives: [
-        {
-          name: "model",
-          rawName: "v-model",
-          value: _vm.invoice.registered_date,
-          expression: "invoice.registered_date"
-        }
-      ],
-      attrs: {
-        name: "registered_date",
-        placeholder: "Registered date",
-        type: "date"
-      },
-      domProps: { value: _vm.invoice.registered_date },
-      on: {
-        input: function($event) {
-          if ($event.target.composing) {
-            return
-          }
-          _vm.$set(_vm.invoice, "registered_date", $event.target.value)
-        }
-      }
-    }),
-    _c("br"),
-    _vm._v(" "),
-    _c(
-      "button",
-      { attrs: { id: "saveNewInvoice" }, on: { click: _vm.saveNewInvoice } },
-      [_vm._v("Save")]
-    )
+    _vm.customersAreReady
+      ? _c("div", [
+          _c(
+            "select",
+            {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.invoice.customer_id,
+                  expression: "invoice.customer_id"
+                }
+              ],
+              on: {
+                change: function($event) {
+                  var $$selectedVal = Array.prototype.filter
+                    .call($event.target.options, function(o) {
+                      return o.selected
+                    })
+                    .map(function(o) {
+                      var val = "_value" in o ? o._value : o.value
+                      return val
+                    })
+                  _vm.$set(
+                    _vm.invoice,
+                    "customer_id",
+                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                  )
+                }
+              }
+            },
+            [
+              _c("option", { attrs: { default: "", selected: "" } }, [
+                _vm._v("Choose a customer")
+              ]),
+              _vm._v(" "),
+              _vm._l(_vm.customers, function(customer) {
+                return _c(
+                  "option",
+                  { key: customer.id, domProps: { value: customer.id } },
+                  [
+                    _vm._v(
+                      "\n                " +
+                        _vm._s(customer.full_name) +
+                        "\n                "
+                    )
+                  ]
+                )
+              })
+            ],
+            2
+          ),
+          _vm._v("\n        " + _vm._s(_vm.invoice.customer_id) + "\n        "),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.invoice.number,
+                expression: "invoice.number"
+              }
+            ],
+            attrs: { name: "number", placeholder: "Number", type: "number" },
+            domProps: { value: _vm.invoice.number },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.invoice, "number", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.invoice.net_amount,
+                expression: "invoice.net_amount"
+              }
+            ],
+            attrs: {
+              name: "net_amount",
+              placeholder: "Net amount",
+              type: "number"
+            },
+            domProps: { value: _vm.invoice.net_amount },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.invoice, "net_amount", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.invoice.tax,
+                expression: "invoice.tax"
+              }
+            ],
+            attrs: { name: "tax", placeholder: "Tax", type: "number" },
+            domProps: { value: _vm.invoice.tax },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.invoice, "tax", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.invoice.description,
+                expression: "invoice.description"
+              }
+            ],
+            attrs: {
+              name: "description",
+              placeholder: "Description",
+              type: "text"
+            },
+            domProps: { value: _vm.invoice.description },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.invoice, "description", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.invoice.date,
+                expression: "invoice.date"
+              }
+            ],
+            attrs: { name: "date", placeholder: "Date", type: "date" },
+            domProps: { value: _vm.invoice.date },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.invoice, "date", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.invoice.sent_date,
+                expression: "invoice.sent_date"
+              }
+            ],
+            attrs: {
+              name: "sent_date",
+              placeholder: "Sent date",
+              type: "date"
+            },
+            domProps: { value: _vm.invoice.sent_date },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.invoice, "sent_date", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.invoice.registered_date,
+                expression: "invoice.registered_date"
+              }
+            ],
+            attrs: {
+              name: "registered_date",
+              placeholder: "Registered date",
+              type: "date"
+            },
+            domProps: { value: _vm.invoice.registered_date },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.invoice, "registered_date", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              attrs: { id: "saveNewInvoice" },
+              on: { click: _vm.saveNewInvoice }
+            },
+            [_vm._v("Save")]
+          )
+        ])
+      : _c("p", [_vm._v("\n        loading\n    ")])
   ])
 }
 var staticRenderFns = []
@@ -19438,6 +19517,14 @@ class Invoice {
 
   payments(invoiceId) {
     const uri = `${BASE_URI}/${invoiceId}/payment`;
+    return axios.get(uri);
+  }
+
+  customers(invoiceId) {
+    // keep it simple for now
+    // should the requirements change, do not touch CustomerController,
+    // but create a new InvoiceCustomerController and a corresponding route
+    const uri = `app/customer`;
     return axios.get(uri);
   }
 

@@ -28,6 +28,14 @@ class Invoice {
         return axios.get(uri)
     }
 
+    customers(invoiceId){
+        // keep it simple for now
+        // should the requirements change, do not touch CustomerController,
+        // but create a new InvoiceCustomerController and a corresponding route
+        const uri = `app/customer`;
+        return axios.get(uri)
+    }
+
     store(data){
         return axios.post(BASE_URI, data);
     }
