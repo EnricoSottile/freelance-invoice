@@ -30,6 +30,10 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
                 Route::get('customer/{customer}/invoice', 'CustomerInvoiceController@index')
                         ->name('customer.invoice.index');
 
+                // CUSTOMER PAYMENTS
+                Route::get('customer/{customer}/payment', 'CustomerPaymentController@index')
+                        ->name('customer.payment.index');
+
 
 
         // INVOICE

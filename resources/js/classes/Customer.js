@@ -16,6 +16,11 @@ class Customer {
         return axios.get(uri)
     }
 
+    payments(customerId){
+        const uri = `${BASE_URI}/${customerId}/payment`;
+        return axios.get(uri)
+    }
+
     store(data){
         return axios.post(BASE_URI, data);
     }

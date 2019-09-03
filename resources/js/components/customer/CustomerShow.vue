@@ -9,16 +9,28 @@
             <br/><br/><br/>
         </div>
 
-        <template v-if="customerIsReady">
+        <div v-if="customerIsReady" style="display:flex">
 
-            <invoice-index 
-                v-if="invoicesAreReady" 
-                :shouldHandleOwnLoading="false" 
-                :filteredInvoices="invoices"
-                :customer="customer">
-            </invoice-index>
+            <div>
+                <invoice-index 
+                    v-if="invoicesAreReady" 
+                    :shouldHandleOwnLoading="false" 
+                    :filteredInvoices="invoices"
+                    :customer="customer">
+                </invoice-index>
+            </div>
 
-        </template>
+            <div v-if="paymentsAreReady">
+                <payment-index 
+                    v-if="paymentsAreReady" 
+                    :shouldHandleOwnLoading="false" 
+                    :filteredPayments="payments">
+                </payment-index>
+            </div>
+
+        </div>
+
+
 
         
     </div>
@@ -27,6 +39,8 @@
 <script>
     import Customer from '../../classes/Customer'
     import InvoiceIndex from '../invoice/InvoiceIndex'
+    import PaymentIndex from '../payment/PaymentIndex'
+
 
     export default {
         props: {
@@ -40,18 +54,21 @@
         },
 
         components: {
-            'invoice-index': InvoiceIndex
+            'invoice-index': InvoiceIndex,
+            'payment-index': PaymentIndex
         },
 
 
         mounted(){
             this.getCustomer(this.customerId);
             this.getCustomerInvoices(this.customerId);
+            this.getCustomerPayments(this.customerId);
         }, 
 
         beforeRouteUpdate (to, from, next) {
             this.getCustomer(this.customerId);
             this.getCustomerInvoices(this.customerId);
+            this.getCustomerPayments(this.customerId);
 
             next();
         },
@@ -62,8 +79,29 @@
                 customerClass: new Customer(),
                 customer: {},
                 invoices: [],
+                payments: [],
                 customerIsReady: false,
                 invoicesAreReady: false,
+                paymentsAreReady: false
+            }
+        },
+
+        computed: {
+            hasPayedPayments(){
+                return this.payments 
+                && this.payments.filter(p => p.payed_date).length;
+            },
+            hasRegisteredInvoices(){
+                return this.invoices 
+                && this.invoices.filter(i => i.registered_date).length;
+            },
+            isEditable() {
+                return this.hasPayedPayments === 0 
+                && this.hasRegisteredInvoices === 0
+            },
+            isDestroyable() {
+                return this.hasPayedPayments === 0 
+                && this.hasRegisteredInvoices === 0
             }
         },
 
@@ -77,6 +115,11 @@
                 const { data } = await this.customerClass.invoices(customerId);
                 this.invoices = data;
                 this.invoicesAreReady = true;
+            },
+            async getCustomerPayments(customerId){
+                const { data } = await this.customerClass.payments(customerId);
+                this.payments = data;
+                this.paymentsAreReady = true;
             },
             async destroyCustomer(){
                 const response = await this.customerClass.destroy(this.customerId);

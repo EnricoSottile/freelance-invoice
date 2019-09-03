@@ -1929,6 +1929,7 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_Customer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../classes/Customer */ "./resources/js/classes/Customer.js");
 /* harmony import */ var _invoice_InvoiceIndex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../invoice/InvoiceIndex */ "./resources/js/components/invoice/InvoiceIndex.vue");
+/* harmony import */ var _payment_PaymentIndex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../payment/PaymentIndex */ "./resources/js/components/payment/PaymentIndex.vue");
 //
 //
 //
@@ -1955,6 +1956,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -1970,17 +1984,20 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   components: {
-    'invoice-index': _invoice_InvoiceIndex__WEBPACK_IMPORTED_MODULE_1__["default"]
+    'invoice-index': _invoice_InvoiceIndex__WEBPACK_IMPORTED_MODULE_1__["default"],
+    'payment-index': _payment_PaymentIndex__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
 
   mounted() {
     this.getCustomer(this.customerId);
     this.getCustomerInvoices(this.customerId);
+    this.getCustomerPayments(this.customerId);
   },
 
   beforeRouteUpdate(to, from, next) {
     this.getCustomer(this.customerId);
     this.getCustomerInvoices(this.customerId);
+    this.getCustomerPayments(this.customerId);
     next();
   },
 
@@ -1989,11 +2006,31 @@ __webpack_require__.r(__webpack_exports__);
       customerClass: new _classes_Customer__WEBPACK_IMPORTED_MODULE_0__["default"](),
       customer: {},
       invoices: [],
+      payments: [],
       customerIsReady: false,
-      invoicesAreReady: false
+      invoicesAreReady: false,
+      paymentsAreReady: false
     };
   },
 
+  computed: {
+    hasPayedPayments() {
+      return this.payments && this.payments.filter(p => p.payed_date).length;
+    },
+
+    hasRegisteredInvoices() {
+      return this.invoices && this.invoices.filter(i => i.registered_date).length;
+    },
+
+    isEditable() {
+      return this.hasPayedPayments === 0 && this.hasRegisteredInvoices === 0;
+    },
+
+    isDestroyable() {
+      return this.hasPayedPayments === 0 && this.hasRegisteredInvoices === 0;
+    }
+
+  },
   methods: {
     async getCustomer(customerId) {
       const {
@@ -2009,6 +2046,14 @@ __webpack_require__.r(__webpack_exports__);
       } = await this.customerClass.invoices(customerId);
       this.invoices = data;
       this.invoicesAreReady = true;
+    },
+
+    async getCustomerPayments(customerId) {
+      const {
+        data
+      } = await this.customerClass.payments(customerId);
+      this.payments = data;
+      this.paymentsAreReady = true;
     },
 
     async destroyCustomer() {
@@ -3298,44 +3343,63 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c(
-    "div",
-    [
-      _c("div", [_vm._v("Customer show")]),
+  return _c("div", [
+    _c("div", [_vm._v("Customer show")]),
+    _vm._v(" "),
+    _c("div", [
+      _c("pre", [_vm._v(_vm._s(_vm.customer))]),
       _vm._v(" "),
-      _c("div", [
-        _c("pre", [_vm._v(_vm._s(_vm.customer))]),
-        _vm._v(" "),
-        _c(
-          "button",
-          {
-            attrs: { id: "destroyCustomer" },
-            on: { click: _vm.destroyCustomer }
-          },
-          [_vm._v("Delete")]
-        ),
-        _vm._v(" "),
-        _c("br"),
-        _c("br"),
-        _c("br")
-      ]),
+      _c(
+        "button",
+        {
+          attrs: { id: "destroyCustomer" },
+          on: { click: _vm.destroyCustomer }
+        },
+        [_vm._v("Delete")]
+      ),
       _vm._v(" "),
-      _vm.customerIsReady
-        ? [
-            _vm.invoicesAreReady
-              ? _c("invoice-index", {
-                  attrs: {
-                    shouldHandleOwnLoading: false,
-                    filteredInvoices: _vm.invoices,
-                    customer: _vm.customer
-                  }
-                })
-              : _vm._e()
-          ]
-        : _vm._e()
-    ],
-    2
-  )
+      _c("br"),
+      _c("br"),
+      _c("br")
+    ]),
+    _vm._v(" "),
+    _vm.customerIsReady
+      ? _c("div", { staticStyle: { display: "flex" } }, [
+          _c(
+            "div",
+            [
+              _vm.invoicesAreReady
+                ? _c("invoice-index", {
+                    attrs: {
+                      shouldHandleOwnLoading: false,
+                      filteredInvoices: _vm.invoices,
+                      customer: _vm.customer
+                    }
+                  })
+                : _vm._e()
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _vm.paymentsAreReady
+            ? _c(
+                "div",
+                [
+                  _vm.paymentsAreReady
+                    ? _c("payment-index", {
+                        attrs: {
+                          shouldHandleOwnLoading: false,
+                          filteredPayments: _vm.payments
+                        }
+                      })
+                    : _vm._e()
+                ],
+                1
+              )
+            : _vm._e()
+        ])
+      : _vm._e()
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -19458,6 +19522,11 @@ class Customer {
 
   invoices(customerId) {
     const uri = `${BASE_URI}/${customerId}/invoice`;
+    return axios.get(uri);
+  }
+
+  payments(customerId) {
+    const uri = `${BASE_URI}/${customerId}/payment`;
     return axios.get(uri);
   }
 
