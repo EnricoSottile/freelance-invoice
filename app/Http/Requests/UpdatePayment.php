@@ -5,6 +5,8 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Dto\PaymentDto;
 
+use Illuminate\Validation\Rule;
+
 class UpdatePayment extends FormRequest
 {
     /**
@@ -25,7 +27,12 @@ class UpdatePayment extends FormRequest
     public function rules()
     {
         return [
-            'invoice_id' => 'required|exists:invoices,id',
+            'invoice_id' => [
+                'required',
+                Rule::exists('invoices', 'id')->where(function ($query) {
+                    $query->where('user_id', \Auth::user()->id);
+                }),
+            ],
             'net_amount' => 'required|between:0,99999999.99',
             'due_date' => 'nullable|date',
             'payed_date' => 'nullable|date'

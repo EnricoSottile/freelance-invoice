@@ -5,6 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use App\Dto\InvoiceDto;
 
+
+use Illuminate\Validation\Rule;
+
 class StoreInvoice extends FormRequest
 {
     /**
@@ -25,7 +28,12 @@ class StoreInvoice extends FormRequest
     public function rules()
     {
         return [
-            'customer_id' => 'required|exists:customers,id',
+            'customer_id' => [
+                'required',
+                Rule::exists('customers', 'id')->where(function ($query) {
+                    $query->where('user_id', \Auth::user()->id);
+                }),
+            ],
             'number' => 'required|string',
             'net_amount' => 'required|between:0,99999999.99',
             'tax' => 'required|between:0,100.00',
