@@ -71,13 +71,6 @@
             }
         },
 
-        computed: {
-            getCustomer(){
-                return 'name';
-            }
-        },
-
-
         methods: {
             async saveNewInvoice(){
                 const {data: {invoice}} = await this.invoiceClass.store(this.invoice);

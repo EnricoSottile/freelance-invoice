@@ -3,7 +3,9 @@
         <div>Customer index</div>
 
         <div>
-            <button id="storeCustomer" @click.prevent="storeCustomer()">add</button>
+            <router-link :to="{ name: 'customer.create'}">
+                Add new Customer
+            </router-link>
 
             <p v-if="!customersAreReady">Loading</p>
 
@@ -50,9 +52,6 @@
                 this.customers = data;
                 this.customersAreReady = true;
             },
-            storeCustomer(){
-                
-            }
         },
     }
 </script>

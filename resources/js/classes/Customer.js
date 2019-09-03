@@ -11,6 +11,15 @@ class Customer {
         return axios.get(BASE_URI);  
     }
 
+    create(){
+        return {
+            full_name: null,
+            email: null,
+            phone: null,
+            vat_code: null
+        }
+    }
+
     invoices(customerId){
         const uri = `${BASE_URI}/${customerId}/invoice`;
         return axios.get(uri)
