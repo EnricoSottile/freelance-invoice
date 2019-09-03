@@ -30,8 +30,8 @@ class Customer {
         return axios.get(uri);        
     }
 
-    update(customer){
-        return axios.put(BASE_URI, data);
+    update(customerId, data){
+        return axios.put(`${BASE_URI}/${customerId}`, data);
     }
 
     destroy(customerId){

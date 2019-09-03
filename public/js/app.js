@@ -1930,6 +1930,22 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_Customer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../classes/Customer */ "./resources/js/classes/Customer.js");
 /* harmony import */ var _invoice_InvoiceIndex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../invoice/InvoiceIndex */ "./resources/js/components/invoice/InvoiceIndex.vue");
 /* harmony import */ var _payment_PaymentIndex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../payment/PaymentIndex */ "./resources/js/components/payment/PaymentIndex.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2009,7 +2025,8 @@ __webpack_require__.r(__webpack_exports__);
       payments: [],
       customerIsReady: false,
       invoicesAreReady: false,
-      paymentsAreReady: false
+      paymentsAreReady: false,
+      customerBeingEdited: null
     };
   },
 
@@ -2020,10 +2037,6 @@ __webpack_require__.r(__webpack_exports__);
 
     hasRegisteredInvoices() {
       return this.invoices && this.invoices.filter(i => i.registered_date).length;
-    },
-
-    isEditable() {
-      return this.hasPayedPayments === 0 && this.hasRegisteredInvoices === 0;
     },
 
     isDestroyable() {
@@ -2060,6 +2073,27 @@ __webpack_require__.r(__webpack_exports__);
       const response = await this.customerClass.destroy(this.customerId);
       window.alert("customer was deleted");
       router.go(-1);
+    },
+
+    editCustomer() {
+      const customerBeingEdited = _objectSpread({}, this.customer);
+
+      this.customerBeingEdited = customerBeingEdited;
+    },
+
+    async updateCustomer() {
+      const {
+        data: {
+          customer
+        }
+      } = await this.customerClass.update(this.customer.id, this.customerBeingEdited);
+      this.customerBeingEdited = null;
+      this.customer = _objectSpread({}, customer);
+      alert('customer was updated');
+    },
+
+    cancelEditCustomer(event, customerId) {
+      this.customerBeingEdited = null;
     }
 
   }
@@ -3346,22 +3380,158 @@ var render = function() {
   return _c("div", [
     _c("div", [_vm._v("Customer show")]),
     _vm._v(" "),
-    _c("div", [
-      _c("pre", [_vm._v(_vm._s(_vm.customer))]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          attrs: { id: "destroyCustomer" },
-          on: { click: _vm.destroyCustomer }
-        },
-        [_vm._v("Delete")]
-      ),
-      _vm._v(" "),
-      _c("br"),
-      _c("br"),
-      _c("br")
-    ]),
+    _vm.customerBeingEdited
+      ? _c("div", [
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.customerBeingEdited.full_name,
+                expression: "customerBeingEdited.full_name"
+              }
+            ],
+            attrs: {
+              name: "full_name",
+              placeholder: "Full name",
+              type: "text"
+            },
+            domProps: { value: _vm.customerBeingEdited.full_name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.customerBeingEdited,
+                  "full_name",
+                  $event.target.value
+                )
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.customerBeingEdited.email,
+                expression: "customerBeingEdited.email"
+              }
+            ],
+            attrs: { name: "email", placeholder: "Email", type: "email" },
+            domProps: { value: _vm.customerBeingEdited.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.customerBeingEdited, "email", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.customerBeingEdited.phone,
+                expression: "customerBeingEdited.phone"
+              }
+            ],
+            attrs: { name: "phone", placeholder: "Phone", type: "text" },
+            domProps: { value: _vm.customerBeingEdited.phone },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.customerBeingEdited, "phone", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.customerBeingEdited.vat_code,
+                expression: "customerBeingEdited.vat_code"
+              }
+            ],
+            attrs: {
+              name: "vat_code",
+              placeholder: "Vat code",
+              type: "number"
+            },
+            domProps: { value: _vm.customerBeingEdited.vat_code },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(
+                  _vm.customerBeingEdited,
+                  "vat_code",
+                  $event.target.value
+                )
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              attrs: { id: "updateCustomer" },
+              on: { click: _vm.updateCustomer }
+            },
+            [_vm._v("Update")]
+          ),
+          _vm._v(" "),
+          _c(
+            "button",
+            {
+              attrs: { id: "cancelEditCustomer" },
+              on: { click: _vm.cancelEditCustomer }
+            },
+            [_vm._v("Cancel")]
+          ),
+          _vm._v(" "),
+          _c("br"),
+          _c("br"),
+          _c("br")
+        ])
+      : _c("div", [
+          _c("pre", [_vm._v(_vm._s(_vm.customer))]),
+          _vm._v(" "),
+          _c(
+            "button",
+            { attrs: { id: "editCustomer" }, on: { click: _vm.editCustomer } },
+            [_vm._v("Edit")]
+          ),
+          _vm._v(" "),
+          _vm.isDestroyable
+            ? _c(
+                "button",
+                {
+                  attrs: { id: "destroyCustomer" },
+                  on: { click: _vm.destroyCustomer }
+                },
+                [_vm._v("Delete")]
+              )
+            : _vm._e(),
+          _vm._v(" "),
+          _c("br"),
+          _c("br"),
+          _c("br")
+        ]),
     _vm._v(" "),
     _vm.customerIsReady
       ? _c("div", { staticStyle: { display: "flex" } }, [
@@ -19539,8 +19709,8 @@ class Customer {
     return axios.get(uri);
   }
 
-  update(customer) {
-    return axios.put(BASE_URI, data);
+  update(customerId, data) {
+    return axios.put(`${BASE_URI}/${customerId}`, data);
   }
 
   destroy(customerId) {
