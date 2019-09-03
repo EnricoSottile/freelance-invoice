@@ -4,15 +4,33 @@
 
         <div>
             <p v-if="!invoicesAreReady">Loading</p>
-            
-            <ul>
-                
-                <li v-for="invoice in invoices" v-bind:key="invoice.id">
-                    <router-link :to="{ name: 'invoice.show', params: { invoiceId: invoice.id }}">
-                        {{ invoice.id }} - {{ invoice.number }} - {{ invoice.registered_date }}
+
+            <div v-else>
+                <!-- ADD NEW INVOICE -->
+                <template v-if="customer !== null">
+                    <router-link :to="{ name: 'customer.invoice.create', params: {customer}}">
+                        Add new Invoice
                     </router-link>
-                </li>
-            </ul>
+                </template>
+                <template v-else>
+                    <router-link :to="{ name: 'invoice.create'}">
+                        Add new Invoice
+                    </router-link>
+                </template>
+
+
+                <ul>
+                    
+                    <li v-for="invoice in invoices" v-bind:key="invoice.id">
+                        <router-link :to="{ name: 'invoice.show', params: { invoiceId: invoice.id }}">
+                            {{ invoice.id }} - {{ invoice.number }} - {{ invoice.registered_date }}
+                        </router-link>
+                    </li>
+                </ul>
+
+            </div>
+            
+
             
         </div>
 
@@ -34,6 +52,11 @@
                 type: Array,
                 required: false,
             },
+            customer: {
+                type: Object,
+                required: false,
+                default: null
+            }
         },
 
         mounted(){
@@ -51,6 +74,12 @@
                 invoiceClass: new Invoice(),
                 invoices: [],
                 invoicesAreReady: false
+            }
+        },
+
+        computed: {
+            getCreateParams(){
+                return this.customer !== null ? {customer: this.customer} : {};
             }
         },
 

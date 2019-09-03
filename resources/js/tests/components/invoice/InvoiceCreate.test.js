@@ -69,5 +69,14 @@ describe('InvoiceCreate', () => {
   })  
 
 
+  test('invoice create from customer sets the id correctly', () => {
+    const id = 100;
+    const wrapper2 = shallowMount(InvoiceCreate, {
+      propsData: {customerId: id},
+    });
+
+    expect(wrapper2.vm.invoice.customer_id).toBe(id);
+  })
+
 })
   

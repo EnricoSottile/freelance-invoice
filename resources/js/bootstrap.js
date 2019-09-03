@@ -30,9 +30,19 @@ window.axios.interceptors.response.use( response => response,  error => {
 
 
         if (error.response.status === 403) {
-            // error in deleting
+            // error in deleting/editing
             if (error.response && error.response.data && error.response.data.message) {
                 alert(error.response.data.message);
+            }
+        }
+
+
+        if (error.response.status === 422) {
+            // validation error            
+            if (error.response && error.response.data && error.response.data.errors) {
+                const errors = error.response.data.errors;
+                const values = Object.values(errors);
+                alert(values.join("\n"));
             }
         }
 

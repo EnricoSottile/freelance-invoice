@@ -14,7 +14,8 @@
             <invoice-index 
                 v-if="invoicesAreReady" 
                 :shouldHandleOwnLoading="false" 
-                :filteredInvoices="invoices">
+                :filteredInvoices="invoices"
+                :customer="customer">
             </invoice-index>
 
         </template>

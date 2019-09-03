@@ -22,12 +22,27 @@
 
     export default {
 
+        props: {
+            customerId: {
+                required: false,
+                default: null,
+                validator(value) {
+                    const type = typeof(value);
+                    return type === 'string' || type === 'number';
+                }
+            },
+        },
+
         mounted(){
             this.invoice = this.invoiceClass.create();
+            this.setCustomer(this.customerId);
+            
         },
 
         beforeRouteUpdate (to, from, next) {
+            const customerId = to.params.customerId;
             this.invoice = this.invoiceClass.create();
+            this.setCustomer(customerId);
             next();
         },
 
@@ -45,6 +60,10 @@
                 const {data: {invoice}} = await this.invoiceClass.store(this.invoice);
                 alert('invoice was added');
                 router.push({ name: 'invoice.show', params: { invoiceId: invoice.id } })
+            },
+            setCustomer(customerId){
+                if (customerId === null) return;
+                this.invoice.customer_id = customerId;
             }
         },
     }

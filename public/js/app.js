@@ -1954,6 +1954,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -2051,12 +2052,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    customerId: {
+      required: false,
+      default: null,
+
+      validator(value) {
+        const type = typeof value;
+        return type === 'string' || type === 'number';
+      }
+
+    }
+  },
+
   mounted() {
     this.invoice = this.invoiceClass.create();
+    this.setCustomer(this.customerId);
   },
 
   beforeRouteUpdate(to, from, next) {
+    const customerId = to.params.customerId;
     this.invoice = this.invoiceClass.create();
+    this.setCustomer(customerId);
     next();
   },
 
@@ -2081,6 +2098,11 @@ __webpack_require__.r(__webpack_exports__);
           invoiceId: invoice.id
         }
       });
+    },
+
+    setCustomer(customerId) {
+      if (customerId === null) return;
+      this.invoice.customer_id = customerId;
     }
 
   }
@@ -2119,6 +2141,24 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2129,6 +2169,11 @@ __webpack_require__.r(__webpack_exports__);
     filteredInvoices: {
       type: Array,
       required: false
+    },
+    customer: {
+      type: Object,
+      required: false,
+      default: null
     }
   },
 
@@ -2149,6 +2194,14 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
 
+  computed: {
+    getCreateParams() {
+      return this.customer !== null ? {
+        customer: this.customer
+      } : {};
+    }
+
+  },
   methods: {
     async getInvoices() {
       if (this.shouldHandleOwnLoading) {
@@ -3240,7 +3293,8 @@ var render = function() {
               ? _c("invoice-index", {
                   attrs: {
                     shouldHandleOwnLoading: false,
-                    filteredInvoices: _vm.invoices
+                    filteredInvoices: _vm.invoices,
+                    customer: _vm.customer
                   }
                 })
               : _vm._e()
@@ -3492,43 +3546,80 @@ var render = function() {
     _c("div", [_vm._v("Invoice index")]),
     _vm._v(" "),
     _c("div", [
-      !_vm.invoicesAreReady ? _c("p", [_vm._v("Loading")]) : _vm._e(),
-      _vm._v(" "),
-      _c(
-        "ul",
-        _vm._l(_vm.invoices, function(invoice) {
-          return _c(
-            "li",
-            { key: invoice.id },
+      !_vm.invoicesAreReady
+        ? _c("p", [_vm._v("Loading")])
+        : _c(
+            "div",
             [
+              _vm.customer !== null
+                ? [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "customer.invoice.create",
+                            params: { customer: _vm.customer }
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                    Add new Invoice\n                "
+                        )
+                      ]
+                    )
+                  ]
+                : [
+                    _c(
+                      "router-link",
+                      { attrs: { to: { name: "invoice.create" } } },
+                      [
+                        _vm._v(
+                          "\n                    Add new Invoice\n                "
+                        )
+                      ]
+                    )
+                  ],
+              _vm._v(" "),
               _c(
-                "router-link",
-                {
-                  attrs: {
-                    to: {
-                      name: "invoice.show",
-                      params: { invoiceId: invoice.id }
-                    }
-                  }
-                },
-                [
-                  _vm._v(
-                    "\n                    " +
-                      _vm._s(invoice.id) +
-                      " - " +
-                      _vm._s(invoice.number) +
-                      " - " +
-                      _vm._s(invoice.registered_date) +
-                      "\n                "
+                "ul",
+                _vm._l(_vm.invoices, function(invoice) {
+                  return _c(
+                    "li",
+                    { key: invoice.id },
+                    [
+                      _c(
+                        "router-link",
+                        {
+                          attrs: {
+                            to: {
+                              name: "invoice.show",
+                              params: { invoiceId: invoice.id }
+                            }
+                          }
+                        },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(invoice.id) +
+                              " - " +
+                              _vm._s(invoice.number) +
+                              " - " +
+                              _vm._s(invoice.registered_date) +
+                              "\n                    "
+                          )
+                        ]
+                      )
+                    ],
+                    1
                   )
-                ]
+                }),
+                0
               )
             ],
-            1
+            2
           )
-        }),
-        0
-      )
     ])
   ])
 }
@@ -19247,9 +19338,18 @@ window.axios.interceptors.response.use(response => response, error => {
     }
 
     if (error.response.status === 403) {
-      // error in deleting
+      // error in deleting/editing
       if (error.response && error.response.data && error.response.data.message) {
         alert(error.response.data.message);
+      }
+    }
+
+    if (error.response.status === 422) {
+      // validation error            
+      if (error.response && error.response.data && error.response.data.errors) {
+        const errors = error.response.data.errors;
+        const values = Object.values(errors);
+        alert(values.join("\n"));
       }
     }
   }
@@ -20013,6 +20113,11 @@ const routes = [// CUSTOMER
   path: '/invoice/create',
   name: 'invoice.create',
   component: _components_invoice_InvoiceCreate__WEBPACK_IMPORTED_MODULE_4__["default"]
+}, {
+  path: '/customer/:customerId/invoice/create',
+  name: 'customer.invoice.create',
+  component: _components_invoice_InvoiceCreate__WEBPACK_IMPORTED_MODULE_4__["default"],
+  props: true
 }, {
   path: '/invoice/:invoiceId',
   name: 'invoice.show',

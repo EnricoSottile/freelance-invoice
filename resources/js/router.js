@@ -34,6 +34,12 @@ const routes = [
         component: InvoiceCreate, 
     },
     { 
+        path: '/customer/:customerId/invoice/create', 
+        name: 'customer.invoice.create', 
+        component: InvoiceCreate, 
+        props: true
+    },
+    { 
         path: '/invoice/:invoiceId', 
         name: 'invoice.show', 
         component: InvoiceShow, 
