@@ -8,6 +8,12 @@ use Illuminate\Http\Request;
 class TrashController extends Controller
 {
 
+    /**
+     * Validates a given model name and returns it
+     *
+     * @param  String  $resource
+     * @return Model
+     */
     private function getModel($resource) {
         $models = ['Customer', 'Invoice', 'Payment'];
 
@@ -22,7 +28,7 @@ class TrashController extends Controller
     /**
      * Restores the specified resource from trash.
      *
-     * @param  mixed  $resource
+     * @param  String  $resource
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
@@ -37,7 +43,7 @@ class TrashController extends Controller
     /**
      * Delete the specified resource from trash.
      *
-     * @param  mixed  $resource
+     * @param  String  $resource
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */

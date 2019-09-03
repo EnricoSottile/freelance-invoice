@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Payment;
+use App\Models\Upload;
 
 class Invoice extends Model
 {
@@ -39,5 +40,10 @@ class Invoice extends Model
 
     public function trashed_payments() {
         return $this->payments()->onlyTrashed()->get();
+    }
+
+    public function uploads()
+    {
+        return $this->morphMany(Upload::class, 'uploadable');
     }
 }

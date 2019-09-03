@@ -33,6 +33,9 @@
             <br/><br/><br/>
         </div>  
 
+
+        <upload v-if="invoiceIsReady"></upload>
+
         <template v-if="invoiceIsReady">
 
             <payment-index 
@@ -50,6 +53,7 @@
 <script>
     import Invoice from '../../classes/Invoice'
     import PaymentIndex from '../payment/PaymentIndex'
+    import Upload from '../upload/Upload'
 
 
     export default {
@@ -64,7 +68,8 @@
         },
 
         components: {
-            'payment-index': PaymentIndex
+            'payment-index': PaymentIndex,
+            'upload': Upload
         },
 
 

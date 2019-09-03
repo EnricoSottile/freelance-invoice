@@ -22,6 +22,7 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
         // TODO
         \Auth::loginUsingId(1);
 
+
         // CUSTOMER
         Route::resource('customer', 'CustomerController')
                 ->only(['index', 'store', 'show', 'update', 'destroy']);
@@ -58,6 +59,13 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
         Route::delete('trash/destroy/{resource}/{id}', 'TrashController@destroy')
                 ->name('trash.destroy');
 
+
+        // UPLOAD
+        Route::post('upload/{resource}/{resourceId}', 'UploadController@store')
+                ->name('upload.store');
+        
+        // Route::delete('upload/{uploadId}', 'UploadController@destroy')
+        //         ->name('upload.destroy');
 
 });
 
