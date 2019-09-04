@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use \Auth;
+use Illuminate\Support\Facades\Storage;
 
 
 class UploadController extends Controller
@@ -46,7 +47,6 @@ class UploadController extends Controller
 
 
 
-
     /**
      * Uploads and stores a file in storage
      *
@@ -59,25 +59,22 @@ class UploadController extends Controller
         $resource = $model::findOrFail($resourceId);
 
         $path = $request->file('image')->store('private');
-        $upload = $resource->uploads()->create([
-            'path' => $path,
-        ]);
+
+        try{
+            
+            $upload = $resource->uploads()->create([
+                'path' => $path,
+                'user_id' => Auth::user()->id,
+            ]);
+
+        } catch(\Illuminate\Database\QueryException $e) {
+            Storage::delete($path);
+            abort(403, $e->getMessage());
+        }
+
 
 
         return response()->json(['upload' => $upload]);
     }
-
-
-    // /**
-    //  * Restores the specified resource from trash.
-    //  *
-    //  * @param  mixed  $resource
-    //  * @param  int  $id
-    //  * @return \Illuminate\Http\Response
-    //  */
-    // public function destroy($uploadId){
-
-    // }
-
 
 }

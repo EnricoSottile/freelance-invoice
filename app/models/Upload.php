@@ -11,7 +11,7 @@ class Upload extends Model
     //
 
     protected $fillable = [
-        'name', 'path'
+        'name', 'path', 'user_id',
     ];
 
     public function uploadable()
@@ -19,14 +19,25 @@ class Upload extends Model
         return $this->morphTo();
     }
 
+    /**
+     * encoded_image attribute(s) appended to the json cast of the model
+     *
+     * @var array
+     */
     protected $appends = ['encoded_image'];
-    public function getEncodedImageAttribute()
+    
+    /**
+     * Returns encoded_image attribute as a base64 representation of the image
+     *
+     * @return String
+     */
+    public function getEncodedImageAttribute() : String
     {
-        if (! Storage::disk('')->exists( $this->path )) {
+        if (! Storage::exists( $this->path )) {
             return '';
         }
 
-        $file = Storage::disk('')->get( $this->path );
+        $file = Storage::get( $this->path );
         return base64_encode($file);
     }
 
