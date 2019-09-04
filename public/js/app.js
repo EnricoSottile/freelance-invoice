@@ -2947,6 +2947,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     resourceType: {
@@ -3036,7 +3037,7 @@ __webpack_require__.r(__webpack_exports__);
         }
       }).then(function (response) {
         //handle success
-        console.log(response);
+        vm.uploads.push(response.data.upload);
         alert("image uploaded");
         vm.removeImage();
       });
@@ -5059,7 +5060,7 @@ var render = function() {
           ])
         : _c("div", [
             _c("img", {
-              staticStyle: { "max-width": "100%", height: "100px" },
+              staticStyle: { "max-width": "100%", height: "50px" },
               attrs: { src: _vm.image }
             }),
             _vm._v(" "),
@@ -5083,8 +5084,12 @@ var render = function() {
                 _vm._s(upload.id) +
                 " - " +
                 _vm._s(upload.path) +
-                "\n                "
-            )
+                "\n                    "
+            ),
+            _c("img", {
+              staticStyle: { "max-width": "100%", height: "50px" },
+              attrs: { src: "data:image/jpeg;base64," + upload.encoded_image }
+            })
           ])
         }),
         0

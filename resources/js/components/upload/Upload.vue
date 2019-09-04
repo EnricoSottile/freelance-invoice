@@ -8,7 +8,7 @@
                     <input type="file" @change="onFileChange">
                 </div>
                 <div v-else>
-                    <img :src="image" style="max-width:100%; height:100px;"/>
+                    <img :src="image" style="max-width:100%; height:50px;"/>
                     <button @click="removeImage">Remove image</button>
                     <button @click="uploadImage">Upload</button>
                 </div>
@@ -21,6 +21,7 @@
                         v-bind:key="upload.id" 
                         v-for="upload in uploads">
                         {{ upload.id }} - {{ upload.path }}
+                        <img :src="'data:image/jpeg;base64,'+upload.encoded_image" style="max-width:100%; height:50px;"/>
                     </li>
 
                 </ul>
@@ -111,7 +112,7 @@
                     })
                     .then(function (response) {
                         //handle success
-                        console.log(response);
+                        vm.uploads.push(response.data.upload);
                         alert("image uploaded");
                         vm.removeImage();
                     });

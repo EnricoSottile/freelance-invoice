@@ -59,7 +59,7 @@ class UploadTest extends TestCase
             'image' => UploadedFile::fake()->image('')
         ]);
 
-        $file = $response->getOriginalContent()['uploads'][0];
+        $file = $response->getOriginalContent()['upload'];
         $path = $file['path'];
         Storage::disk('')->assertExists( $path );
         $this->assertDatabaseHas('uploads', [

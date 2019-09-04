@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use \Auth;
 
+
 class UploadController extends Controller
 {
 
@@ -36,8 +37,14 @@ class UploadController extends Controller
     public function index($resource, $resourceId){
         $model = $this->getModel( ucfirst($resource) );
         $resource = $model::findOrFail($resourceId);
-        return response()->json(['uploads' => $resource->uploads()->get()]);
+
+        
+        $uploads = $resource->uploads()->get();
+        return response()->json(['uploads' => $uploads]);
     }
+
+
+
 
 
     /**
@@ -52,12 +59,12 @@ class UploadController extends Controller
         $resource = $model::findOrFail($resourceId);
 
         $path = $request->file('image')->store('private');
-        $resource->uploads()->create([
-            'user_id' => Auth::user()->id,
+        $upload = $resource->uploads()->create([
             'path' => $path,
         ]);
 
-        return response()->json(['uploads' => $resource->uploads()->get()]);
+
+        return response()->json(['upload' => $upload]);
     }
 
 
