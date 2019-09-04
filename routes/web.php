@@ -61,6 +61,9 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
 
 
         // UPLOAD
+        Route::get('upload/{resource}/{resourceId}', 'UploadController@index')
+        ->name('upload.index');
+
         Route::post('upload/{resource}/{resourceId}', 'UploadController@store')
                 ->name('upload.store');
         

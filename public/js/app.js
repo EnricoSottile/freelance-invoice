@@ -2943,6 +2943,10 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     resourceType: {
@@ -2977,9 +2981,21 @@ __webpack_require__.r(__webpack_exports__);
     this.getUploads();
   },
 
-  computed: {},
+  computed: {
+    getUrl() {
+      return `app/upload/${this.resourceType}/${this.resourceId}`;
+    }
+
+  },
   methods: {
-    getUploads() {},
+    async getUploads() {
+      const {
+        data: {
+          uploads
+        }
+      } = await axios.get(this.getUrl);
+      this.uploads = uploads;
+    },
 
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
@@ -3006,7 +3022,7 @@ __webpack_require__.r(__webpack_exports__);
 
     async uploadImage() {
       const vm = this;
-      const URL = `app/upload/${this.resourceType}/${this.resourceId}`;
+      const URL = this.getUrl;
       var bodyFormData = new FormData();
       bodyFormData.append('image', this.upload);
       axios({
@@ -3021,6 +3037,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         //handle success
         console.log(response);
+        alert("image uploaded");
         vm.removeImage();
       });
     }
@@ -5056,17 +5073,23 @@ var render = function() {
     _vm._v(" "),
     _c("div", [_vm._v("Uploaded files")]),
     _vm._v(" "),
-    _c(
-      "div",
-      _vm._l(_vm.uploads, function(upload) {
-        return _c("img", {
-          key: upload.id,
-          staticStyle: { "max-width": "100%", height: "50px" },
-          attrs: { src: _vm.image }
-        })
-      }),
-      0
-    )
+    _c("div", [
+      _c(
+        "ul",
+        _vm._l(_vm.uploads, function(upload) {
+          return _c("li", { key: upload.id }, [
+            _vm._v(
+              "\n                    " +
+                _vm._s(upload.id) +
+                " - " +
+                _vm._s(upload.path) +
+                "\n                "
+            )
+          ])
+        }),
+        0
+      )
+    ])
   ])
 }
 var staticRenderFns = []

@@ -27,9 +27,23 @@ class UploadController extends Controller
 
 
     /**
+     * Returns a listing of the resource
+     *
+     * @param  String  $resource
+     * @param  int  $resourceId
+     * @return \Illuminate\Http\Response
+     */
+    public function index($resource, $resourceId){
+        $model = $this->getModel( ucfirst($resource) );
+        $resource = $model::findOrFail($resourceId);
+        return response()->json(['uploads' => $resource->uploads()->get()]);
+    }
+
+
+    /**
      * Uploads and stores a file in storage
      *
-     * @param  mixed  $resource
+     * @param  String  $resource
      * @param  int  $resourceId
      * @return \Illuminate\Http\Response
      */

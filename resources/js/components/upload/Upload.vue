@@ -16,10 +16,14 @@
 
             <div>Uploaded files</div>
             <div>
-                <img 
-                    v-bind:key="upload.id" 
-                    v-for="upload in uploads" 
-                    :src="image" style="max-width:100%; height:50px;"/>
+                <ul>
+                    <li                     
+                        v-bind:key="upload.id" 
+                        v-for="upload in uploads">
+                        {{ upload.id }} - {{ upload.path }}
+                    </li>
+
+                </ul>
             </div>
 
     </div>
@@ -47,7 +51,7 @@
         },
 
 
-        data(){
+        data(){  
             return {
                 image: '',
                 upload: '',
@@ -60,12 +64,15 @@
         },
 
         computed: {
-
+            getUrl(){
+                return `app/upload/${this.resourceType}/${this.resourceId}`; 
+            }
         },
 
         methods: {
-            getUploads(){
-
+            async getUploads(){
+                const { data: {uploads} } = await axios.get( this.getUrl );
+                this.uploads = uploads;
             },
             onFileChange(e) {
                 var files = e.target.files || e.dataTransfer.files;
@@ -89,10 +96,10 @@
             },
             async uploadImage(){
                 const vm = this;
-                const URL = `app/upload/${this.resourceType}/${this.resourceId}`; 
+                const URL = this.getUrl;
 
-    var bodyFormData = new FormData();
-    bodyFormData.append('image', this.upload); 
+                var bodyFormData = new FormData();
+                bodyFormData.append('image', this.upload); 
 
 
 
@@ -105,6 +112,7 @@
                     .then(function (response) {
                         //handle success
                         console.log(response);
+                        alert("image uploaded");
                         vm.removeImage();
                     });
 
