@@ -22,6 +22,7 @@
                         v-for="upload in uploads">
                         {{ upload.id }} - {{ upload.path }}
                         <img :src="'data:image/jpeg;base64,'+upload.encoded_image" style="max-width:100%; height:50px;"/>
+                        <button id="destroyUpload" @click="destroyUpload(upload.id)">Delete</button>
                     </li>
 
                 </ul>
@@ -74,6 +75,11 @@
             async getUploads(){
                 const { data: {uploads} } = await axios.get( this.getUrl );
                 this.uploads = uploads;
+            },
+            async destroyUpload(uploadId){
+                const response = await axios.delete( this.getUrl + '/' + uploadId);
+                alert("upload was deleted");
+                this.uploads = this.uploads.filter(u => u.id !== uploadId);
             },
             onFileChange(e) {
                 var files = e.target.files || e.dataTransfer.files;

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 
 use App\Models\Invoice;
 use App\Http\Traits\StoresUploads;
+use Illuminate\Support\Facades\Storage;
+
 
 class InvoiceUploadController extends Controller
 {
@@ -44,5 +46,23 @@ class InvoiceUploadController extends Controller
         // TODO check on is editable 
 
         return $this->traitUpload($request, $invoice);
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $invoiceId
+     * @param  int  $uploadId
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($invoiceId, $uploadId)
+    {
+        $invoice = Invoice::findOrFail($invoiceId);  
+        $upload = $invoice->uploads()->where('id', $uploadId)->first();
+
+        Storage::delete($upload->path);
+        $upload->delete();
+
+        return response()->json();
     }
 }

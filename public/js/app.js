@@ -2948,6 +2948,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     resourceType: {
@@ -2996,6 +2997,12 @@ __webpack_require__.r(__webpack_exports__);
         }
       } = await axios.get(this.getUrl);
       this.uploads = uploads;
+    },
+
+    async destroyUpload(uploadId) {
+      const response = await axios.delete(this.getUrl + '/' + uploadId);
+      alert("upload was deleted");
+      this.uploads = this.uploads.filter(u => u.id !== uploadId);
     },
 
     onFileChange(e) {
@@ -5089,7 +5096,20 @@ var render = function() {
             _c("img", {
               staticStyle: { "max-width": "100%", height: "50px" },
               attrs: { src: "data:image/jpeg;base64," + upload.encoded_image }
-            })
+            }),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                attrs: { id: "destroyUpload" },
+                on: {
+                  click: function($event) {
+                    return _vm.destroyUpload(upload.id)
+                  }
+                }
+              },
+              [_vm._v("Delete")]
+            )
           ])
         }),
         0

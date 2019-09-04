@@ -48,6 +48,9 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
                 
                 Route::post('invoice/{invoice}/upload', 'InvoiceUploadController@store')
                         ->name('invoice.upload.store');
+
+                Route::delete('invoice/{invoice}/upload/{upload}', 'InvoiceUploadController@destroy')
+                        ->name('invoice.upload.destroy');
         
         
                 // INVOICE PAYMENTS
