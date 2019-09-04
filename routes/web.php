@@ -41,6 +41,15 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
         Route::resource('invoice', 'InvoiceController')
                 ->only(['index', 'store', 'show', 'update', 'destroy']);
 
+        
+                // INVOICE UPLOAD
+                Route::get('invoice/{invoice}/upload', 'InvoiceUploadController@index')
+                        ->name('invoice.upload.index');
+                
+                Route::post('invoice/{invoice}/upload', 'InvoiceUploadController@store')
+                        ->name('invoice.upload.store');
+        
+        
                 // INVOICE PAYMENTS
                 Route::get('invoice/{invoice}/payment', 'InvoicePaymentController@index')
                         ->name('invoice.payment.index');
@@ -59,16 +68,6 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
         Route::delete('trash/destroy/{resource}/{id}', 'TrashController@destroy')
                 ->name('trash.destroy');
 
-
-        // UPLOAD
-        Route::get('upload/{resource}/{resourceId}', 'UploadController@index')
-        ->name('upload.index');
-
-        Route::post('upload/{resource}/{resourceId}', 'UploadController@store')
-                ->name('upload.store');
-        
-        // Route::delete('upload/{uploadId}', 'UploadController@destroy')
-        //         ->name('upload.destroy');
 
 });
 

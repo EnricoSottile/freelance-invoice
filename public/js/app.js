@@ -2984,7 +2984,7 @@ __webpack_require__.r(__webpack_exports__);
 
   computed: {
     getUrl() {
-      return `app/upload/${this.resourceType}/${this.resourceId}`;
+      return `app/${this.resourceType}/${this.resourceId}/upload`;
     }
 
   },

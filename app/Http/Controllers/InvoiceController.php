@@ -8,11 +8,13 @@ use \Auth;
 
 use App\Http\Requests\StoreInvoice;
 use App\Http\Requests\UpdateInvoice;
-
 use App\Services\InvoiceService;
+
 
 class InvoiceController extends Controller
 {
+
+
     /**
      * Display a listing of the resource.
      *
@@ -78,5 +80,6 @@ class InvoiceController extends Controller
         $invoice->delete();
         return response()->json();
     }
+
 
 }
