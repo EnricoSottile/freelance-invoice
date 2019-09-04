@@ -3,7 +3,6 @@
 namespace App\Observers;
 
 use App\Models\Invoice;
-use Illuminate\Support\Facades\Storage;
 
 class InvoiceObserver
 {
@@ -70,7 +69,6 @@ class InvoiceObserver
         if ($invoice->trashed()) {
         // Im deleting permanently therefore remove uploads
             $invoice->uploads()->each(function($upload){
-                Storage::delete($upload->path);
                 $upload->delete();
             });
         }

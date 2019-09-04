@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 
 use App\Models\Invoice;
 use App\Http\Traits\StoresUploads;
-use Illuminate\Support\Facades\Storage;
-
 
 class InvoiceUploadController extends Controller
 {
@@ -60,7 +58,6 @@ class InvoiceUploadController extends Controller
         $invoice = Invoice::findOrFail($invoiceId);  
         $upload = $invoice->uploads()->where('id', $uploadId)->first();
 
-        Storage::delete($upload->path);
         $upload->delete();
 
         return response()->json();

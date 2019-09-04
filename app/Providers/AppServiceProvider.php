@@ -13,6 +13,9 @@ use App\Observers\InvoiceObserver;
 use App\Models\Payment;
 use App\Observers\PaymentObserver;
 
+use App\Models\Upload;
+use App\Observers\UploadObserver;
+
 class AppServiceProvider extends ServiceProvider
 {
     /**
@@ -35,5 +38,6 @@ class AppServiceProvider extends ServiceProvider
         Customer::observe(CustomerObserver::class);
         Invoice::observe(InvoiceObserver::class);
         Payment::observe(PaymentObserver::class);
+        Upload::observe(UploadObserver::class);
     }
 }
