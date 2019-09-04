@@ -34,7 +34,11 @@
         </div>  
 
 
-        <upload v-if="invoiceIsReady"></upload>
+        <upload 
+            resource-type="invoice" 
+            :resource-id="invoice.id" 
+            v-if="invoiceIsReady">
+        </upload>
 
         <template v-if="invoiceIsReady">
 

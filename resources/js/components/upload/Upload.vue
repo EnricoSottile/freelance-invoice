@@ -14,6 +14,14 @@
                 </div>
             </div>
 
+            <div>Uploaded files</div>
+            <div>
+                <img 
+                    v-bind:key="upload.id" 
+                    v-for="upload in uploads" 
+                    :src="image" style="max-width:100%; height:50px;"/>
+            </div>
+
     </div>
 </template>
 
@@ -21,12 +29,34 @@
 
     export default {
 
+        props: {
+            resourceType: {
+                required: true,
+                validator(value) {
+                    const type = typeof(value);
+                    return type === 'string' && ['invoice'].includes(value);
+                }
+            },
+            resourceId: {
+                required: true,
+                validator(value) {
+                    const type = typeof(value);
+                    return type === 'string' || type === 'number';
+                }
+            },
+        },
+
 
         data(){
             return {
                 image: '',
-                upload: ''
+                upload: '',
+                uploads: [],
             }
+        },
+
+        mounted() {
+            this.getUploads();
         },
 
         computed: {
@@ -34,6 +64,9 @@
         },
 
         methods: {
+            getUploads(){
+
+            },
             onFileChange(e) {
                 var files = e.target.files || e.dataTransfer.files;
                 if (!files.length)
@@ -55,7 +88,8 @@
                 this.image = '';
             },
             async uploadImage(){
-                const URL = 'app/upload/invoice/1'; 
+                const vm = this;
+                const URL = `app/upload/${this.resourceType}/${this.resourceId}`; 
 
     var bodyFormData = new FormData();
     bodyFormData.append('image', this.upload); 
@@ -71,6 +105,7 @@
                     .then(function (response) {
                         //handle success
                         console.log(response);
+                        vm.removeImage();
                     });
 
             }

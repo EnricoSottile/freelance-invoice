@@ -56,7 +56,7 @@ class UploadTest extends TestCase
         $invoiceId = $this->invoice->id;
 
         $response = $this->actingAs($user)->json('POST', "/app/upload/invoice/${invoiceId}", [
-            'image' => UploadedFile::fake()->image('avatar.jpg')
+            'image' => UploadedFile::fake()->image('')
         ]);
 
         $file = $response->getOriginalContent()['uploads'][0];

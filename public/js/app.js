@@ -2462,6 +2462,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
 
 
 
@@ -2931,16 +2935,52 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    resourceType: {
+      required: true,
+
+      validator(value) {
+        const type = typeof value;
+        return type === 'string' && ['invoice'].includes(value);
+      }
+
+    },
+    resourceId: {
+      required: true,
+
+      validator(value) {
+        const type = typeof value;
+        return type === 'string' || type === 'number';
+      }
+
+    }
+  },
+
   data() {
     return {
       image: '',
-      upload: ''
+      upload: '',
+      uploads: []
     };
+  },
+
+  mounted() {
+    this.getUploads();
   },
 
   computed: {},
   methods: {
+    getUploads() {},
+
     onFileChange(e) {
       var files = e.target.files || e.dataTransfer.files;
       if (!files.length) return;
@@ -2965,7 +3005,8 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     async uploadImage() {
-      const URL = 'app/upload/invoice/1';
+      const vm = this;
+      const URL = `app/upload/${this.resourceType}/${this.resourceId}`;
       var bodyFormData = new FormData();
       bodyFormData.append('image', this.upload);
       axios({
@@ -2980,6 +3021,7 @@ __webpack_require__.r(__webpack_exports__);
       }).then(function (response) {
         //handle success
         console.log(response);
+        vm.removeImage();
       });
     }
 
@@ -4555,7 +4597,11 @@ var render = function() {
             _c("br")
           ]),
       _vm._v(" "),
-      _vm.invoiceIsReady ? _c("upload") : _vm._e(),
+      _vm.invoiceIsReady
+        ? _c("upload", {
+            attrs: { "resource-type": "invoice", "resource-id": _vm.invoice.id }
+          })
+        : _vm._e(),
       _vm._v(" "),
       _vm.invoiceIsReady
         ? [
@@ -5006,7 +5052,21 @@ var render = function() {
             _vm._v(" "),
             _c("button", { on: { click: _vm.uploadImage } }, [_vm._v("Upload")])
           ])
-    ])
+    ]),
+    _vm._v(" "),
+    _c("div", [_vm._v("Uploaded files")]),
+    _vm._v(" "),
+    _c(
+      "div",
+      _vm._l(_vm.uploads, function(upload) {
+        return _c("img", {
+          key: upload.id,
+          staticStyle: { "max-width": "100%", height: "50px" },
+          attrs: { src: _vm.image }
+        })
+      }),
+      0
+    )
   ])
 }
 var staticRenderFns = []

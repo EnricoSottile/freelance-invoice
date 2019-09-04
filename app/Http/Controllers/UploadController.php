@@ -37,7 +37,7 @@ class UploadController extends Controller
         $model = $this->getModel( ucfirst($resource) );
         $resource = $model::findOrFail($resourceId);
 
-        $name = $request->file('image')->store('');
+        $name = $request->file('image')->store('private');
         $resource->uploads()->create([
             'user_id' => Auth::user()->id,
             'name' => $name,
