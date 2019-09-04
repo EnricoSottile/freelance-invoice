@@ -19,7 +19,6 @@ class CreateUploadsTable extends Migration
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
 
-            $table->string('name');
             $table->string('path');
 
             $table->integer('uploadable_id');

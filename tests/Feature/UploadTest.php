@@ -60,16 +60,16 @@ class UploadTest extends TestCase
         ]);
 
         $file = $response->getOriginalContent()['uploads'][0];
-        $name = $file['name'];
-        Storage::disk('')->assertExists( $name );
+        $path = $file['path'];
+        Storage::disk('')->assertExists( $path );
         $this->assertDatabaseHas('uploads', [
             'id' => $file['id'],
             'user_id' => $user->id,
-            'name' => $name,
+            'path' => $path,
             'uploadable_id' => $invoiceId,
         ]);
 
-        Storage::disk('')->delete($name);
+        Storage::disk('')->delete($path);
     }
 
 
