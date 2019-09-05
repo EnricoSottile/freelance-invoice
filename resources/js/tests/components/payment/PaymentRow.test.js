@@ -19,6 +19,7 @@ paymentClass.update = jest.fn().mockReturnValue(mockPayment);
 
 const wrapper = shallowMount(PaymentRow, {
   propsData: {payment: mockPayment, paymentClass},
+  stubs: ['router-link']
 });
 
 

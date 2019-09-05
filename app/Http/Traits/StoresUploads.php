@@ -21,7 +21,7 @@ trait StoresUploads
      * @return \Illuminate\Http\Response
      */
     public function upload(Request $request, $model) {
-        $path = $request->file('image')->store('private');
+        $path = $request->file('upload')->store('private');
 
         try{
             $upload = $model->uploads()->create([

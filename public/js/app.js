@@ -3026,6 +3026,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _classes_Upload__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../classes/Upload */ "./resources/js/classes/Upload.js");
 //
 //
 //
@@ -3059,6 +3060,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 const MODELS = ['invoice', 'customer', 'payment'];
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -3092,34 +3094,34 @@ const MODELS = ['invoice', 'customer', 'payment'];
 
   data() {
     return {
-      image: '',
+      uploadClass: null,
+      imageSrc: '',
       upload: '',
       uploads: []
     };
   },
 
   mounted() {
+    this.initClass();
     this.getUploads();
   },
 
-  computed: {
-    getUrl() {
-      return `app/${this.resourceType}/${this.resourceId}/upload`;
-    }
-
-  },
   methods: {
+    initClass() {
+      this.uploadClass = new _classes_Upload__WEBPACK_IMPORTED_MODULE_0__["default"](this.resourceType, this.resourceId);
+    },
+
     async getUploads() {
       const {
         data: {
           uploads
         }
-      } = await axios.get(this.getUrl);
+      } = await this.uploadClass.index();
       this.uploads = uploads;
     },
 
     async destroyUpload(uploadId) {
-      const response = await axios.delete(this.getUrl + '/' + uploadId);
+      const response = await this.uploadClass.destroy(uploadId);
       alert("upload was deleted");
       this.uploads = this.uploads.filter(u => u.id !== uploadId);
     },
@@ -3131,12 +3133,12 @@ const MODELS = ['invoice', 'customer', 'payment'];
     },
 
     createImage(file) {
-      var image = new Image();
+      var imageSrc = new Image();
       var reader = new FileReader();
       var vm = this;
 
       reader.onload = e => {
-        vm.image = e.target.result;
+        vm.imageSrc = e.target.result;
       };
 
       reader.readAsDataURL(file);
@@ -3144,29 +3146,14 @@ const MODELS = ['invoice', 'customer', 'payment'];
     },
 
     removeImage: function (e) {
-      this.image = '';
+      this.imageSrc = '';
     },
 
     async uploadImage() {
-      const vm = this;
-      const URL = this.getUrl;
-      var bodyFormData = new FormData();
-      bodyFormData.append('image', this.upload);
-      axios({
-        method: 'post',
-        url: URL,
-        data: bodyFormData,
-        config: {
-          headers: {
-            'Content-Type': 'multipart/form-data'
-          }
-        }
-      }).then(function (response) {
-        //handle success
-        vm.uploads.push(response.data.upload);
-        alert("image uploaded");
-        vm.removeImage();
-      });
+      const response = await this.uploadClass.store(this.upload);
+      this.uploads.push(response.data.upload);
+      alert("image uploaded");
+      this.removeImage();
     }
 
   }
@@ -5281,7 +5268,7 @@ var render = function() {
     _vm._v(" "),
     _vm.allowUploads
       ? _c("div", [
-          !_vm.image
+          !_vm.imageSrc
             ? _c("div", [
                 _c("h2", [_vm._v("Select an image")]),
                 _vm._v(" "),
@@ -5293,16 +5280,26 @@ var render = function() {
             : _c("div", [
                 _c("img", {
                   staticStyle: { "max-width": "100%", height: "50px" },
-                  attrs: { src: _vm.image }
+                  attrs: { src: _vm.imageSrc }
                 }),
                 _vm._v(" "),
-                _c("button", { on: { click: _vm.removeImage } }, [
-                  _vm._v("Remove image")
-                ]),
+                _c(
+                  "button",
+                  {
+                    attrs: { id: "removeImage" },
+                    on: { click: _vm.removeImage }
+                  },
+                  [_vm._v("Remove image")]
+                ),
                 _vm._v(" "),
-                _c("button", { on: { click: _vm.uploadImage } }, [
-                  _vm._v("Upload")
-                ])
+                _c(
+                  "button",
+                  {
+                    attrs: { id: "uploadImage" },
+                    on: { click: _vm.uploadImage }
+                  },
+                  [_vm._v("Upload")]
+                )
               ])
         ])
       : _vm._e(),
@@ -20560,6 +20557,51 @@ class Payment {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (Payment);
+
+/***/ }),
+
+/***/ "./resources/js/classes/Upload.js":
+/*!****************************************!*\
+  !*** ./resources/js/classes/Upload.js ***!
+  \****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class Upload {
+  constructor(resourceType, resourceId) {
+    this.url = `app/${resourceType}/${resourceId}/upload`;
+  }
+
+  index() {
+    console.log("----index----");
+    return axios.get(this.url);
+  }
+
+  store(file) {
+    const url = this.url;
+    let data = new FormData();
+    data.append('upload', file);
+    return axios({
+      method: 'post',
+      url,
+      data,
+      config: {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      }
+    });
+  }
+
+  destroy(uploadId) {
+    return axios.delete(`${this.url}/${uploadId}`);
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Upload);
 
 /***/ }),
 

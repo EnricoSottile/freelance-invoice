@@ -3,14 +3,14 @@
         <div>Upload</div>
 
             <div v-if="allowUploads">
-                <div v-if="!image">
+                <div v-if="!imageSrc">
                     <h2>Select an image</h2>
                     <input type="file" @change="onFileChange">
                 </div>
                 <div v-else>
-                    <img :src="image" style="max-width:100%; height:50px;"/>
-                    <button @click="removeImage">Remove image</button>
-                    <button @click="uploadImage">Upload</button>
+                    <img :src="imageSrc" style="max-width:100%; height:50px;"/>
+                    <button id="removeImage" @click="removeImage">Remove image</button>
+                    <button id="uploadImage" @click="uploadImage">Upload</button>
                 </div>
             </div>
 
@@ -32,6 +32,7 @@
 </template>
 
 <script>
+    import Upload from '../../classes/Upload'
     const MODELS = ['invoice', 'customer', 'payment'];
 
     export default {
@@ -64,74 +65,55 @@
 
         data(){  
             return {
-                image: '',
+                uploadClass: null,
+                imageSrc: '',
                 upload: '',
                 uploads: [],
             }
         },
 
         mounted() {
+            this.initClass();
             this.getUploads();
         },
 
-        computed: {
-            getUrl(){
-                return `app/${this.resourceType}/${this.resourceId}/upload`
-            }
-        },
-
         methods: {
+            initClass(){
+                this.uploadClass = new Upload(this.resourceType, this.resourceId)
+            },
             async getUploads(){
-                const { data: {uploads} } = await axios.get( this.getUrl );
+                const { data: {uploads} } = await this.uploadClass.index();
                 this.uploads = uploads;
             },
             async destroyUpload(uploadId){
-                const response = await axios.delete( this.getUrl + '/' + uploadId);
+                const response = await this.uploadClass.destroy(uploadId);
                 alert("upload was deleted");
                 this.uploads = this.uploads.filter(u => u.id !== uploadId);
             },
             onFileChange(e) {
                 var files = e.target.files || e.dataTransfer.files;
-                if (!files.length)
-                    return;
+                if (!files.length) return;
                 this.createImage(files[0]);
             },
             createImage(file) {
-                var image = new Image();
+                var imageSrc = new Image();
                 var reader = new FileReader();
                 var vm = this;
 
                 reader.onload = (e) => {
-                    vm.image = e.target.result;
+                    vm.imageSrc = e.target.result;
                 };
                 reader.readAsDataURL(file);
                 this.upload = file;
             },
             removeImage: function (e) {
-                this.image = '';
+                this.imageSrc = '';
             },
             async uploadImage(){
-                const vm = this;
-                const URL = this.getUrl;
-
-                var bodyFormData = new FormData();
-                bodyFormData.append('image', this.upload); 
-
-
-
-                axios({
-                    method: 'post',
-                    url: URL,
-                    data: bodyFormData,
-                    config: { headers: {'Content-Type': 'multipart/form-data' }}
-                    })
-                    .then(function (response) {
-                        //handle success
-                        vm.uploads.push(response.data.upload);
-                        alert("image uploaded");
-                        vm.removeImage();
-                    });
-
+                const response = await this.uploadClass.store(this.upload);
+                this.uploads.push(response.data.upload);
+                alert("image uploaded");
+                this.removeImage();
             }
         },
 
