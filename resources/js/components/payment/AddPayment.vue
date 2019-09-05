@@ -11,6 +11,7 @@
         <template v-if="newPayment">
             <input v-model="newPayment.net_amount" name="net_amount" placeholder="Net amount" type="number"/>
             <input v-model="newPayment.due_date" name="due_date" placeholder="Due date" type="date"/>
+            <input v-model="newPayment.payed_date" name="payed_date" placeholder="Payed date" type="date"/>
             <button id="saveNewPayment" @click="saveNewPayment">Save</button>
             <button id="cancelNewPayment" @click="cancelNewPayment">Cancel</button>
         </template>

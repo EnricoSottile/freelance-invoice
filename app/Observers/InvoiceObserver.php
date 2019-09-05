@@ -50,7 +50,7 @@ class InvoiceObserver
                 
         if ( $status->canBeDeleted() ) {
             
-            // if is trashed, this 'deleting' is permanent: remove all uploads
+            // if is trashed, this 'deleting' is permanent, so remove all uploads
             $status->getIsTrashed() && $invoice->deleteUploads();
             $status->getHasUnpayedPayments() && $invoice->deleteUnpayedPayments();
 

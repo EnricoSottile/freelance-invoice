@@ -2628,6 +2628,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     paymentClass: {
@@ -4777,6 +4778,31 @@ var render = function() {
                     return
                   }
                   _vm.$set(_vm.newPayment, "due_date", $event.target.value)
+                }
+              }
+            }),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.newPayment.payed_date,
+                  expression: "newPayment.payed_date"
+                }
+              ],
+              attrs: {
+                name: "payed_date",
+                placeholder: "Payed date",
+                type: "date"
+              },
+              domProps: { value: _vm.newPayment.payed_date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(_vm.newPayment, "payed_date", $event.target.value)
                 }
               }
             }),
