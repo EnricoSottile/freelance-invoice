@@ -8,7 +8,6 @@ class Upload {
 
 
     index(){
-        console.log("----index----");
         return axios.get(this.url);  
     }
 

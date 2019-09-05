@@ -1890,7 +1890,7 @@ __webpack_require__.r(__webpack_exports__);
 
   data() {
     return {
-      customerClass: new _classes_Customer__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      customerClass: _classes_Customer__WEBPACK_IMPORTED_MODULE_0__["default"],
       customer: {}
     };
   },
@@ -1963,7 +1963,7 @@ __webpack_require__.r(__webpack_exports__);
 
   data() {
     return {
-      customerClass: new _classes_Customer__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      customerClass: _classes_Customer__WEBPACK_IMPORTED_MODULE_0__["default"],
       customers: [],
       customersAreReady: false
     };
@@ -2096,7 +2096,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   data() {
     return {
-      customerClass: new _classes_Customer__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      customerClass: _classes_Customer__WEBPACK_IMPORTED_MODULE_0__["default"],
       customer: {},
       invoices: [],
       payments: [],
@@ -2252,7 +2252,7 @@ __webpack_require__.r(__webpack_exports__);
 
   data() {
     return {
-      invoiceClass: new _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      invoiceClass: _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"],
       invoice: {},
       customers: [],
       customersAreReady: false
@@ -2371,7 +2371,7 @@ __webpack_require__.r(__webpack_exports__);
 
   data() {
     return {
-      invoiceClass: new _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      invoiceClass: _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"],
       invoices: [],
       invoicesAreReady: false
     };
@@ -2516,7 +2516,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   data() {
     return {
-      invoiceClass: new _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      invoiceClass: _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"],
       invoice: {},
       payments: [],
       customers: [],
@@ -2765,7 +2765,7 @@ __webpack_require__.r(__webpack_exports__);
 
   data() {
     return {
-      paymentClass: new _classes_Payment__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      paymentClass: _classes_Payment__WEBPACK_IMPORTED_MODULE_0__["default"],
       payments: [],
       paymentsAreReady: false
     };
@@ -2987,7 +2987,7 @@ __webpack_require__.r(__webpack_exports__);
 
   data() {
     return {
-      paymentClass: new _classes_Payment__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      paymentClass: _classes_Payment__WEBPACK_IMPORTED_MODULE_0__["default"],
       payment: {},
       paymentIsReady: false
     };
@@ -20395,11 +20395,11 @@ const BASE_URI = 'app/customer';
 class Customer {
   constructor() {}
 
-  index() {
+  static index() {
     return axios.get(BASE_URI);
   }
 
-  create() {
+  static create() {
     return {
       full_name: null,
       email: null,
@@ -20408,30 +20408,30 @@ class Customer {
     };
   }
 
-  invoices(customerId) {
+  static invoices(customerId) {
     const uri = `${BASE_URI}/${customerId}/invoice`;
     return axios.get(uri);
   }
 
-  payments(customerId) {
+  static payments(customerId) {
     const uri = `${BASE_URI}/${customerId}/payment`;
     return axios.get(uri);
   }
 
-  store(data) {
+  static store(data) {
     return axios.post(BASE_URI, data);
   }
 
-  show(customerId) {
+  static show(customerId) {
     const uri = `${BASE_URI}/${customerId}`;
     return axios.get(uri);
   }
 
-  update(customerId, data) {
+  static update(customerId, data) {
     return axios.put(`${BASE_URI}/${customerId}`, data);
   }
 
-  destroy(customerId) {
+  static destroy(customerId) {
     return axios.delete(`${BASE_URI}/${customerId}`);
   }
 
@@ -20455,11 +20455,11 @@ const BASE_URI = 'app/invoice';
 class Invoice {
   constructor() {}
 
-  index() {
+  static index() {
     return axios.get(BASE_URI);
   }
 
-  create(customerId = null) {
+  static create(customerId = null) {
     return {
       customer_id: customerId,
       number: null,
@@ -20472,12 +20472,12 @@ class Invoice {
     };
   }
 
-  payments(invoiceId) {
+  static payments(invoiceId) {
     const uri = `${BASE_URI}/${invoiceId}/payment`;
     return axios.get(uri);
   }
 
-  customers(invoiceId) {
+  static customers(invoiceId) {
     // keep it simple for now
     // should the requirements change, do not touch CustomerController,
     // but create a new InvoiceCustomerController and a corresponding route
@@ -20485,20 +20485,20 @@ class Invoice {
     return axios.get(uri);
   }
 
-  store(data) {
+  static store(data) {
     return axios.post(BASE_URI, data);
   }
 
-  show(invoiceId) {
+  static show(invoiceId) {
     const uri = `${BASE_URI}/${invoiceId}`;
     return axios.get(uri);
   }
 
-  update(invoiceId, data) {
+  static update(invoiceId, data) {
     return axios.put(`${BASE_URI}/${invoiceId}`, data);
   }
 
-  destroy(invoiceId) {
+  static destroy(invoiceId) {
     return axios.delete(`${BASE_URI}/${invoiceId}`);
   }
 
@@ -20522,11 +20522,11 @@ const BASE_URI = 'app/payment';
 class Payment {
   constructor() {}
 
-  index() {
+  static index() {
     return axios.get(BASE_URI);
   }
 
-  create(invoiceId) {
+  static create(invoiceId) {
     return {
       id: null,
       user_id: null,
@@ -20537,20 +20537,20 @@ class Payment {
     };
   }
 
-  store(data) {
+  static store(data) {
     return axios.post(BASE_URI, data);
   }
 
-  show(paymentId) {
+  static show(paymentId) {
     const uri = `${BASE_URI}/${paymentId}`;
     return axios.get(uri);
   }
 
-  update(paymentId, data) {
+  static update(paymentId, data) {
     return axios.put(`${BASE_URI}/${paymentId}`, data);
   }
 
-  destroy(paymentId) {
+  static destroy(paymentId) {
     return axios.delete(`${BASE_URI}/${paymentId}`);
   }
 
@@ -20575,7 +20575,6 @@ class Upload {
   }
 
   index() {
-    console.log("----index----");
     return axios.get(this.url);
   }
 

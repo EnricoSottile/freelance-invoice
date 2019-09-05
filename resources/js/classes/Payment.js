@@ -6,11 +6,11 @@ class Payment {
     constructor(){}
 
 
-    index(){
+    static index(){
         return axios.get(BASE_URI);  
     }
 
-    create(invoiceId){
+    static create(invoiceId){
         return {
             id: null,
             user_id: null,
@@ -21,20 +21,20 @@ class Payment {
         }
     }
 
-    store(data){
+    static store(data){
         return axios.post(BASE_URI, data);
     }
 
-    show(paymentId){
+    static show(paymentId){
         const uri = `${BASE_URI}/${paymentId}`;
         return axios.get(uri);        
     }
 
-    update(paymentId, data){
+    static update(paymentId, data){
         return axios.put(`${BASE_URI}/${paymentId}`, data);
     }
 
-    destroy(paymentId){
+    static destroy(paymentId){
         return axios.delete(`${BASE_URI}/${paymentId}`);        
     }
 

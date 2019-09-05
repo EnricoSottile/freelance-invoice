@@ -64,7 +64,7 @@
 
         data(){
             return {
-                invoiceClass: new Invoice(),
+                invoiceClass: Invoice,
                 invoice: {},
                 customers: [],
                 customersAreReady: false

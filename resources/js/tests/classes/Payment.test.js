@@ -1,5 +1,5 @@
 import Payment from '../../classes/Payment'
-const paymentClass = new Payment()
+const paymentClass = Payment
 
 
 describe('PaymentClass', () => {

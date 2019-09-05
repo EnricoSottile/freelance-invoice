@@ -96,7 +96,7 @@
 
         data(){
             return {
-                invoiceClass: new Invoice(),
+                invoiceClass: Invoice,
                 invoice: {},
                 payments: [],
                 customers: [],

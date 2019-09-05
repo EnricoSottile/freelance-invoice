@@ -71,7 +71,7 @@
 
         data(){
             return {
-                invoiceClass: new Invoice(),
+                invoiceClass: Invoice,
                 invoices: [],
                 invoicesAreReady: false
             }

@@ -6,11 +6,11 @@ class Invoice {
     constructor(){}
 
 
-    index(){
+    static index(){
         return axios.get(BASE_URI);  
     }
 
-    create(customerId = null){
+    static create(customerId = null){
         return {
             customer_id: customerId,
             number: null,
@@ -23,12 +23,12 @@ class Invoice {
         }
     }
 
-    payments(invoiceId){
+    static payments(invoiceId){
         const uri = `${BASE_URI}/${invoiceId}/payment`;
         return axios.get(uri)
     }
 
-    customers(invoiceId){
+    static customers(invoiceId){
         // keep it simple for now
         // should the requirements change, do not touch CustomerController,
         // but create a new InvoiceCustomerController and a corresponding route
@@ -36,20 +36,20 @@ class Invoice {
         return axios.get(uri)
     }
 
-    store(data){
+    static store(data){
         return axios.post(BASE_URI, data);
     }
 
-    show(invoiceId){
+    static show(invoiceId){
         const uri = `${BASE_URI}/${invoiceId}`;
         return axios.get(uri);        
     }
 
-    update(invoiceId, data){
+    static update(invoiceId, data){
         return axios.put(`${BASE_URI}/${invoiceId}`, data);
     }
 
-    destroy(invoiceId){
+    static destroy(invoiceId){
         return axios.delete(`${BASE_URI}/${invoiceId}`);        
     }
 

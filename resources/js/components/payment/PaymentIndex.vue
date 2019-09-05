@@ -88,7 +88,7 @@
 
         data(){
             return {
-                paymentClass: new Payment(),
+                paymentClass: Payment,
                 payments: [],
                 paymentsAreReady: false,
             }

@@ -1,5 +1,5 @@
 import Customer from '../../classes/Customer'
-const customerClass = new Customer()
+const customerClass = Customer
 
 
 describe('CustomerClass', () => {

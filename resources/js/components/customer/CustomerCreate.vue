@@ -32,7 +32,7 @@
 
         data(){
             return {
-                customerClass: new Customer(),
+                customerClass: Customer,
                 customer: {},
             }
         },

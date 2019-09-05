@@ -1,5 +1,5 @@
 import Invoice from '../../classes/Invoice'
-const invoiceClass = new Invoice()
+const invoiceClass = Invoice
 
 
 describe('InvoiceClass', () => {

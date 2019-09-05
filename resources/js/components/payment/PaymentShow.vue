@@ -53,7 +53,7 @@
 
         data(){
             return {
-                paymentClass: new Payment(),
+                paymentClass: Payment,
                 payment: {},
                 paymentIsReady: false,
             }

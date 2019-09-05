@@ -7,11 +7,11 @@ class Customer {
     }
 
 
-    index(){
+    static index(){
         return axios.get(BASE_URI);  
     }
 
-    create(){
+    static create(){
         return {
             full_name: null,
             email: null,
@@ -20,30 +20,30 @@ class Customer {
         }
     }
 
-    invoices(customerId){
+    static invoices(customerId){
         const uri = `${BASE_URI}/${customerId}/invoice`;
         return axios.get(uri)
     }
 
-    payments(customerId){
+    static payments(customerId){
         const uri = `${BASE_URI}/${customerId}/payment`;
         return axios.get(uri)
     }
 
-    store(data){
+    static store(data){
         return axios.post(BASE_URI, data);
     }
 
-    show(customerId){
+    static show(customerId){
         const uri = `${BASE_URI}/${customerId}`;
         return axios.get(uri);        
     }
 
-    update(customerId, data){
+    static update(customerId, data){
         return axios.put(`${BASE_URI}/${customerId}`, data);
     }
 
-    destroy(customerId){
+    static destroy(customerId){
         return axios.delete(`${BASE_URI}/${customerId}`);        
     }
 

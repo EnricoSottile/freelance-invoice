@@ -37,7 +37,7 @@ describe('PaymentShow', () => {
       'payment', 
       'paymentIsReady',
     ];
-
+  
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
 
     expect( wrapper.vm.paymentClass ).toBeInstanceOf(Payment);

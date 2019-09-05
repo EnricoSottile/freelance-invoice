@@ -40,7 +40,7 @@
 
         data(){
             return {
-                customerClass: new Customer(),
+                customerClass: Customer,
                 customers: [],
                 customersAreReady: false
             }
