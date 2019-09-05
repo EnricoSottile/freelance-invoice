@@ -14,12 +14,6 @@ class Customer extends Model
 {
     use SoftDeletes;
 
-    public function canBeDestroyed(){
-        $invoices = $this->registered_invoices()->count();
-        $payments = $this->payed_payments()->count();
-        return $invoices === 0 && $payments === 0;
-    }
-
 
     public function invoices(){
         return $this->hasMany(Invoice::class);
@@ -38,9 +32,21 @@ class Customer extends Model
         });
     }
 
+    public function deleteUnregisteredInvoices(){
+        $this->unregistered_invoices()->each(function($inv) {
+            $inv->delete();
+        });
+    }
+
 
     public function trashed_invoices() {
         return $this->invoices()->onlyTrashed()->get();
+    }
+
+    public function restoreTrashedInvoices(){
+        $this->trashed_invoices()->each(function($inv) {
+            $inv->restore();
+        });
     }
 
 

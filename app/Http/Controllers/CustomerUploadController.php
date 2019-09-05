@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Customer;
-// use App\Helpers\InvoiceStatus;
+use App\Helpers\InvoiceStatus;
 use App\Http\Traits\StoresUploads;
 
 class CustomerUploadController extends Controller
@@ -42,11 +42,6 @@ class CustomerUploadController extends Controller
      */
     public function store(Request $request, $id){
         $customer = Customer::findOrFail($id);
-        // $status = new CustomerStatus($customer);
-
-        // if ( ! $status->canBeUpdated() ) {
-        //     abort(403, 'Customer uploads cannot be edited');
-        // }
 
         return $this->traitUpload($request, $customer);
     }
@@ -61,11 +56,11 @@ class CustomerUploadController extends Controller
     public function destroy($customerId, $uploadId)
     {
         $customer = Customer::findOrFail($customerId);  
-        // $status = new CustomerStatus($customer);
+        $status = new CustomerStatus($customer);
 
-        // if ( ! $status->canBeDeleted() ) {
-        //     abort(403, 'Customer uploads cannot be deleted');
-        // }
+        if ( ! $status->canBeDeleted() ) {
+            abort(403, 'Customer uploads cannot be deleted');
+        }
 
         $upload = $customer->uploads()->where('id', $uploadId)->first();
         $upload->delete();

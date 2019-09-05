@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Customer;
+use App\Helpers\CustomerStatus;
 
 class CustomerObserver
 {
@@ -16,18 +17,14 @@ class CustomerObserver
      */
     public function deleting(Customer $customer)
     {
-        $existingCustomer = Customer::withTrashed()->find($customer->id);
-        $canBeDestroyed = $existingCustomer->canBeDestroyed();
-        if ($canBeDestroyed === false) {
-            abort(403, 'This customer cannot be deleted');
+        $status = new CustomerStatus($customer);
+                
+        if ( $status->canBeDeleted() ) {
+            $status->getHasUnregisteredInvoices() && $customer->deleteUnregisteredInvoices();
+        } else {
+            abort(403, 'Customer cannot be deleted' );
         }
 
-        $hasUnregisteredInvoices = $customer->unregistered_invoices()->count();
-        if ($hasUnregisteredInvoices) {
-            $customer->unregistered_invoices()->each(function($inv) {
-                $inv->delete();
-            });
-        }
     }
 
     /**
@@ -38,11 +35,8 @@ class CustomerObserver
      */
     public function restoring(Customer $customer)
     {
-        $trashedInvoices = $customer->trashed_invoices();
-        if( $trashedInvoices->count() ) {
-            $trashedInvoices->each(function($inv) {
-                $inv->restore();
-            });
+        if( $customer->trashed_invoices()->count() ) {
+            $customer->restoreTrashedInvoices();
         }
     }
 
