@@ -25,10 +25,10 @@ class Payment {
         return axios.post(BASE_URI, data);
     }
 
-    // show(paymentId){
-    //     const uri = `${BASE_URI}/${paymentId}`;
-    //     return axios.get(uri);        
-    // }
+    show(paymentId){
+        const uri = `${BASE_URI}/${paymentId}`;
+        return axios.get(uri);        
+    }
 
     update(paymentId, data){
         return axios.put(`${BASE_URI}/${paymentId}`, data);

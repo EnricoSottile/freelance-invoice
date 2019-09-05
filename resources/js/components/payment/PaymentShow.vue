@@ -1,0 +1,84 @@
+<template>
+    <div>
+        <div>Payment show</div>
+
+        <div >
+            <pre>{{ payment }}</pre>
+        </div>  
+
+
+        <upload 
+            resource-type="payment" 
+            :resource-id="payment.id" 
+            :allowUploads="isEditable"
+            :allowDeletes="isDestroyable"
+            v-if="paymentIsReady">
+        </upload>
+
+
+    </div>
+</template>
+
+<script>
+    import Payment from '../../classes/Payment'
+    import Upload from '../upload/Upload'
+
+
+    export default {
+        props: {
+            paymentId: {
+                required: true,
+                validator(value) {
+                    const type = typeof(value);
+                    return type === 'string' || type === 'number';
+                }
+            },
+        },
+
+        components: {
+            'upload': Upload
+        },
+
+
+        mounted(){
+            this.getPayment(this.paymentId);
+        },
+
+        beforeRouteUpdate (to, from, next) {
+            const paymentId = to.params.paymentId;
+            this.getPayment(invoiceId);
+            next();
+        },
+
+
+        data(){
+            return {
+                paymentClass: new Payment(),
+                payment: {},
+                paymentIsReady: false,
+            }
+        },
+
+        computed: {
+            isEditable() {
+                return this.payment.payed_date === null;
+            },
+            isDestroyable() {
+                return this.payment.payed_date === null;
+            }
+        },
+
+        methods: {
+            async getPayment(paymentId){
+                const { data } = await this.paymentClass.show(paymentId);
+                this.payment = data;
+                this.paymentIsReady = true;
+            },
+        },
+
+
+
+
+    }
+</script>
+

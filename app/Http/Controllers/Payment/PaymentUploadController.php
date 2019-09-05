@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Http\Controllers\Customer;
+namespace App\Http\Controllers\Payment;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-use App\Models\Customer;
-use App\Helpers\CustomerStatus;
+use App\Models\Payment;
+use App\Helpers\PaymentStatus;
 use App\Http\Traits\StoresUploads;
 
-class CustomerUploadController extends Controller
+class PaymentUploadController extends Controller
 {
 
 
@@ -27,8 +27,8 @@ class CustomerUploadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index($id){
-        $customer = Customer::findOrFail($id);
-        $uploads = $customer->uploads()->get();
+        $payment = Payment::findOrFail($id);
+        $uploads = $payment->uploads()->get();
         return response()->json(['uploads' => $uploads]);
     }
 
@@ -41,28 +41,33 @@ class CustomerUploadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $id){
-        $customer = Customer::findOrFail($id);
+        $payment = Payment::findOrFail($id);
+        $status = new PaymentStatus($payment);
 
-        return $this->traitUpload($request, $customer);
+        if ( ! $status->canBeUpdated() ) {
+            abort(403, 'Payment uploads cannot be edited');
+        }
+
+        return $this->traitUpload($request, $payment);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $customerId
+     * @param  int  $paymentId
      * @param  int  $uploadId
      * @return \Illuminate\Http\Response
      */
-    public function destroy($customerId, $uploadId)
+    public function destroy($paymentId, $uploadId)
     {
-        $customer = Customer::findOrFail($customerId);  
-        $status = new CustomerStatus($customer);
+        $payment = Payment::findOrFail($paymentId);  
+        $status = new PaymentStatus($payment);
 
         if ( ! $status->canBeDeleted() ) {
-            abort(403, 'Customer uploads cannot be deleted');
+            abort(403, 'Payment uploads cannot be deleted');
         }
 
-        $upload = $customer->uploads()->where('id', $uploadId)->first();
+        $upload = $payment->uploads()->where('id', $uploadId)->first();
         $upload->delete();
 
         return response()->json();

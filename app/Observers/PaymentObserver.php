@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Helpers\PaymentStatus;
 use App\Models\Payment;
 
 class PaymentObserver
@@ -14,10 +15,10 @@ class PaymentObserver
      * @return void
      */
     public function updating(Payment $payment){
-        $existingPayment = Payment::withTrashed()->find($payment->id);
-
-        if ( $existingPayment->isPayed() ) {
-            abort(403, 'Cannot update registered payment');
+        $status = new PaymentStatus($payment);
+        
+        if ( ! $status->canBeUpdated() ) {
+            abort(403, 'Payment cannot be updated' );
         }
     }
 
@@ -30,10 +31,10 @@ class PaymentObserver
      */
     public function deleting(Payment $payment)
     {        
-        $existingPayment = Payment::withTrashed()->find($payment->id);
-
-        if ( $existingPayment->isPayed() ) {
-            abort(403, 'Cannot delete registered payment');
+        $status = new PaymentStatus($payment);
+        
+        if ( ! $status->canBeDeleted() ) {
+            abort(403, 'Payment cannot be deleted' );
         }
     }
 }

@@ -2866,6 +2866,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     payment: {
@@ -2922,6 +2925,98 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 /***/ }),
 
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/PaymentShow.vue?vue&type=script&lang=js&":
+/*!******************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/payment/PaymentShow.vue?vue&type=script&lang=js& ***!
+  \******************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _classes_Payment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../classes/Payment */ "./resources/js/classes/Payment.js");
+/* harmony import */ var _upload_Upload__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../upload/Upload */ "./resources/js/components/upload/Upload.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    paymentId: {
+      required: true,
+
+      validator(value) {
+        const type = typeof value;
+        return type === 'string' || type === 'number';
+      }
+
+    }
+  },
+  components: {
+    'upload': _upload_Upload__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
+
+  mounted() {
+    this.getPayment(this.paymentId);
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    const paymentId = to.params.paymentId;
+    this.getPayment(invoiceId);
+    next();
+  },
+
+  data() {
+    return {
+      paymentClass: new _classes_Payment__WEBPACK_IMPORTED_MODULE_0__["default"](),
+      payment: {},
+      paymentIsReady: false
+    };
+  },
+
+  computed: {
+    isEditable() {
+      return this.payment.payed_date === null;
+    },
+
+    isDestroyable() {
+      return this.payment.payed_date === null;
+    }
+
+  },
+  methods: {
+    async getPayment(paymentId) {
+      const {
+        data
+      } = await this.paymentClass.show(paymentId);
+      this.payment = data;
+      this.paymentIsReady = true;
+    }
+
+  }
+});
+
+/***/ }),
+
 /***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/upload/Upload.vue?vue&type=script&lang=js&":
 /*!************************************************************************************************************************************************************************!*\
   !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/upload/Upload.vue?vue&type=script&lang=js& ***!
@@ -2964,7 +3059,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-const MODELS = ['invoice', 'customer'];
+const MODELS = ['invoice', 'customer', 'payment'];
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     resourceType: {
@@ -4957,29 +5052,46 @@ var render = function() {
             _vm._v(" "),
             _c("td", [_vm._v(_vm._s(_vm.payment.payed_date))]),
             _vm._v(" "),
-            _c("td", [
-              _vm.isEditable
-                ? _c(
-                    "button",
-                    {
-                      attrs: { id: "editPayment_" + _vm.payment.id },
-                      on: { click: _vm.editPayment }
-                    },
-                    [_vm._v("Edit")]
-                  )
-                : _vm._e(),
-              _vm._v(" "),
-              _vm.isDestroyable
-                ? _c(
-                    "button",
-                    {
-                      attrs: { id: "destroyPayment_" + _vm.payment.id },
-                      on: { click: _vm.destroyPayment }
-                    },
-                    [_vm._v("Delete")]
-                  )
-                : _vm._e()
-            ])
+            _c(
+              "td",
+              [
+                _vm.isEditable
+                  ? _c(
+                      "button",
+                      {
+                        attrs: { id: "editPayment_" + _vm.payment.id },
+                        on: { click: _vm.editPayment }
+                      },
+                      [_vm._v("Edit")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _vm.isDestroyable
+                  ? _c(
+                      "button",
+                      {
+                        attrs: { id: "destroyPayment_" + _vm.payment.id },
+                        on: { click: _vm.destroyPayment }
+                      },
+                      [_vm._v("Delete")]
+                    )
+                  : _vm._e(),
+                _vm._v(" "),
+                _c(
+                  "router-link",
+                  {
+                    attrs: {
+                      to: {
+                        name: "payment.show",
+                        params: { paymentId: _vm.payment.id }
+                      }
+                    }
+                  },
+                  [_vm._v("\n                Detail\n            ")]
+                )
+              ],
+              1
+            )
           ]
         : [
             _c("td", [
@@ -5097,6 +5209,49 @@ var render = function() {
           ]
     ],
     2
+  )
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/PaymentShow.vue?vue&type=template&id=9d12b702&":
+/*!**********************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/payment/PaymentShow.vue?vue&type=template&id=9d12b702& ***!
+  \**********************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    [
+      _c("div", [_vm._v("Payment show")]),
+      _vm._v(" "),
+      _c("div", [_c("pre", [_vm._v(_vm._s(_vm.payment))])]),
+      _vm._v(" "),
+      _vm.paymentIsReady
+        ? _c("upload", {
+            attrs: {
+              "resource-type": "payment",
+              "resource-id": _vm.payment.id,
+              allowUploads: _vm.isEditable,
+              allowDeletes: _vm.isDestroyable
+            }
+          })
+        : _vm._e()
+    ],
+    1
   )
 }
 var staticRenderFns = []
@@ -20387,11 +20542,12 @@ class Payment {
 
   store(data) {
     return axios.post(BASE_URI, data);
-  } // show(paymentId){
-  //     const uri = `${BASE_URI}/${paymentId}`;
-  //     return axios.get(uri);        
-  // }
+  }
 
+  show(paymentId) {
+    const uri = `${BASE_URI}/${paymentId}`;
+    return axios.get(uri);
+  }
 
   update(paymentId, data) {
     return axios.put(`${BASE_URI}/${paymentId}`, data);
@@ -21028,6 +21184,75 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/components/payment/PaymentShow.vue":
+/*!*********************************************************!*\
+  !*** ./resources/js/components/payment/PaymentShow.vue ***!
+  \*********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PaymentShow_vue_vue_type_template_id_9d12b702___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PaymentShow.vue?vue&type=template&id=9d12b702& */ "./resources/js/components/payment/PaymentShow.vue?vue&type=template&id=9d12b702&");
+/* harmony import */ var _PaymentShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PaymentShow.vue?vue&type=script&lang=js& */ "./resources/js/components/payment/PaymentShow.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PaymentShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PaymentShow_vue_vue_type_template_id_9d12b702___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PaymentShow_vue_vue_type_template_id_9d12b702___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/payment/PaymentShow.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/payment/PaymentShow.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************!*\
+  !*** ./resources/js/components/payment/PaymentShow.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/babel-loader/lib??ref--4-0!../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentShow.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/PaymentShow.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentShow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/payment/PaymentShow.vue?vue&type=template&id=9d12b702&":
+/*!****************************************************************************************!*\
+  !*** ./resources/js/components/payment/PaymentShow.vue?vue&type=template&id=9d12b702& ***!
+  \****************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentShow_vue_vue_type_template_id_9d12b702___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentShow.vue?vue&type=template&id=9d12b702& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/PaymentShow.vue?vue&type=template&id=9d12b702&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentShow_vue_vue_type_template_id_9d12b702___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentShow_vue_vue_type_template_id_9d12b702___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
 /***/ "./resources/js/components/upload/Upload.vue":
 /*!***************************************************!*\
   !*** ./resources/js/components/upload/Upload.vue ***!
@@ -21114,8 +21339,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_invoice_InvoiceCreate__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./components/invoice/InvoiceCreate */ "./resources/js/components/invoice/InvoiceCreate.vue");
 /* harmony import */ var _components_invoice_InvoiceShow__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./components/invoice/InvoiceShow */ "./resources/js/components/invoice/InvoiceShow.vue");
 /* harmony import */ var _components_payment_PaymentIndex__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./components/payment/PaymentIndex */ "./resources/js/components/payment/PaymentIndex.vue");
+/* harmony import */ var _components_payment_PaymentShow__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./components/payment/PaymentShow */ "./resources/js/components/payment/PaymentShow.vue");
 
 Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
+
 
 
 
@@ -21167,6 +21394,11 @@ const routes = [// CUSTOMER
   props: {
     shouldHandleOwnLoading: true
   }
+}, {
+  path: '/payment/:paymentId',
+  name: 'payment.show',
+  component: _components_payment_PaymentShow__WEBPACK_IMPORTED_MODULE_8__["default"],
+  props: true
 }];
 window.router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes

@@ -73,6 +73,16 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
         Route::resource('payment', 'Payment\PaymentController')
                 ->only(['index', 'store', 'show',  'update', 'destroy']);
 
+                // PAYMENT UPLOAD
+                Route::get('payment/{payment}/upload', 'Payment\PaymentUploadController@index')
+                ->name('payment.upload.index');
+                
+                Route::post('payment/{payment}/upload', 'Payment\PaymentUploadController@store')
+                        ->name('payment.upload.store');
+
+                Route::delete('payment/{payment}/upload/{upload}', 'Payment\PaymentUploadController@destroy')
+                        ->name('payment.upload.destroy');
+
 
         // TRASH
         Route::get('trash/restore/{resource}/{id}', 'TrashController@restore')

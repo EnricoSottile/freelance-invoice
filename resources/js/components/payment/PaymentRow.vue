@@ -12,6 +12,9 @@
             <td>
                 <button v-if="isEditable" :id="`editPayment_${payment.id}`" @click="editPayment">Edit</button>
                 <button v-if="isDestroyable" :id="`destroyPayment_${payment.id}`" @click="destroyPayment">Delete</button>
+                <router-link :to="{ name: 'payment.show', params: {paymentId: payment.id}}">
+                    Detail
+                </router-link>
             </td>
 
         </template>

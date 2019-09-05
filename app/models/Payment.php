@@ -16,4 +16,10 @@ class Payment extends Model
     public function isPayed() : bool {
         return ! is_null($this->payed_date);
     }
+
+
+    public function uploads()
+    {
+        return $this->morphMany(Upload::class, 'uploadable');
+    }
 }

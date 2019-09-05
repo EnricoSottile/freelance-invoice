@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    const MODELS = ['invoice', 'customer'];
+    const MODELS = ['invoice', 'customer', 'payment'];
 
     export default {
 
