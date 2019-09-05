@@ -24,53 +24,53 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
 
 
         // CUSTOMER
-        Route::resource('customer', 'CustomerController')
+        Route::resource('customer', 'Customer\CustomerController')
                 ->only(['index', 'store', 'show', 'update', 'destroy']);
                 
                 // CUSTOMER INVOICES
-                Route::get('customer/{customer}/invoice', 'CustomerInvoiceController@index')
+                Route::get('customer/{customer}/invoice', 'Customer\CustomerInvoiceController@index')
                         ->name('customer.invoice.index');
 
                 // CUSTOMER PAYMENTS
-                Route::get('customer/{customer}/payment', 'CustomerPaymentController@index')
+                Route::get('customer/{customer}/payment', 'Customer\CustomerPaymentController@index')
                         ->name('customer.payment.index');
 
                 // CUSTOMER UPLOAD
-                Route::get('customer/{customer}/upload', 'CustomerUploadController@index')
+                Route::get('customer/{customer}/upload', 'Customer\CustomerUploadController@index')
                         ->name('customer.upload.index');
                 
-                Route::post('customer/{customer}/upload', 'CustomerUploadController@store')
+                Route::post('customer/{customer}/upload', 'Customer\CustomerUploadController@store')
                         ->name('customer.upload.store');
 
-                Route::delete('customer/{customer}/upload/{upload}', 'CustomerUploadController@destroy')
+                Route::delete('customer/{customer}/upload/{upload}', 'Customer\CustomerUploadController@destroy')
                         ->name('customer.upload.destroy');
 
 
 
         // INVOICE
-        Route::resource('invoice', 'InvoiceController')
+        Route::resource('invoice', 'Invoice\InvoiceController')
                 ->only(['index', 'store', 'show', 'update', 'destroy']);
 
         
                 // INVOICE UPLOAD
-                Route::get('invoice/{invoice}/upload', 'InvoiceUploadController@index')
+                Route::get('invoice/{invoice}/upload', 'Invoice\InvoiceUploadController@index')
                         ->name('invoice.upload.index');
                 
-                Route::post('invoice/{invoice}/upload', 'InvoiceUploadController@store')
+                Route::post('invoice/{invoice}/upload', 'Invoice\InvoiceUploadController@store')
                         ->name('invoice.upload.store');
 
-                Route::delete('invoice/{invoice}/upload/{upload}', 'InvoiceUploadController@destroy')
+                Route::delete('invoice/{invoice}/upload/{upload}', 'Invoice\InvoiceUploadController@destroy')
                         ->name('invoice.upload.destroy');
         
         
                 // INVOICE PAYMENTS
-                Route::get('invoice/{invoice}/payment', 'InvoicePaymentController@index')
+                Route::get('invoice/{invoice}/payment', 'Invoice\InvoicePaymentController@index')
                         ->name('invoice.payment.index');
 
 
 
         // PAYMENT
-        Route::resource('payment', 'PaymentController')
+        Route::resource('payment', 'Payment\PaymentController')
                 ->only(['index', 'store', 'show',  'update', 'destroy']);
 
 
