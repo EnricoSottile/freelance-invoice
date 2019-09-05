@@ -19,6 +19,7 @@ class Invoice extends Model
     public function isRegistered() : bool {
         return ! is_null($this->registered_date);
     }
+    
 
     public function payments(){
         return $this->hasMany(Payment::class);
@@ -38,12 +39,30 @@ class Invoice extends Model
         });
     }
 
+    public function deleteUnpayedPayments(){
+        $this->unpayed_payments()->each(function($p) {
+            $p->delete();
+        });
+    }
+
     public function trashed_payments() {
         return $this->payments()->onlyTrashed()->get();
+    }
+
+    public function restoreTrashedPayments(){
+        $this->trashed_payments()->each(function($p) {
+            $p->restore();
+        });
     }
 
     public function uploads()
     {
         return $this->morphMany(Upload::class, 'uploadable');
+    }
+
+    public function deleteUploads(){
+        $this->uploads()->each(function($upload){
+            $upload->delete();
+        });
     }
 }

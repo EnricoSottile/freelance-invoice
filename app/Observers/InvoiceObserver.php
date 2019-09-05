@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Helpers\InvoiceStatus;
 use App\Models\Invoice;
 
 class InvoiceObserver
@@ -15,10 +16,10 @@ class InvoiceObserver
      * @return void
      */
     public function updating(Invoice $invoice){
-        $existingInvoice = Invoice::withTrashed()->find($invoice->id);
-
-        if ( $existingInvoice->isRegistered() ) {
-            abort(403, 'Cannot update registered invoice');
+        $status = new InvoiceStatus($invoice);
+        
+        if ( ! $status->canBeUpdated() ) {
+            abort(403, 'Invoice cannot be updated' );
         }
     }
 
@@ -30,12 +31,9 @@ class InvoiceObserver
      * @param  \App\Models\Invoice  $invoice
      * @return void
      */
-    public function restoring(Invoice $invoice){
-        $trashedPayments = $invoice->trashed_payments();
-        if( $trashedPayments->count() ) {
-            $trashedPayments->each(function($p) {
-                $p->restore();
-            });
+    public function restoring(Invoice $invoice){        
+        if( $invoice->trashed_payments()->count() ) {
+            $invoice->restoreTrashedPayments();
         }
     }
 
@@ -48,32 +46,17 @@ class InvoiceObserver
      */
     public function deleting(Invoice $invoice)
     {        
-        $existingInvoice = Invoice::withTrashed()->find($invoice->id);
-
-        if ( $existingInvoice->isRegistered() ) {
-            abort(403, 'Cannot delete registered invoice');
-        }
-
+        $status = new InvoiceStatus($invoice);
         
-        $hasPayedPayments = $existingInvoice->payed_payments()->count();
-        $hasUnpayedPayments = $existingInvoice->unpayed_payments()->count();
-        if ($hasPayedPayments) {
-            abort(403, 'Cannot delete invoice with payed payments');
-        } elseif($hasUnpayedPayments) {
-            $invoice->unpayed_payments()->each(function($p) {
-                $p->delete();
-            });
+        if ( $status->canBeDeleted() ) {
+            
+            // if is trashed, this 'deleting' is permanent: remove all uploads
+            $status->getIsTrashed() && $invoice->deleteUploads();
+            $status->getHasUnpayedPayments() && $invoice->deleteUnpayedPayments();
+
+        } else {
+            abort(403, 'Invoice cannot be deleted' );
         }
-
-        
-        if ($invoice->trashed()) {
-        // Im deleting permanently therefore remove uploads
-            $invoice->uploads()->each(function($upload){
-                $upload->delete();
-            });
-        }
-
-
     }
 
 }
