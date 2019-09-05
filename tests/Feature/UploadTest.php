@@ -22,10 +22,23 @@ class UploadTest extends TestCase
      */
     private $user;
 
+
+    /**
+     * 
+     */
+    private $customer;
+
+
     /**
      * 
      */
     private $invoice;
+
+
+    /**
+     * 
+     */
+    private $payment;
 
     /**
      * set up the needed resources
@@ -40,10 +53,20 @@ class UploadTest extends TestCase
         $invoice = factory( Invoice::class )->create([
             'customer_id' => $customer->id, 
             'user_id' => $user->id, 
+            'registered_date' => null,
         ]);
 
+        $payment = factory( Payment::class )->create([
+            'invoice_id' => $invoice->id, 
+            'user_id' => $user->id, 
+            'payed_date' => null
+        ]);
+
+        $this->customer = $customer;
         $this->invoice = $invoice;
+        $this->payment = $payment;
     }
+
 
 
     /**
@@ -51,26 +74,33 @@ class UploadTest extends TestCase
      *
      * @return void
      */
-    public function testInvoiceUpload(){
+    public function testResourceUploads(){
         $user = $this->user;
-        $invoiceId = $this->invoice->id;
-
-        $response = $this->actingAs($user)->json('POST', "/app/upload/invoice/${invoiceId}", [
-            'image' => UploadedFile::fake()->image('')
-        ]);
-
-        $file = $response->getOriginalContent()['upload'];
-        $path = $file['path'];
-        Storage::disk('')->assertExists( $path );
-        $this->assertDatabaseHas('uploads', [
-            'id' => $file['id'],
-            'user_id' => $user->id,
-            'path' => $path,
-            'uploadable_id' => $invoiceId,
-        ]);
-
-        Storage::disk('')->delete($path);
+        $resources = ['customer', 'invoice', 'payment'];
+        foreach($resources as $resource) {
+            
+            $resourceId = $this->{$resource}->id;
+            $response = $this->actingAs($user)
+                            ->json('POST', route("${resource}.upload.store", ["${resource}" => $resourceId]), [
+                'upload' => UploadedFile::fake()->image('')
+            ]);
+    
+            $file = $response->getOriginalContent()['upload'];
+            $path = $file['path'];
+            Storage::disk('')->assertExists( $path );
+            $this->assertDatabaseHas('uploads', [
+                'id' => $file['id'],
+                'user_id' => $user->id,
+                'path' => $path,
+                'uploadable_id' => $resourceId,
+            ]);
+    
+            Storage::disk('')->delete($path);
+        }
     }
+
+
+    
 
 
 }
