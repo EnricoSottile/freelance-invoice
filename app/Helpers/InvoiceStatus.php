@@ -57,8 +57,7 @@ final class InvoiceStatus {
      * @return boolean
      */
     public function canBeUpdated() : bool {
-        return 
-            $this->isRegistered === false;
+        return $this->isRegistered === false;
     }
 
     /**
@@ -100,4 +99,6 @@ final class InvoiceStatus {
     {
         return $this->isTrashed;
     }
+
+ 
 }

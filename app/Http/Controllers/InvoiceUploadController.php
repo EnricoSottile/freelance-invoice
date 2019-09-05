@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Models\Invoice;
+use App\Helpers\InvoiceStatus;
 use App\Http\Traits\StoresUploads;
 
 class InvoiceUploadController extends Controller
@@ -41,7 +42,11 @@ class InvoiceUploadController extends Controller
      */
     public function store(Request $request, $id){
         $invoice = Invoice::findOrFail($id);
-        // TODO check on is editable 
+        $status = new InvoiceStatus($invoice);
+
+        if ( ! $status->canBeUpdated() ) {
+            abort(403, 'Invoice uploads cannot be edited');
+        }
 
         return $this->traitUpload($request, $invoice);
     }
@@ -56,8 +61,13 @@ class InvoiceUploadController extends Controller
     public function destroy($invoiceId, $uploadId)
     {
         $invoice = Invoice::findOrFail($invoiceId);  
-        $upload = $invoice->uploads()->where('id', $uploadId)->first();
+        $status = new InvoiceStatus($invoice);
 
+        if ( ! $status->canBeDeleted() ) {
+            abort(403, 'Invoice uploads cannot be deleted');
+        }
+
+        $upload = $invoice->uploads()->where('id', $uploadId)->first();
         $upload->delete();
 
         return response()->json();

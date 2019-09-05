@@ -47,7 +47,7 @@ class InvoiceObserver
     public function deleting(Invoice $invoice)
     {        
         $status = new InvoiceStatus($invoice);
-        
+                
         if ( $status->canBeDeleted() ) {
             
             // if is trashed, this 'deleting' is permanent: remove all uploads
