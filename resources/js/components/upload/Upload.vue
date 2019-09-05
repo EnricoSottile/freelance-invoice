@@ -2,7 +2,7 @@
     <div>
         <div>Upload</div>
 
-            <div>
+            <div v-if="allowUploads">
                 <div v-if="!image">
                     <h2>Select an image</h2>
                     <input type="file" @change="onFileChange">
@@ -22,7 +22,7 @@
                         v-for="upload in uploads">
                         {{ upload.id }} - {{ upload.path }}
                         <img :src="'data:image/jpeg;base64,'+upload.encoded_image" style="max-width:100%; height:50px;"/>
-                        <button id="destroyUpload" @click="destroyUpload(upload.id)">Delete</button>
+                        <button v-if="allowDeletes" id="destroyUpload" @click="destroyUpload(upload.id)">Delete</button>
                     </li>
 
                 </ul>
@@ -50,6 +50,14 @@
                     return type === 'string' || type === 'number';
                 }
             },
+            allowUploads: {
+                required: true,
+                type: Boolean,
+            },
+            allowDeletes: {
+                required: true,
+                type: Boolean,
+            }
         },
 
 

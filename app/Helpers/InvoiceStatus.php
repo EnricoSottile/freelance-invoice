@@ -57,7 +57,9 @@ final class InvoiceStatus {
      * @return boolean
      */
     public function canBeUpdated() : bool {
-        return $this->isRegistered === false;
+        return 
+            $this->isRegistered === false && 
+            $this->hasPayedPayments === false;
     }
 
     /**

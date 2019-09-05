@@ -2466,6 +2466,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 
@@ -2968,6 +2970,14 @@ __webpack_require__.r(__webpack_exports__);
         return type === 'string' || type === 'number';
       }
 
+    },
+    allowUploads: {
+      required: true,
+      type: Boolean
+    },
+    allowDeletes: {
+      required: true,
+      type: Boolean
     }
   },
 
@@ -4624,7 +4634,12 @@ var render = function() {
       _vm._v(" "),
       _vm.invoiceIsReady
         ? _c("upload", {
-            attrs: { "resource-type": "invoice", "resource-id": _vm.invoice.id }
+            attrs: {
+              "resource-type": "invoice",
+              "resource-id": _vm.invoice.id,
+              allowUploads: _vm.isEditable,
+              allowDeletes: _vm.isDestroyable
+            }
           })
         : _vm._e(),
       _vm._v(" "),
@@ -5055,29 +5070,33 @@ var render = function() {
   return _c("div", [
     _c("div", [_vm._v("Upload")]),
     _vm._v(" "),
-    _c("div", [
-      !_vm.image
-        ? _c("div", [
-            _c("h2", [_vm._v("Select an image")]),
-            _vm._v(" "),
-            _c("input", {
-              attrs: { type: "file" },
-              on: { change: _vm.onFileChange }
-            })
-          ])
-        : _c("div", [
-            _c("img", {
-              staticStyle: { "max-width": "100%", height: "50px" },
-              attrs: { src: _vm.image }
-            }),
-            _vm._v(" "),
-            _c("button", { on: { click: _vm.removeImage } }, [
-              _vm._v("Remove image")
-            ]),
-            _vm._v(" "),
-            _c("button", { on: { click: _vm.uploadImage } }, [_vm._v("Upload")])
-          ])
-    ]),
+    _vm.allowUploads
+      ? _c("div", [
+          !_vm.image
+            ? _c("div", [
+                _c("h2", [_vm._v("Select an image")]),
+                _vm._v(" "),
+                _c("input", {
+                  attrs: { type: "file" },
+                  on: { change: _vm.onFileChange }
+                })
+              ])
+            : _c("div", [
+                _c("img", {
+                  staticStyle: { "max-width": "100%", height: "50px" },
+                  attrs: { src: _vm.image }
+                }),
+                _vm._v(" "),
+                _c("button", { on: { click: _vm.removeImage } }, [
+                  _vm._v("Remove image")
+                ]),
+                _vm._v(" "),
+                _c("button", { on: { click: _vm.uploadImage } }, [
+                  _vm._v("Upload")
+                ])
+              ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", [_vm._v("Uploaded files")]),
     _vm._v(" "),
@@ -5098,18 +5117,20 @@ var render = function() {
               attrs: { src: "data:image/jpeg;base64," + upload.encoded_image }
             }),
             _vm._v(" "),
-            _c(
-              "button",
-              {
-                attrs: { id: "destroyUpload" },
-                on: {
-                  click: function($event) {
-                    return _vm.destroyUpload(upload.id)
-                  }
-                }
-              },
-              [_vm._v("Delete")]
-            )
+            _vm.allowDeletes
+              ? _c(
+                  "button",
+                  {
+                    attrs: { id: "destroyUpload" },
+                    on: {
+                      click: function($event) {
+                        return _vm.destroyUpload(upload.id)
+                      }
+                    }
+                  },
+                  [_vm._v("Delete")]
+                )
+              : _vm._e()
           ])
         }),
         0
