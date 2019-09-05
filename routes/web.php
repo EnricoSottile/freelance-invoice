@@ -35,6 +35,16 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
                 Route::get('customer/{customer}/payment', 'CustomerPaymentController@index')
                         ->name('customer.payment.index');
 
+                // CUSTOMER UPLOAD
+                Route::get('customer/{customer}/upload', 'CustomerUploadController@index')
+                        ->name('customer.upload.index');
+                
+                Route::post('customer/{customer}/upload', 'CustomerUploadController@store')
+                        ->name('customer.upload.store');
+
+                Route::delete('customer/{customer}/upload/{upload}', 'CustomerUploadController@destroy')
+                        ->name('customer.upload.destroy');
+
 
 
         // INVOICE

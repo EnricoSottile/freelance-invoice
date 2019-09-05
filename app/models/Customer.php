@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Invoice;
 use App\Models\Payment;
+use App\Models\Upload;
+
 
 class Customer extends Model
 {
@@ -51,6 +53,11 @@ class Customer extends Model
         return $this->payments()->get()->filter(function($p) {
             return $p->isPayed();
         });
+    }
+
+    public function uploads()
+    {
+        return $this->morphMany(Upload::class, 'uploadable');
     }
 
     

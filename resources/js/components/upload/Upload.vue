@@ -32,6 +32,7 @@
 </template>
 
 <script>
+    const MODELS = ['invoice', 'customer'];
 
     export default {
 
@@ -40,7 +41,7 @@
                 required: true,
                 validator(value) {
                     const type = typeof(value);
-                    return type === 'string' && ['invoice'].includes(value);
+                    return type === 'string' && MODELS.includes(value);
                 }
             },
             resourceId: {

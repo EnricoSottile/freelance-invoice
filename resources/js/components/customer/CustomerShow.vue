@@ -22,6 +22,15 @@
         <div v-if="customerIsReady" style="display:flex">
 
             <div>
+                <upload 
+                    resource-type="customer" 
+                    :resource-id="customer.id" 
+                    :allowUploads="true"
+                    :allowDeletes="isDestroyable">
+                </upload>
+            </div>
+
+            <div>
                 <invoice-index 
                     v-if="invoicesAreReady" 
                     :shouldHandleOwnLoading="false" 
@@ -50,6 +59,8 @@
     import Customer from '../../classes/Customer'
     import InvoiceIndex from '../invoice/InvoiceIndex'
     import PaymentIndex from '../payment/PaymentIndex'
+    import Upload from '../upload/Upload'
+
 
 
     export default {
@@ -65,7 +76,8 @@
 
         components: {
             'invoice-index': InvoiceIndex,
-            'payment-index': PaymentIndex
+            'payment-index': PaymentIndex,
+            'upload': Upload
         },
 
 

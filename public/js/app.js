@@ -1995,6 +1995,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_Customer__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../classes/Customer */ "./resources/js/classes/Customer.js");
 /* harmony import */ var _invoice_InvoiceIndex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../invoice/InvoiceIndex */ "./resources/js/components/invoice/InvoiceIndex.vue");
 /* harmony import */ var _payment_PaymentIndex__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../payment/PaymentIndex */ "./resources/js/components/payment/PaymentIndex.vue");
+/* harmony import */ var _upload_Upload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../upload/Upload */ "./resources/js/components/upload/Upload.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2049,6 +2050,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -2066,7 +2077,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
   },
   components: {
     'invoice-index': _invoice_InvoiceIndex__WEBPACK_IMPORTED_MODULE_1__["default"],
-    'payment-index': _payment_PaymentIndex__WEBPACK_IMPORTED_MODULE_2__["default"]
+    'payment-index': _payment_PaymentIndex__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'upload': _upload_Upload__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
 
   mounted() {
@@ -2951,6 +2963,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+const MODELS = ['invoice', 'customer'];
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     resourceType: {
@@ -2958,7 +2971,7 @@ __webpack_require__.r(__webpack_exports__);
 
       validator(value) {
         const type = typeof value;
-        return type === 'string' && ['invoice'].includes(value);
+        return type === 'string' && MODELS.includes(value);
       }
 
     },
@@ -3903,6 +3916,21 @@ var render = function() {
     _vm._v(" "),
     _vm.customerIsReady
       ? _c("div", { staticStyle: { display: "flex" } }, [
+          _c(
+            "div",
+            [
+              _c("upload", {
+                attrs: {
+                  "resource-type": "customer",
+                  "resource-id": _vm.customer.id,
+                  allowUploads: true,
+                  allowDeletes: _vm.isDestroyable
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
           _c(
             "div",
             [
