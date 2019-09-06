@@ -16,6 +16,8 @@ class TrashTest extends TestCase
 
     use RefreshDatabase;
 
+    protected $user;
+
     /**
      * Array[] of Model entities to test
      */
@@ -24,22 +26,22 @@ class TrashTest extends TestCase
     public function setUp() : void{
         parent::setUp();
 
-        $user = factory(User::class)->create();
-        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
+        $this->user = factory(User::class)->create();
+        $userId = $this->user->id;
+
+        $customer = factory( Customer::class )->create(['user_id' => $userId]);
         $invoice = factory( Invoice::class )->create([
             'customer_id' => $customer->id, 
-            'user_id' => $user->id, 
+            'user_id' => $userId, 
+            'registered_date' => null
         ]);
 
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
         $this->resources = [
-            factory( Customer::class )->create(['user_id' => $user->id]),
-            factory( Invoice::class )
-                ->create([
-                    'customer_id' => $customer->id, 
-                    'user_id' => $user->id, 
-                    'registered_date' => null ]),
+            $customer,
+            $invoice,
             factory( Payment::class )
-                ->create(['invoice_id' => $invoice->id, 'user_id' => $user->id, 'payed_date' => null])
+                ->create(['invoice_id' => $invoice->id, 'user_id' => $userId, 'payed_date' => null])
         ];
     }
 
@@ -50,14 +52,14 @@ class TrashTest extends TestCase
      */
     public function testTrashableResourcesCanBeRestored()
     {
-        $user = factory(User::class)->create();
         foreach($this->resources as $res) {
             $resName = strtolower( class_basename(get_class($res)) );
             $resId = $res->id;
             $res->delete();
             $route = route('trash.restore', ['resource' => $resName, 'id' => $resId]);
-            $response = $this->actingAs($user)->get($route);
+            $response = $this->actingAs($this->user)->get($route);
             $response->assertStatus(200);
+            
 
             $dataCheck = array_merge($res->toArray(), ['deleted_at' => null]);
             $this->assertDatabaseHas($resName . "s", $dataCheck);
@@ -73,14 +75,13 @@ class TrashTest extends TestCase
      */
     public function testTrashedResourcesCanBePermanentlyDeleted()
     {
-        $user = factory(User::class)->create();
-
+        $this->withoutExceptionHandling();
         foreach($this->resources as $res) {
             $resName = strtolower( class_basename(get_class($res)) );
             $resId = $res->id;
             $res->delete();
             $route = route('trash.destroy', ['resource' => $resName, 'id' => $resId]);
-            $response = $this->actingAs($user)->delete($route);
+            $response = $this->actingAs($this->user)->delete($route);
             $response->assertStatus(200);
             $this->assertDatabaseMissing($resName . "s", $res->toArray());
         }
