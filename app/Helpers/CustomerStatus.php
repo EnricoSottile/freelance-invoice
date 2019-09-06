@@ -35,7 +35,7 @@ final class CustomerStatus {
 
     
     /**
-     * Determines if the invoice can de deleted
+     * Determines if the customer can de deleted
      *
      * @return boolean
      */
