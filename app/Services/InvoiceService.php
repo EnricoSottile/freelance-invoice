@@ -53,7 +53,7 @@ final class InvoiceService {
      * @return Invoice
      */
     public function update(InvoiceDto $request, int $id) : Invoice {
-        $invoice = Invoice::findOrFail($id);   
+        $invoice = Auth::user()->invoices()->findOrFail($id);   
         
         foreach($this->attributes as $a) {
             $getter = 'get' . ucfirst($a);

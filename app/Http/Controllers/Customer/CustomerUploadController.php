@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Helpers\CustomerStatus;
 use App\Http\Traits\StoresUploads;
+use \Auth;
 
 class CustomerUploadController extends Controller
 {
@@ -27,7 +28,7 @@ class CustomerUploadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index($id){
-        $customer = Customer::findOrFail($id);
+        $customer = Auth::user()->customers()->findOrFail($id);
         $uploads = $customer->uploads()->get();
         return response()->json(['uploads' => $uploads]);
     }
@@ -41,7 +42,7 @@ class CustomerUploadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $id){
-        $customer = Customer::findOrFail($id);
+        $customer = Auth::user()->customers()->findOrFail($id);
 
         return $this->traitUpload($request, $customer);
     }
@@ -55,7 +56,7 @@ class CustomerUploadController extends Controller
      */
     public function destroy($customerId, $uploadId)
     {
-        $customer = Customer::findOrFail($customerId);  
+        $customer = Auth::user()->customers()->findOrFail($customerId);  
         $status = new CustomerStatus($customer);
 
         if ( ! $status->canBeDeleted() ) {

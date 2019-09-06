@@ -8,6 +8,7 @@ use App\Models\Customer;
 use App\Http\Requests\StoreCustomer;
 use App\Http\Requests\UpdateCustomer;
 use App\Services\CustomerService;
+use \Auth;
 
 class CustomerController extends Controller
 {
@@ -18,7 +19,7 @@ class CustomerController extends Controller
      */
     public function index()
     {
-        return Customer::all()->toJson();
+        return Auth::user()->customers()->get()->toJson();
     }
 
 
@@ -43,7 +44,7 @@ class CustomerController extends Controller
      */
     public function show($id)
     {
-        $customer = Customer::findOrFail($id);
+        $customer = Auth::user()->customers()->findOrFail($id);
         return $customer->toJson();
     }
 
@@ -70,7 +71,7 @@ class CustomerController extends Controller
      */
     public function destroy($id)
     {
-        $customer = Customer::findOrFail($id);  
+        $customer = Auth::user()->customers()->findOrFail($id);  
         $customer->delete();
         return response()->json();
     }

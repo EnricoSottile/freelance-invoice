@@ -26,9 +26,10 @@ class InvoiceTest extends TestCase
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
         $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $count = rand(1, 10);
         factory( Invoice::class, $count )
-            ->create(['customer_id' => 1, 'user_id' => 1]);
+            ->create(['customer_id' => $customer->id, 'user_id' => $user->id]);
 
         $response = $this->actingAs($user)->get(route('invoice.index'));
         $response->assertStatus(200);

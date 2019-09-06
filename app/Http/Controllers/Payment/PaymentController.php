@@ -9,6 +9,7 @@ use App\Models\Payment;
 use App\Http\Requests\StorePayment;
 use App\Http\Requests\UpdatePayment;
 use App\Services\PaymentService;
+use \Auth;
 
 class PaymentController extends Controller
 {
@@ -19,7 +20,7 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        return Payment::all()->toJson();
+        return Auth::user()->payments()->get()->toJson();
     }
 
 
@@ -43,7 +44,7 @@ class PaymentController extends Controller
      */
     public function show($id)
     {
-        $payment = Payment::findOrFail($id);
+        $payment = Auth::user()->payments()->findOrFail($id);
         return $payment->toJson();
     }
 
@@ -71,7 +72,7 @@ class PaymentController extends Controller
      */
     public function destroy($id)
     {
-        $payment = Payment::findOrFail($id);  
+        $payment = Auth::user()->payments()->findOrFail($id);  
         $payment->delete();
         return response()->json();
     }

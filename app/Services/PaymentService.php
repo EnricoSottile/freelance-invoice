@@ -48,7 +48,7 @@ final class PaymentService {
      * @return Payment
      */
     public function update(PaymentDto $request, int $id) : Payment {
-        $payment = Payment::findOrFail($id);   
+        $payment = Auth::user()->payments()->findOrFail($id);   
         
         foreach($this->attributes as $a) {
             $getter = 'get' . ucfirst($a);

@@ -20,9 +20,9 @@ class InvoiceController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return Invoice::all()->toJson();
+        return Auth::user()->invoices()->get()->toJson();
     }
 
 
@@ -48,7 +48,7 @@ class InvoiceController extends Controller
      */
     public function show($id)
     {
-        $invoice = Invoice::findOrFail($id);
+        $invoice = Auth::user()->invoices()->findOrFail($id);
         return $invoice->toJson();
     }
 
@@ -76,7 +76,7 @@ class InvoiceController extends Controller
      */
     public function destroy($id)
     {
-        $invoice = Invoice::findOrFail($id);  
+        $invoice = Auth::user()->invoices()->findOrFail($id);  
         $invoice->delete();
         return response()->json();
     }

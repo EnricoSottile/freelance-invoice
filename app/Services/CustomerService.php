@@ -48,7 +48,7 @@ final class CustomerService {
      * @return Customer
      */
     public function update(CustomerDto $request, int $id) : Customer {
-        $customer = Customer::findOrFail($id);   
+        $customer = Auth::user()->customers()->findOrFail($id);   
         
         foreach($this->attributes as $a) {
             $getter = 'get' . ucfirst($a);

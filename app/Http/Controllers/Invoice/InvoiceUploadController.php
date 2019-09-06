@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Invoice;
 use App\Helpers\InvoiceStatus;
 use App\Http\Traits\StoresUploads;
+use \Auth;
 
 class InvoiceUploadController extends Controller
 {
@@ -27,7 +28,7 @@ class InvoiceUploadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index($id){
-        $invoice = Invoice::findOrFail($id);
+        $invoice = Auth::user()->invoices()->findOrFail($id);
         $uploads = $invoice->uploads()->get();
         return response()->json(['uploads' => $uploads]);
     }
@@ -41,7 +42,7 @@ class InvoiceUploadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $id){
-        $invoice = Invoice::findOrFail($id);
+        $invoice = Auth::user()->invoices()->findOrFail($id);
         $status = new InvoiceStatus($invoice);
 
         if ( ! $status->canBeUpdated() ) {

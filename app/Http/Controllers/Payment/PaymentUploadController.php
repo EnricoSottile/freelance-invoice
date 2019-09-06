@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Helpers\PaymentStatus;
 use App\Http\Traits\StoresUploads;
+use \Auth;
 
 class PaymentUploadController extends Controller
 {
@@ -27,7 +28,7 @@ class PaymentUploadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index($id){
-        $payment = Payment::findOrFail($id);
+        $payment = Auth::user()->payments()->findOrFail($id);
         $uploads = $payment->uploads()->get();
         return response()->json(['uploads' => $uploads]);
     }
@@ -41,7 +42,7 @@ class PaymentUploadController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request, $id){
-        $payment = Payment::findOrFail($id);
+        $payment = Auth::user()->payments()->findOrFail($id);
         $status = new PaymentStatus($payment);
 
         if ( ! $status->canBeUpdated() ) {
@@ -60,7 +61,7 @@ class PaymentUploadController extends Controller
      */
     public function destroy($paymentId, $uploadId)
     {
-        $payment = Payment::findOrFail($paymentId);  
+        $payment = Auth::user()->payments()->findOrFail($paymentId);  
         $status = new PaymentStatus($payment);
 
         if ( ! $status->canBeDeleted() ) {

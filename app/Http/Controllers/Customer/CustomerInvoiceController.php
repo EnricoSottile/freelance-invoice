@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
 use App\Models\Customer;
+use \Auth;
 
 class CustomerInvoiceController extends Controller
 {
@@ -16,7 +17,7 @@ class CustomerInvoiceController extends Controller
      */
     public function index(Request $request, Int $id)
     {
-        $customer = Customer::findOrFail($id);
+        $customer = Auth::user()->customers()->findOrFail($id);
         return $customer->invoices()->get()->toJson();
     }
 
