@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="antialiased bg-gray-100">
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -7,6 +7,7 @@
 
         <title>Laravel</title>
 
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/main.css') }}">
 
     </head>
     <body>
@@ -26,29 +27,14 @@
                 </div>
             @endif --}}
 
-            <div id="app">   
-                <nav>
-                    <ul>
-                        <li>
-                            <router-link :to="{ name: 'customer.index'}">
-                                Customers
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link :to="{ name: 'invoice.index'}">
-                                Invoices
-                            </router-link>
-                        </li>
-                        <li>
-                            <router-link :to="{ name: 'payment.index'}">
-                                Payments
-                            </router-link>
-                        </li>
-                    </ul>
 
-                </nav>
+            <div id="app">   
+
+                <nav-bar></nav-bar>
                 
-                <router-view></router-view>
+                <router-view 
+                    class="p-5 m-5 shadow-lg bg-white rounded">
+                </router-view>
             </div> 
 
 
