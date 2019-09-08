@@ -27,7 +27,7 @@
         props: {
             paymentClass: {
                 required: true,
-                type: Object
+                type: Function
             },
             invoice: {
                 type: Object,

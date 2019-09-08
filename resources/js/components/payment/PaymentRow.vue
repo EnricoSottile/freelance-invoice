@@ -51,7 +51,7 @@
             },
             paymentClass: {
                 required: true,
-                type: Object
+                type: Function
             }
         },
 

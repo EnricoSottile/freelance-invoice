@@ -2633,7 +2633,7 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     paymentClass: {
       required: true,
-      type: Object
+      type: Function
     },
     invoice: {
       type: Object,
@@ -2877,7 +2877,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     paymentClass: {
       required: true,
-      type: Object
+      type: Function
     }
   },
 
