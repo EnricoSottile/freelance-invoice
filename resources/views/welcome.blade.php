@@ -32,8 +32,7 @@
 
                 <nav-bar></nav-bar>
                 
-                <router-view 
-                    class="p-5 m-5 shadow-lg bg-white rounded">
+                <router-view>
                 </router-view>
             </div> 
 

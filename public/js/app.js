@@ -1950,6 +1950,31 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted() {
@@ -3212,7 +3237,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".nav-a {\n  padding: 1.5rem;\n  color: #fff;\n  text-transform: uppercase;\n  font-weight: 600;\n  font-size: 0.75rem;\n}\n.nav-a:hover,\n.router-link-active {\n  text-decoration: none;\n  color: #718096;\n  background-color: #e2e8f0;\n}\n\n\n", ""]);
+exports.push([module.i, ".nav {\n  background-color: #fff;\n  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n}\n.nav-a {\n  padding: 1.5rem;\n  font-weight: 300;\n  color: #4a5568;\n  transition: all .2s linear;\n}\n.router-link-active,\n.router-link-active:hover {\n  text-decoration: none;\n  border-bottom-width: 2px;\n  border-color: #38b2ac;\n  color: #38b2ac;\n  cursor:default;\n  transition: all .2s linear;\n}\n.nav-a:hover:not(.router-link-active) {\n  text-decoration: none;\n  background-color: #f7fafc;\n  border-bottom-width: 2px;\n  border-color: #f7fafc;\n  color: #38b2ac;\n  cursor:pointer;\n  transition: all .2s linear;\n}\n\n\n", ""]);
 
 // exports
 
@@ -4453,57 +4478,115 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("div", [_vm._v("Customer index")]),
-    _vm._v(" "),
+  return _c("div", { staticClass: "card" }, [
     _c(
       "div",
+      { staticClass: "flex" },
       [
-        _c("router-link", { attrs: { to: { name: "customer.create" } } }, [
-          _vm._v("\n            Add new Customer\n        ")
-        ]),
-        _vm._v(" "),
-        !_vm.customersAreReady ? _c("p", [_vm._v("Loading")]) : _vm._e(),
-        _vm._v(" "),
         _c(
-          "ul",
-          _vm._l(_vm.customers, function(customer) {
-            return _c(
-              "li",
-              { key: customer.id },
-              [
-                _c(
-                  "router-link",
-                  {
-                    attrs: {
-                      to: {
-                        name: "customer.show",
-                        params: { customerId: customer.id }
-                      }
-                    }
-                  },
-                  [
-                    _vm._v(
-                      "\n                    " +
-                        _vm._s(customer.id) +
-                        " - " +
-                        _vm._s(customer.full_name) +
-                        "\n                "
-                    )
-                  ]
-                )
-              ],
-              1
-            )
-          }),
-          0
+          "router-link",
+          {
+            staticClass: "btn btn-default",
+            attrs: { to: { name: "customer.create" } }
+          },
+          [_vm._v("\n            Add new Customer\n        ")]
         )
       ],
       1
-    )
+    ),
+    _vm._v(" "),
+    !_vm.customersAreReady
+      ? _c("p", [_vm._v("Loading")])
+      : _c("table", { staticClass: "table" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c(
+            "tbody",
+            _vm._l(_vm.customers, function(customer) {
+              return _c("tr", { key: customer.id }, [
+                _c("td", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(customer.id) +
+                      "\n                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c(
+                  "td",
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        attrs: {
+                          to: {
+                            name: "customer.show",
+                            params: { customerId: customer.id }
+                          }
+                        }
+                      },
+                      [
+                        _vm._v(
+                          "\n                        " +
+                            _vm._s(customer.full_name) +
+                            "\n                    "
+                        )
+                      ]
+                    )
+                  ],
+                  1
+                ),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(customer.email) +
+                      "\n                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(customer.phone) +
+                      "\n                "
+                  )
+                ]),
+                _vm._v(" "),
+                _c("td", [
+                  _vm._v(
+                    "\n                    " +
+                      _vm._s(customer.vat_code) +
+                      "\n                "
+                  )
+                ])
+              ])
+            }),
+            0
+          )
+        ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", { staticClass: "thead-row" }, [
+        _c("th", [_vm._v("Id")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Name")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Email")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Phone")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("VAT")])
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -5948,7 +6031,7 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("nav", { staticClass: "bg-gray-600 shadow-lg" }, [
+    _c("nav", { staticClass: "nav" }, [
       _c("ul", { staticClass: "flex" }, [
         _c(
           "li",

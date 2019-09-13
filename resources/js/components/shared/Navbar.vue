@@ -1,7 +1,7 @@
 <template>
     <div>
 
-          <nav class="bg-gray-600 shadow-lg">
+          <nav class="nav">
             <ul class="flex">
                 <li class="flex">
                     <router-link class="nav-a" :to="{ name: 'customer.index'}">
@@ -35,14 +35,26 @@
 
 <style>
 
-
-    .nav-a {
-        @apply p-6 text-white uppercase font-semibold text-xs;
+    .nav {
+        @apply bg-white shadow-lg;
     }
 
-    .nav-a:hover,
-    .router-link-active {
-        @apply no-underline text-gray-600 bg-gray-300;
+    .nav-a {
+        @apply p-6 font-light text-gray-700;
+        transition: all .2s linear;
+    }
+
+    .router-link-active,
+    .router-link-active:hover {
+        @apply no-underline border-b-2 border-teal-500 text-teal-500;
+        cursor:default;
+        transition: all .2s linear;
+    }
+
+    .nav-a:hover:not(.router-link-active) {
+        @apply no-underline bg-gray-100 border-b-2 border-gray-100 text-teal-500;
+        cursor:pointer;
+        transition: all .2s linear;
     }
 
 

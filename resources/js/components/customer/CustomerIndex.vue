@@ -1,23 +1,48 @@
 <template>
-    <div>
-        <div>Customer index</div>
+    <div class="card">
 
-        <div>
-            <router-link :to="{ name: 'customer.create'}">
+        <div class="flex">
+            <router-link :to="{ name: 'customer.create'}" class="btn btn-default">
                 Add new Customer
             </router-link>
-
-            <p v-if="!customersAreReady">Loading</p>
-
-            <ul>
-                <li v-for="customer in customers" v-bind:key="customer.id">
-                    <router-link :to="{ name: 'customer.show', params: { customerId: customer.id }}">
-                        {{ customer.id }} - {{ customer.full_name }}
-                    </router-link>
-                </li>
-            </ul>
-            
         </div>
+
+
+        <p v-if="!customersAreReady">Loading</p>
+
+        <table v-else class="table">
+            <thead>
+                <tr class="thead-row">
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>VAT</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="customer in customers" v-bind:key="customer.id">
+                    <td>
+                        {{ customer.id }}
+                    </td>
+                    <td>
+                        <router-link :to="{ name: 'customer.show', params: { customerId: customer.id }}">
+                            {{ customer.full_name }}
+                        </router-link>
+                    </td>
+                    <td>
+                        {{ customer.email }}
+                    </td>
+                    <td>
+                        {{ customer.phone }}
+                    </td>
+                    <td>
+                        {{ customer.vat_code }}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
 
     </div>
 </template>
@@ -55,3 +80,4 @@
         },
     }
 </script>
+
