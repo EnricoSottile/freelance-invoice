@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import PaymentShow from '../../../components/payment/PaymentShow'
 
 import Payment from '../../../classes/Payment'
-const paymentClass = new Payment();
+const paymentClass = Payment;
 
 const getPaymentObj = {'id': 1,payed_date: null};
 paymentClass.show = jest.fn().mockReturnValue({data: getPaymentObj});
@@ -40,7 +40,6 @@ describe('PaymentShow', () => {
   
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
 
-    expect( wrapper.vm.paymentClass ).toBeInstanceOf(Payment);
     expect( wrapper.vm.payment ).toEqual(getPaymentObj);
     expect( wrapper.vm.paymentIsReady ).toBeTruthy();
   })

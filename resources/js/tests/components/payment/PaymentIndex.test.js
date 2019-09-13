@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import PaymentIndex from '../../../components/payment/PaymentIndex'
 
 import Payment from '../../../classes/Payment'
-const paymentClass = new Payment();
+const paymentClass = Payment;
 
 const getPaymentsObj = [{id:1}, {id:2}];
 paymentClass.index = jest.fn().mockReturnValue({data: getPaymentsObj});

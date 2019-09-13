@@ -2,7 +2,7 @@ import { shallowMount } from '@vue/test-utils'
 import PaymentRow from '../../../components/payment/PaymentRow'
 
 import Payment from '../../../classes/Payment'
-const paymentClass = new Payment();
+const paymentClass = Payment;
 
 const id = 1;
 const mockPayment = {
@@ -38,7 +38,6 @@ describe('PaymentRow', () => {
 
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
 
-    expect( wrapper.vm.paymentClass ).toBeInstanceOf(Payment);
     expect( wrapper.vm.paymentBeingEdited ).toBeNull();
     expect( wrapper.vm.payment ).toEqual(mockPayment);
   })
