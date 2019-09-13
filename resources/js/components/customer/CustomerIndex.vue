@@ -8,14 +8,14 @@
         </div>
 
 
-        <data-table :collection="customers" :fields="fields"></data-table>
+        <data-table :collection="customers" :fields="fields" :dataIsReady="customersAreReady"></data-table>
 
     </div>
 </template>
 
 <script>
     import Customer from '../../classes/Customer'
-    import DataTable from '../../components/shared/DataTable'
+    import DataTable from '../shared/DataTable'
 
     export default {
 

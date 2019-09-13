@@ -1,51 +1,69 @@
 <template>
     <div>
 
-        <table class="table table-sortable">
-            <thead>
-                <tr class="thead-row">
-                    <th v-for="field in fields" v-bind:key="field.name">
-                        <button @click.prevent="sort(field.name)" :class="getSortedClass(field.name)">
-                        {{ field.label }}
-                        </button>
-                    </th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-if="!dataIsReady">
-                    <td colspan="5" rowspan="10" class="h-64">
-                        Loading
-                    </td>
-                </tr>
-                <tr v-else v-for="data in getSortedData" v-bind:key="data[getFirstFieldProperty]">
-                    <td v-for="field in fields" v-bind:key="field.name">
 
-                        <template v-if="field.options && field.options.type === 'link' ">
-                            <router-link 
-                                :to="{name: field.options.view, params: getParams(field.options.params, data)}">
-                                {{ data[field.name] }}
-                            </router-link>
-                        </template>
+        <div class="scrollable-container">
+            <table class="table table-sortable">
+                <thead>
+                    <tr>
+                        <th :colspan="fields.length">
+                            <search-input 
+                            v-if="dataIsReady" 
+                            :collection="collection" 
+                            :fields="fields" 
+                            @search="handleSearchResult($event)"></search-input>
+                            <small v-if="searchResults" class="text-xs font-light text-gray-600">Showing {{ getSortedData.length }} results</small>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th v-for="field in fields" v-bind:key="field.name">
+                            <button @click.prevent="sort(field.name)" :class="getSortedClass(field.name)">
+                            {{ field.label }}
+                            </button>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-if="!dataIsReady">
+                        <td :colspan="fields.length" rowspan="10" class="h-64">
+                            Loading
+                        </td>
+                    </tr>
+                    <tr v-else v-for="data in getSortedData" v-bind:key="data[getFirstFieldProperty]">
+                        <td v-for="field in fields" v-bind:key="field.name">
+
+                            <template v-if="field.options && field.options.type === 'link' ">
+                                <router-link 
+                                    :to="{name: field.options.view, params: getParams(field.options.params, data)}">
+                                    {{ data[field.name] }}
+                                </router-link>
+                            </template>
 
 
-                        <template v-else-if="field.options && field.options.type === 'date' ">
-                            {{ formatDate(field.options, data[field.name])}}
-                        </template>
+                            <template v-else-if="field.options && field.options.type === 'date' ">
+                                {{ formatDate(field.options, data[field.name])}}
+                            </template>
 
-                        <template v-else>{{ data[field.name] }}</template>
-                        
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                            <template v-else>{{ data[field.name] }}</template>
+                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
         
     </div>
 </template>
 
 <script>
     import _orderBy from 'lodash/orderBy'
+    import Search from '../shared/Search'
 
     export default {
+
+        components: {
+            'search-input': Search,
+        },
 
         props: {
             dataIsReady: {
@@ -70,14 +88,16 @@
 
         data(){
             return {
-                    sortColumn: '',
-                    sortDirection: 'asc',
+                sortColumn: '',
+                sortDirection: 'asc',
+                searchResults: null,
             }
         },
 
         mounted(){
             this.sortColumn = this.getFirstFieldProperty;
         },
+
 
         computed: {
             /**
@@ -90,12 +110,17 @@
             getSortedData(){
                 const property = this.sortColumn;
                 const order = this.sortDirection;
-                return _orderBy(this.collection, (c) => c[property], order);
+                const data = this.searchResults !== null ? this.searchResults : this.collection;
+                return _orderBy(data, (c) => c[property], order);
             },
         },
 
         methods: {
-            
+            handleSearchResult(data) {
+                this.unsort();
+                this.searchResults = data;
+            },
+
             /**
              *  onclick, set the column and direction of sort
              */
@@ -106,6 +131,9 @@
                     this.sortColumn = column;
                     this.sortDirection = 'asc';
                 }
+            },
+            unsort(){
+                this.sortColumn = '';
             },
 
             /**
@@ -154,13 +182,26 @@
 </script>
 
 <style>
+    .scrollable-container {
+        max-height:65vh;
+        overflow: scroll;
+    }
     .table {
         width: 100%;
+        @apply mt-4;
     }
     .table > thead > tr,
     .table > tbody > tr {
         @apply border-b border-gray-300;
         transition: all .1s linear;
+    }
+
+    .table > thead > tr:first-child {
+        @apply border-0;
+    }
+
+    .table > thead > tr:first-child > th {
+        @apply text-right;
     }
 
     .table > tbody > tr:hover {
@@ -170,7 +211,6 @@
     .table th,
     .table td {
         @apply py-4 px-8 text-gray-700;
-        text-align:center;
     }
 
     .table th,
@@ -180,6 +220,7 @@
 
     .table td {
         @apply font-light;
+        text-align:center;
     }
 
     .table-sortable > thead > tr > th {

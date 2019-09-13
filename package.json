@@ -32,6 +32,7 @@
         "vue-template-compiler": "^2.6.10"
     },
     "dependencies": {
+        "fuse.js": "^3.4.5",
         "tailwindcss": "^1.1.2",
         "vue-router": "^3.1.2"
     }
