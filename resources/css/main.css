@@ -55,7 +55,8 @@ a:hover {
     text-align:center;
 }
 
-.table th {
+.table th,
+.table th button {
     @apply font-semibold;
 }
 
@@ -63,6 +64,29 @@ a:hover {
     @apply font-light;
 }
 
+.table-sortable > thead > tr > th {
+    position:relative;
+}
+
+.table-sortable .sort-asc,
+.table-sortable .sort-desc {
+    @apply text-teal-500;
+}
+
+.table-sortable .sort-asc:after,
+.table-sortable .sort-desc:after {
+    position:absolute;
+    display: inline-block;
+}
+
+
+.table-sortable .sort-asc:after {
+    content: '\2191';
+}
+
+.table-sortable .sort-desc:after {
+    content: '\2193';
+}
 
 
 

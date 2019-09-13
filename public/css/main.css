@@ -677,12 +677,36 @@ a:hover {
   text-align:center;
 }
 
-.table th {
+.table th,
+.table th button {
   font-weight: 600;
 }
 
 .table td {
   font-weight: 300;
+}
+
+.table-sortable > thead > tr > th {
+  position:relative;
+}
+
+.table-sortable .sort-asc,
+.table-sortable .sort-desc {
+  color: #38b2ac;
+}
+
+.table-sortable .sort-asc:after,
+.table-sortable .sort-desc:after {
+  position:absolute;
+  display: inline-block;
+}
+
+.table-sortable .sort-asc:after {
+  content: '\2191';
+}
+
+.table-sortable .sort-desc:after {
+  content: '\2193';
 }
 
 .container {

@@ -7,21 +7,27 @@
             </router-link>
         </div>
 
-
-        <p v-if="!customersAreReady">Loading</p>
-
-        <table v-else class="table">
+        <table class="table table-sortable">
             <thead>
                 <tr class="thead-row">
-                    <th>Id</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Phone</th>
-                    <th>VAT</th>
+                    <th>
+                        <button @click.prevent="sort('id')" :class="getSortedClass('id')">
+                        Id
+                        </button>
+                    </th>
+                    <th><button @click.prevent="sort('full_name')">Name</button></th>
+                    <th><button @click.prevent="sort('email')">Email</button></th>
+                    <th><button @click.prevent="sort('phone')">Phone</button></th>
+                    <th><button @click.prevent="sort('vat_code')">VAT</button></th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="customer in customers" v-bind:key="customer.id">
+                <tr v-if="!customersAreReady">
+                    <td colspan="5" rowspan="10" class="h-64">
+                        Loading
+                    </td>
+                </tr>
+                <tr v-else v-for="customer in getSortedCustomers" v-bind:key="customer.id">
                     <td>
                         {{ customer.id }}
                     </td>
@@ -49,6 +55,7 @@
 
 <script>
     import Customer from '../../classes/Customer'
+    import _orderBy from 'lodash/orderBy'
     
 
     export default {
@@ -67,8 +74,20 @@
             return {
                 customerClass: Customer,
                 customers: [],
-                customersAreReady: false
+                customersAreReady: false,
+
+                sortColumn: 'id',
+                sortDirection: 'asc',
             }
+        },
+
+        computed: {
+            getSortedCustomers(){
+                const property = this.sortColumn;
+                const order = this.sortDirection;
+                return _orderBy(this.customers, (c) => c[property], order);
+            },
+            
         },
 
         methods: {
@@ -77,6 +96,19 @@
                 this.customers = data;
                 this.customersAreReady = true;
             },
+            sort(column){
+                if (this.sortColumn === column) {
+                    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
+                } else {
+                    this.sortColumn = column;
+                    this.sortDirection = 'asc';
+                }
+            },
+            getSortedClass(column){
+                if (this.sortColumn === column) {
+                    return `sort-${this.sortDirection}`;
+                }
+            }
         },
     }
 </script>
