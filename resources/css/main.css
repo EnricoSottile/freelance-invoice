@@ -35,66 +35,6 @@ a:hover {
 }
 
 
-/* TABLE */
-.table {
-    width: 100%;
-}
-.table > thead > tr,
-.table > tbody > tr {
-    @apply border-b border-gray-300;
-    transition: all .1s linear;
-}
-
-.table > tbody > tr:hover {
-    @apply bg-gray-100;
-}
-
-.table th,
-.table td {
-    @apply py-4 px-8 text-gray-700;
-    text-align:center;
-}
-
-.table th,
-.table th button {
-    @apply font-semibold;
-}
-
-.table td {
-    @apply font-light;
-}
-
-.table-sortable > thead > tr > th {
-    position:relative;
-}
-
-.table-sortable .sort-asc,
-.table-sortable .sort-desc {
-    @apply text-teal-500;
-}
-
-.table-sortable .sort-asc:after,
-.table-sortable .sort-desc:after {
-    position:absolute;
-    display: inline-block;
-}
-
-
-.table-sortable .sort-asc:after {
-    content: '\2191';
-}
-
-.table-sortable .sort-desc:after {
-    content: '\2193';
-}
-
-
-
-
-
-
-
-
 
 
 @tailwind components;

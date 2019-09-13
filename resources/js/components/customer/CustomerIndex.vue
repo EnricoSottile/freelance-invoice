@@ -7,58 +7,21 @@
             </router-link>
         </div>
 
-        <table class="table table-sortable">
-            <thead>
-                <tr class="thead-row">
-                    <th>
-                        <button @click.prevent="sort('id')" :class="getSortedClass('id')">
-                        Id
-                        </button>
-                    </th>
-                    <th><button @click.prevent="sort('full_name')">Name</button></th>
-                    <th><button @click.prevent="sort('email')">Email</button></th>
-                    <th><button @click.prevent="sort('phone')">Phone</button></th>
-                    <th><button @click.prevent="sort('vat_code')">VAT</button></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-if="!customersAreReady">
-                    <td colspan="5" rowspan="10" class="h-64">
-                        Loading
-                    </td>
-                </tr>
-                <tr v-else v-for="customer in getSortedCustomers" v-bind:key="customer.id">
-                    <td>
-                        {{ customer.id }}
-                    </td>
-                    <td>
-                        <router-link :to="{ name: 'customer.show', params: { customerId: customer.id }}">
-                            {{ customer.full_name }}
-                        </router-link>
-                    </td>
-                    <td>
-                        {{ customer.email }}
-                    </td>
-                    <td>
-                        {{ customer.phone }}
-                    </td>
-                    <td>
-                        {{ customer.vat_code }}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
 
+        <data-table :collection="customers" :fields="fields"></data-table>
 
     </div>
 </template>
 
 <script>
     import Customer from '../../classes/Customer'
-    import _orderBy from 'lodash/orderBy'
-    
+    import DataTable from '../../components/shared/DataTable'
 
     export default {
+
+        components: {
+            'data-table': DataTable,
+        },
         
         mounted(){
             this.getCustomers();
@@ -76,38 +39,38 @@
                 customers: [],
                 customersAreReady: false,
 
-                sortColumn: 'id',
-                sortDirection: 'asc',
+                fields: [
+                    {name: 'id', label: 'Id'},
+                    {
+                        name: 'full_name', 
+                        label: 'Name',
+                        options: {
+                            type: 'link',
+                            view: 'customer.show',
+                            params: {name: 'customerId', property: 'id'}
+                        }
+                    },
+                    {name: 'email', label: 'Email'},
+                    {name: 'phone', label: 'Phone'},
+                    {name: 'vat_code', label: 'Vat'},
+                    {
+                        name: 'created_at', 
+                        label: 'Created',
+                        options: {
+                            type: 'date'
+                        }
+                    },
+                ],
             }
         },
 
-        computed: {
-            getSortedCustomers(){
-                const property = this.sortColumn;
-                const order = this.sortDirection;
-                return _orderBy(this.customers, (c) => c[property], order);
-            },
-            
-        },
+
 
         methods: {
             async getCustomers(){
                 const { data } = await this.customerClass.index();
                 this.customers = data;
                 this.customersAreReady = true;
-            },
-            sort(column){
-                if (this.sortColumn === column) {
-                    this.sortDirection = this.sortDirection === 'asc' ? 'desc' : 'asc';
-                } else {
-                    this.sortColumn = column;
-                    this.sortDirection = 'asc';
-                }
-            },
-            getSortedClass(column){
-                if (this.sortColumn === column) {
-                    return `sort-${this.sortDirection}`;
-                }
             }
         },
     }

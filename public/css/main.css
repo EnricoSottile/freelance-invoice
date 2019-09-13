@@ -650,65 +650,6 @@ a:hover {
   border-radius: 0.25rem;
 }
 
-/* TABLE */
-
-.table {
-  width: 100%;
-}
-
-.table > thead > tr,
-.table > tbody > tr {
-  border-bottom-width: 1px;
-  border-color: #e2e8f0;
-  transition: all .1s linear;
-}
-
-.table > tbody > tr:hover {
-  background-color: #f7fafc;
-}
-
-.table th,
-.table td {
-  padding-top: 1rem;
-  padding-bottom: 1rem;
-  padding-left: 2rem;
-  padding-right: 2rem;
-  color: #4a5568;
-  text-align:center;
-}
-
-.table th,
-.table th button {
-  font-weight: 600;
-}
-
-.table td {
-  font-weight: 300;
-}
-
-.table-sortable > thead > tr > th {
-  position:relative;
-}
-
-.table-sortable .sort-asc,
-.table-sortable .sort-desc {
-  color: #38b2ac;
-}
-
-.table-sortable .sort-asc:after,
-.table-sortable .sort-desc:after {
-  position:absolute;
-  display: inline-block;
-}
-
-.table-sortable .sort-asc:after {
-  content: '\2191';
-}
-
-.table-sortable .sort-desc:after {
-  content: '\2193';
-}
-
 .container {
   width: 100%;
 }
