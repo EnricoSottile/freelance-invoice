@@ -6,11 +6,13 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 use App\Models\Payment;
+use App\Models\Customer;
 use App\Models\Upload;
 
 class Invoice extends Model
 {
     use SoftDeletes;
+
 
     /**
      * 
@@ -20,6 +22,10 @@ class Invoice extends Model
         return ! is_null($this->registered_date);
     }
     
+    public function customer(){
+        return $this->belongsTo(Customer::class);
+    }
+
 
     public function payments(){
         return $this->hasMany(Payment::class);

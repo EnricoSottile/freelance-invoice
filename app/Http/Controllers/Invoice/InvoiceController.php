@@ -22,7 +22,11 @@ class InvoiceController extends Controller
      */
     public function index()
     {
-        return Auth::user()->invoices()->get()->toJson();
+        return Auth::user()
+            ->invoices()
+            ->with('customer:id,full_name')
+            ->get()
+            ->toJson();
     }
 
 

@@ -8,7 +8,7 @@ export default [
     {name: 'id', label: 'Id'},
     {name: 'number', label: 'Number'},
     {
-        name: 'customer_id', 
+        name: 'full_name', 
         label: 'Customer',
         link: {
             view: 'customer.show',

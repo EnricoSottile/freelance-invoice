@@ -2188,6 +2188,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/Invoice */ "./resources/js/classes/Invoice.js");
 /* harmony import */ var _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/shared/DataTable/DataTable */ "./resources/js/components/shared/DataTable/DataTable.vue");
 /* harmony import */ var _DataTableFields__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DataTableFields */ "./resources/js/components/invoice/Index/DataTableFields.js");
+/* harmony import */ var _helpers_appendFromNestedProp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @helpers/appendFromNestedProp */ "./resources/js/helpers/appendFromNestedProp.js");
 //
 //
 //
@@ -2216,6 +2217,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -2267,15 +2269,21 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     async getInvoices() {
+      let invoices;
+
       if (this.shouldHandleOwnLoading) {
         const {
           data
         } = await this.invoiceClass.index();
-        this.invoices = data;
+        invoices = data;
       } else {
-        this.invoices = this.filteredInvoices;
+        invoices = this.filteredInvoices;
       }
 
+      this.invoices = Object(_helpers_appendFromNestedProp__WEBPACK_IMPORTED_MODULE_3__["default"])(invoices, {
+        key: 'full_name',
+        selector: 'customer.full_name'
+      });
       this.invoicesAreReady = true;
     }
 
@@ -3013,7 +3021,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_moneyFormat__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @helpers/moneyFormat */ "./resources/js/helpers/moneyFormat.js");
 /* harmony import */ var _components_shared_Search__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/shared/Search */ "./resources/js/components/shared/Search.vue");
 /* harmony import */ var _fieldsSchema__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./fieldsSchema */ "./resources/js/components/shared/DataTable/fieldsSchema.js");
-//
 //
 //
 //
@@ -30063,7 +30070,7 @@ __webpack_require__.r(__webpack_exports__);
   name: 'number',
   label: 'Number'
 }, {
-  name: 'customer_id',
+  name: 'full_name',
   label: 'Customer',
   link: {
     view: 'customer.show',
@@ -30999,6 +31006,45 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
+/***/ "./resources/js/helpers/appendFromNestedProp.js":
+/*!******************************************************!*\
+  !*** ./resources/js/helpers/appendFromNestedProp.js ***!
+  \******************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_getDescendantProp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/getDescendantProp */ "./resources/js/helpers/getDescendantProp.js");
+
+/**
+ * Get a property from a nested object and pull up
+ * 
+ * @param {Array} collection 
+ * @param {String} key 
+ * @param {String} selector (prop1 || prop1.prop2 || ..... )
+ * 
+ * 
+ * collection = [{a: 'b', c: {d: 'e'}}]  
+ * {key: 'foo', selector: 'c.d'}
+ * result => [ {a: 'b', c: {d: 'e'}, foo: 'e' } ]
+ */
+
+/* harmony default export */ __webpack_exports__["default"] = (function (collection, {
+  key,
+  selector
+}) {
+  return collection.map(item => {
+    const value = Object(_helpers_getDescendantProp__WEBPACK_IMPORTED_MODULE_0__["default"])(item, selector);
+
+    if (!value) console.warn(`Value not found: [${selector}]`);
+    item[key] = value;
+    return item;
+  });
+});
+
+/***/ }),
+
 /***/ "./resources/js/helpers/formatDate.js":
 /*!********************************************!*\
   !*** ./resources/js/helpers/formatDate.js ***!
@@ -31018,6 +31064,35 @@ __webpack_require__.r(__webpack_exports__);
   const locale = dateOptions.locale || 'en-GB';
   return new Date(dateString).toLocaleDateString(locale, dateOptions);
 });
+
+/***/ }),
+
+/***/ "./resources/js/helpers/getDescendantProp.js":
+/*!***************************************************!*\
+  !*** ./resources/js/helpers/getDescendantProp.js ***!
+  \***************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getDescendantProp; });
+/**
+ * money format with defaults
+ * 
+ * @param {Object} obj 
+ * @param {String} desc (prop1 || prop1.prop2 || ..... )
+ * 
+ * https://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
+ * 
+ */
+function getDescendantProp(obj, desc) {
+  let arr = desc.split('.');
+
+  while (arr.length && (obj = obj[arr.shift()]));
+
+  return obj;
+}
 
 /***/ }),
 

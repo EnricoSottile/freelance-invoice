@@ -30,6 +30,7 @@
     import Invoice from '@classes/Invoice'
     import DataTable from '@components/shared/DataTable/DataTable'
     import DataTableFields from './DataTableFields'
+    import _append from '@helpers/appendFromNestedProp'
 
     export default {
 
@@ -81,15 +82,18 @@
 
         methods: {
             async getInvoices(){
+                let invoices;
                 if (this.shouldHandleOwnLoading) {
                     const { data } = await this.invoiceClass.index();
-                    this.invoices = data;
+                    invoices = data;
                 } else {
-                    this.invoices = this.filteredInvoices;
+                    invoices = this.filteredInvoices;
                 }
 
+                this.invoices = _append(invoices, {key: 'full_name', selector: 'customer.full_name'});
                 this.invoicesAreReady = true;
-            }
+            },
+
         },
     }
 </script>

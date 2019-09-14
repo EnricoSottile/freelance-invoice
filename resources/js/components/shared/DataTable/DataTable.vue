@@ -1,7 +1,6 @@
 <template>
     <div>
 
-
         <div class="scrollable-container">
             <table class="table table-sortable">
                 <thead>
@@ -175,6 +174,8 @@
             moneyFormat(digits, options) {
                 return _moneyFormat(digits, options);
             },
+
+
 
             getContent(data, field) {
                 let content = data[field.name];
