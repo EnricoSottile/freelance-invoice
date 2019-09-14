@@ -3056,6 +3056,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! lodash/orderBy */ "./node_modules/lodash/orderBy.js");
 /* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(lodash_orderBy__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _shared_Search__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../shared/Search */ "./resources/js/components/shared/Search.vue");
+/* harmony import */ var _helpers_formatDate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../helpers/formatDate */ "./resources/js/helpers/formatDate.js");
 //
 //
 //
@@ -3113,6 +3114,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -3216,21 +3218,8 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
 
-    /**
-     * date format with defaults
-     * 
-     * @param {Object} options 
-     * @param {String} value
-     */
     formatDate(options, value) {
-      const locale = options.locale || 'en-US';
-      const dateOptions = options.dateOptions || {
-        weekday: 'short',
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric'
-      };
-      return new Date(value).toLocaleDateString(locale, dateOptions);
+      return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_2__["default"])(options, value);
     }
 
   }
@@ -3548,7 +3537,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, "input[type=\"search\"] {\n}\ninput[type=\"search\"]:focus {\n  border-color: #38b2ac;\n}\n\n", ""]);
+exports.push([module.i, "input[type=\"search\"]:focus {\n  border-color: #38b2ac;\n}\n\n", ""]);
 
 // exports
 
@@ -27738,6 +27727,34 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Upload_vue_vue_type_template_id_eb1ef398___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
+
+/***/ }),
+
+/***/ "./resources/js/helpers/formatDate.js":
+/*!********************************************!*\
+  !*** ./resources/js/helpers/formatDate.js ***!
+  \********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * date format with defaults
+ * 
+ * @param {Object} options 
+ * @param {String} dateString
+ */
+/* harmony default export */ __webpack_exports__["default"] = (function (options, dateString) {
+  const locale = options.locale || 'en-US';
+  const dateOptions = options.dateOptions || {
+    weekday: 'short',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric'
+  };
+  return new Date(dateString).toLocaleDateString(locale, dateOptions);
+});
 
 /***/ }),
 

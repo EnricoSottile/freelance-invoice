@@ -64,10 +64,6 @@
 
 <style>
 
-    input[type="search"] {
-
-    }
-
     input[type="search"]:focus {
        @apply border-teal-500; 
     }

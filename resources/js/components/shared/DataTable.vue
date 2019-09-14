@@ -58,6 +58,7 @@
 <script>
     import _orderBy from 'lodash/orderBy'
     import Search from '../shared/Search'
+    import _formatDate from '../../helpers/formatDate'
 
     export default {
 
@@ -158,21 +159,8 @@
                 return {[params.name]: data[params.property]};
             },
 
-            /**
-             * date format with defaults
-             * 
-             * @param {Object} options 
-             * @param {String} value
-             */ 
             formatDate(options, value) {
-                const locale = options.locale || 'en-US';
-                const dateOptions = options.dateOptions || {
-                                 weekday: 'short', 
-                                 year: 'numeric', 
-                                 month: 'long', 
-                                 day: 'numeric'
-                            };
-                return new Date(value).toLocaleDateString(locale, dateOptions);
+                return _formatDate(options, value)
             }
         },
 
