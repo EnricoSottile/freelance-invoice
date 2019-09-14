@@ -4,7 +4,7 @@ import InvoiceIndex from '@components/invoice/Index/InvoiceIndex'
 import Invoice from '@classes/Invoice'
 const invoiceClass = new Invoice();
 
-const getInvoicesObj = [{id:1}, {id:2}];
+const getInvoicesObj = [{id:1, customer: {full_name: 'a'}}, {id:2, customer: {full_name: 'b'}}];
 invoiceClass.index = jest.fn().mockReturnValue({data: getInvoicesObj});
 
 const mount = (shouldHandleOwnLoading = true, filteredInvoices = null) => {
@@ -52,6 +52,10 @@ describe('InvoiceIndex with own loading', () => {
     expect(wrapper.vm.invoiceClass.index).toBeCalled()
     expect(wrapper.vm.invoices).toEqual(getInvoicesObj)
     expect(wrapper.vm.invoicesAreReady).toBeTruthy()
+  })
+
+  test('appends data correctly', () => {
+    expect(wrapper.vm.invoices[0].full_name).toEqual('a')
   })
 
 

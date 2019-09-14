@@ -76,7 +76,7 @@
         },
 
 
-        mounted(){
+        created(){
             this.getInvoice(this.invoiceId);
             this.getInvoicePayments(this.invoiceId);
             this.getCustomers();

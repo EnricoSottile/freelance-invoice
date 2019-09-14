@@ -1879,7 +1879,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted() {
+  created() {
     this.customer = this.customerClass.create();
   },
 
@@ -2010,7 +2010,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     'upload': _components_upload_Upload__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
 
-  mounted() {
+  created() {
     this.getCustomer(this.customerId);
     this.getCustomerInvoices(this.customerId);
     this.getCustomerPayments(this.customerId);
@@ -2145,7 +2145,7 @@ __webpack_require__.r(__webpack_exports__);
     'data-table': _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
 
-  mounted() {
+  created() {
     this.getCustomers();
   },
 
@@ -2362,7 +2362,7 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
 
-  mounted() {
+  created() {
     this.invoice = this.invoiceClass.create();
     this.setCustomer(this.customerId);
     this.getCustomers();
@@ -2510,7 +2510,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     'upload': _components_upload_Upload__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
 
-  mounted() {
+  created() {
     this.getInvoice(this.invoiceId);
     this.getInvoicePayments(this.invoiceId);
     this.getCustomers();
@@ -2764,7 +2764,7 @@ __webpack_require__.r(__webpack_exports__);
     'add-payment': _AddPayment__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
 
-  mounted() {
+  created() {
     this.getPayments();
   },
 
@@ -2980,7 +2980,7 @@ __webpack_require__.r(__webpack_exports__);
     'upload': _components_upload_Upload__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
 
-  mounted() {
+  created() {
     this.getPayment(this.paymentId);
   },
 
@@ -12902,7 +12902,12 @@ var render = function() {
                       shouldHandleOwnLoading: false,
                       filteredInvoices: _vm.invoices,
                       customer: _vm.customer,
-                      hiddenFields: ["full_name"]
+                      hiddenFields: [
+                        "full_name",
+                        "description",
+                        "date",
+                        "registered_date"
+                      ]
                     }
                   })
                 : _vm._e()
@@ -14251,9 +14256,9 @@ var render = function() {
                       attrs: { colspan: _vm.fields.length, rowspan: "10" }
                     },
                     [
-                      _vm._v(
-                        "\n                        Loading\n                    "
-                      )
+                      _c("span", { staticClass: "text-xl" }, [
+                        _vm._v("Loading")
+                      ])
                     ]
                   )
                 ])
@@ -30152,7 +30157,14 @@ __webpack_require__.r(__webpack_exports__);
   label: 'Id'
 }, {
   name: 'number',
-  label: 'Number'
+  label: 'Number',
+  link: {
+    view: 'invoice.show',
+    params: {
+      name: 'invoiceId',
+      property: 'id'
+    }
+  }
 }, {
   name: 'full_name',
   label: 'Customer',

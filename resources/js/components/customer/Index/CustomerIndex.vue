@@ -29,7 +29,7 @@
             'data-table': DataTable,
         },
         
-        mounted(){
+        created(){
             this.getCustomers();
         },
 

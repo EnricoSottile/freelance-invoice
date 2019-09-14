@@ -76,7 +76,7 @@
             'add-payment': AddPayment
         },
 
-        mounted(){
+        created(){
             this.getPayments();
         },
 

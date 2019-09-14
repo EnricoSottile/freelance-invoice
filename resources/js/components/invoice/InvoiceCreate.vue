@@ -45,7 +45,7 @@
             },
         },
 
-        mounted(){
+        created(){
             this.invoice = this.invoiceClass.create();
             this.setCustomer(this.customerId);
             this.getCustomers();

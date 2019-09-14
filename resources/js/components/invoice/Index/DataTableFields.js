@@ -6,7 +6,14 @@
  */ 
 export default [
     {name: 'id', label: 'Id'},
-    {name: 'number', label: 'Number'},
+    {
+        name: 'number', 
+        label: 'Number',
+        link: {
+            view: 'invoice.show',
+            params: {name: 'invoiceId', property: 'id'}
+        }
+    },
     {
         name: 'full_name', 
         label: 'Customer',

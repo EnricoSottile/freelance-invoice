@@ -25,7 +25,7 @@
                 <tbody>
                     <tr v-if="!dataIsReady">
                         <td :colspan="fields.length" rowspan="10" class="h-64">
-                            Loading
+                            <span class="text-xl">Loading</span>
                         </td>
                     </tr>
                     <tr v-else v-for="data in getSortedData" v-bind:key="data[getFirstFieldProperty]">

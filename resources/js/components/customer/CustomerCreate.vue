@@ -21,7 +21,7 @@
     export default {
 
 
-        mounted(){
+        created(){
             this.customer = this.customerClass.create();
         },
 

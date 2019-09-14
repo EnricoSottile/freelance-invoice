@@ -36,7 +36,7 @@
                     :shouldHandleOwnLoading="false" 
                     :filteredInvoices="invoices"
                     :customer="customer"
-                    :hiddenFields="['full_name']">
+                    :hiddenFields="['full_name', 'description', 'date', 'registered_date']">
                 </invoice-index>
             </div>
 
@@ -79,7 +79,7 @@
         },
 
 
-        mounted(){
+        created(){
             this.getCustomer(this.customerId);
             this.getCustomerInvoices(this.customerId);
             this.getCustomerPayments(this.customerId);
