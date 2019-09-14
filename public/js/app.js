@@ -1992,6 +1992,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -2238,15 +2239,24 @@ __webpack_require__.r(__webpack_exports__);
       type: Object,
       required: false,
       default: null
+    },
+    hiddenFields: {
+      type: Array,
+      required: false,
+      // Props with type Object/Array must use a factory function 
+      // to return the default value.
+      default: () => []
     }
   },
 
-  mounted() {
+  created() {
     this.getInvoices();
+    this.setDataTableFields();
   },
 
   beforeRouteUpdate(to, from, next) {
     this.getInvoices();
+    this.setDataTableFields();
     next();
   },
 
@@ -2255,7 +2265,7 @@ __webpack_require__.r(__webpack_exports__);
       invoiceClass: _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"],
       invoices: [],
       invoicesAreReady: false,
-      fields: _DataTableFields__WEBPACK_IMPORTED_MODULE_2__["default"]
+      fields: null
     };
   },
 
@@ -2285,6 +2295,13 @@ __webpack_require__.r(__webpack_exports__);
       }
 
       this.invoicesAreReady = true;
+    },
+
+    // programmatically hide fields from DataTable
+    setDataTableFields() {
+      this.fields = _DataTableFields__WEBPACK_IMPORTED_MODULE_2__["default"].filter(field => {
+        return !this.hiddenFields.includes(field.name);
+      });
     }
 
   }
@@ -12884,7 +12901,8 @@ var render = function() {
                     attrs: {
                       shouldHandleOwnLoading: false,
                       filteredInvoices: _vm.invoices,
-                      customer: _vm.customer
+                      customer: _vm.customer,
+                      hiddenFields: ["full_name"]
                     }
                   })
                 : _vm._e()

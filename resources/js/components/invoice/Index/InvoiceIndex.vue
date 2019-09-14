@@ -51,16 +51,26 @@
                 type: Object,
                 required: false,
                 default: null
+            },
+            hiddenFields: {
+                type: Array,
+                required: false,
+
+                // Props with type Object/Array must use a factory function 
+                // to return the default value.
+                default: () => []
             }
         },
 
-        mounted(){
+        created(){
             this.getInvoices();
+            this.setDataTableFields();
         },
 
         beforeRouteUpdate (to, from, next) {
             this.getInvoices();
-            next();
+            this.setDataTableFields();
+            next();            
         },
 
 
@@ -70,14 +80,14 @@
                 invoices: [],
                 invoicesAreReady: false,
 
-                fields: DataTableFields,
+                fields: null
             }
         },
 
         computed: {
             getCreateParams(){
                 return this.customer !== null ? {customer: this.customer} : {};
-            }
+            },
         },
 
         methods: {
@@ -92,6 +102,13 @@
 
                 this.invoicesAreReady = true;
             },
+
+            // programmatically hide fields from DataTable
+            setDataTableFields(){
+                this.fields = DataTableFields.filter(field => {
+                    return ! this.hiddenFields.includes(field.name);
+                });
+            }
 
         },
     }

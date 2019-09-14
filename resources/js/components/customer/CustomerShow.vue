@@ -35,7 +35,8 @@
                     v-if="invoicesAreReady" 
                     :shouldHandleOwnLoading="false" 
                     :filteredInvoices="invoices"
-                    :customer="customer">
+                    :customer="customer"
+                    :hiddenFields="['full_name']">
                 </invoice-index>
             </div>
 
