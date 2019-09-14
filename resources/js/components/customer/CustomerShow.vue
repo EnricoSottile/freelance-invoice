@@ -57,7 +57,7 @@
 
 <script>
     import Customer from '@classes/Customer'
-    import InvoiceIndex from '@components/invoice/InvoiceIndex'
+    import InvoiceIndex from '@components/invoice/Index/InvoiceIndex'
     import PaymentIndex from '@components/payment/PaymentIndex'
     import Upload from '@components/upload/Upload'
 

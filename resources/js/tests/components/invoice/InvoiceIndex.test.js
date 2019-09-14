@@ -1,5 +1,5 @@
 import { shallowMount } from '@vue/test-utils'
-import InvoiceIndex from '@components/invoice/InvoiceIndex'
+import InvoiceIndex from '@components/invoice/Index/InvoiceIndex'
 
 import Invoice from '@classes/Invoice'
 const invoiceClass = new Invoice();
@@ -60,7 +60,8 @@ describe('InvoiceIndex with own loading', () => {
       const expectedData = [
         'invoiceClass', 
         'invoices', 
-        'invoicesAreReady'
+        'invoicesAreReady',
+        'fields'
       ];
   
       expect( Object.keys(data).sort() ).toEqual(expectedData.sort());

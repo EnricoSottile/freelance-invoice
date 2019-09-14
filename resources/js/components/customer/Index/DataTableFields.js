@@ -20,15 +20,13 @@ export default [
     {
         name: 'created_at', 
         label: 'Created',
-        ciao: 'bao',
         date: {
             // default toLocaleDateString options
-            // dateOptions: {
-            //     weekday: 'short', 
-            //     year: 'numeric', 
-            //     month: 'long', 
-            //     day: 'numeric'
-            // }
+            // locale: 'it-IT',
+            // weekday: 'short', 
+            // year: 'numeric', 
+            // month: 'long', 
+            // day: 'numeric'
         }
     },
 ];

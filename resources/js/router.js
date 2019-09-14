@@ -5,7 +5,7 @@ import CustomerIndex from './components/customer/Index/CustomerIndex'
 import CustomerShow from './components/customer/CustomerShow'
 import CustomerCreate from './components/customer/CustomerCreate'
 
-import InvoiceIndex from './components/invoice/InvoiceIndex'
+import InvoiceIndex from './components/invoice/Index/InvoiceIndex'
 import InvoiceCreate from './components/invoice/InvoiceCreate'
 import InvoiceShow from './components/invoice/InvoiceShow'
 

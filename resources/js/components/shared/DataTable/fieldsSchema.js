@@ -11,6 +11,7 @@ export default {
     "properties": {
         "name": {"type": "string", "required": true},
         "label": {"type": "string", "required": true},
+        "percent": {"type": "boolean", "required":false},
         "link": {
             "type": "object", 
             "required": false,

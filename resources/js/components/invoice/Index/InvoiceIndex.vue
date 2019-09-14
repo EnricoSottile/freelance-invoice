@@ -1,47 +1,41 @@
 <template>
-    <div>
-        <div>Invoice index</div>
+    <div class="card">
 
-        <div>
-            <p v-if="!invoicesAreReady">Loading</p>
-
-            <div v-else>
+        <div class="flex">
                 <!-- ADD NEW INVOICE -->
                 <template v-if="customer !== null">
-                    <router-link :to="{ name: 'customer.invoice.create', params: {customer}}">
+                    <router-link class="btn btn-default" :to="{ name: 'customer.invoice.create', params: {customer}}">
                         Add new Invoice
                     </router-link>
                 </template>
                 <template v-else>
-                    <router-link :to="{ name: 'invoice.create'}">
+                    <router-link class="btn btn-default" :to="{ name: 'invoice.create'}">
                         Add new Invoice
                     </router-link>
                 </template>
 
-
-                <ul>
-                    
-                    <li v-for="invoice in invoices" v-bind:key="invoice.id">
-                        <router-link :to="{ name: 'invoice.show', params: { invoiceId: invoice.id }}">
-                            {{ invoice.id }} - {{ invoice.number }} - {{ invoice.registered_date }}
-                        </router-link>
-                    </li>
-                </ul>
-
-            </div>
-            
-
-            
         </div>
+
+
+        <data-table 
+        :collection="invoices" 
+        :fields="fields" 
+        :dataIsReady="invoicesAreReady"></data-table>
 
     </div>
 </template>
 
+
 <script>
     import Invoice from '@classes/Invoice'
-    
+    import DataTable from '@components/shared/DataTable/DataTable'
+    import DataTableFields from './DataTableFields'
 
     export default {
+
+        components: {
+            'data-table': DataTable,
+        },
 
         props: {
             shouldHandleOwnLoading: {
@@ -73,7 +67,9 @@
             return {
                 invoiceClass: Invoice,
                 invoices: [],
-                invoicesAreReady: false
+                invoicesAreReady: false,
+
+                fields: DataTableFields,
             }
         },
 

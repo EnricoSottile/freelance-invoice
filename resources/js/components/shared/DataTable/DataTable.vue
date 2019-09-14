@@ -35,15 +35,15 @@
                             <template v-if="field.link ">
                                 <router-link 
                                     :to="getLinkOptions(field.link, data)">
-                                    {{ data[field.name] }}
+                                    {{ getContent(data, field) }}
                                 </router-link>
                             </template>
 
                             <template v-else-if="field.date ">
-                                {{ formatDate(field.date, data[field.name])}}
+                                {{ formatDate(field.date, getContent(data, field))}}
                             </template>
 
-                            <template v-else>{{ data[field.name] }}</template>
+                            <template v-else>{{ getContent(data, field) }}</template>
                             
                         </td>
                     </tr>
@@ -169,6 +169,21 @@
 
             formatDate(options, value) {
                 return _formatDate(options, value)
+            },
+
+            getContent(data, field) {
+                let content = data[field.name];
+                if (!content || !content.length) return content;
+
+                if (content.length > 25) {
+                    content = content.substr(0, 25) + "...";
+                }
+
+                if (field.percent) {
+                    content += '%';
+                }
+
+                return content;
             }
         },
 
