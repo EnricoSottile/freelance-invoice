@@ -31,18 +31,7 @@
                     <tr v-else v-for="data in getSortedData" v-bind:key="data[getFirstFieldProperty]">
                         <td v-for="field in fields" v-bind:key="field.name">
 
-                            <template v-if="field.link ">
-                                <router-link 
-                                    :to="getLinkOptions(field.link, data)">
-                                    {{ getContent(data, field) }}
-                                </router-link>
-                            </template>
-
-                            <template v-else-if="field.date ">
-                                {{ formatDate(field.date, getContent(data, field))}}
-                            </template>
-
-                            <template v-else>{{ getContent(data, field) }}</template>
+                            <table-row :field="field" :data="data"></table-row>
                             
                         </td>
                     </tr>
@@ -54,16 +43,18 @@
 </template>
 
 <script>
-    import _formatDate from '@helpers/formatDate'
-    import _orderBy from 'lodash/orderBy'
-    import _validateObject from '@helpers/validateObject'
-    import _moneyFormat from '@helpers/moneyFormat'
+    import DataTableRow from './DataTableRow'
     import Search from '@components/shared/Search'
     import JSONSchema from './fieldsSchema'
+
+    import _orderBy from 'lodash/orderBy'
+    import _validateObject from '@helpers/validateObject'
+    
 
     export default {
 
         components: {
+            'table-row': DataTableRow,
             'search-input': Search,
         },
 
@@ -150,51 +141,6 @@
                 }
             },
 
-
-            /**
-             * construct the object needed for the router-link .to
-             * ie: {name: 'customer.show', params: {customerId: customer.id}}
-             * 
-             * @param {Object} link 
-             * @param {Object} data
-             */ 
-            getLinkOptions(link, data){
-                return {
-                    name: link.view,
-                    params: {
-                        [link.params.name]: data[link.params.property]
-                    }
-                }
-            },
-
-            formatDate(options, value) {
-                return _formatDate(options, value)
-            },
-
-            moneyFormat(digits, options) {
-                return _moneyFormat(digits, options);
-            },
-
-
-
-            getContent(data, field) {
-                let content = data[field.name];
-                if (!content || !content.length) return content;
-
-                if (content.length > 25) {
-                    content = content.substr(0, 25) + "...";
-                }
-
-                if (field.percent) {
-                    content += '%';
-                }
-
-                if (field.money) {
-                    content = this.moneyFormat(content, field.money);
-                }
-
-                return content;
-            }
         },
 
 

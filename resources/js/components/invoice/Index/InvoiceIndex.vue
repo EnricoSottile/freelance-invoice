@@ -85,12 +85,11 @@
                 let invoices;
                 if (this.shouldHandleOwnLoading) {
                     const { data } = await this.invoiceClass.index();
-                    invoices = data;
+                    this.invoices = _append(data, {key: 'full_name', selector: 'customer.full_name'});;
                 } else {
-                    invoices = this.filteredInvoices;
+                    this.invoices = this.filteredInvoices;
                 }
 
-                this.invoices = _append(invoices, {key: 'full_name', selector: 'customer.full_name'});
                 this.invoicesAreReady = true;
             },
 
