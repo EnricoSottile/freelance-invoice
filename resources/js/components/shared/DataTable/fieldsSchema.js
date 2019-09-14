@@ -12,6 +12,17 @@ export default {
         "name": {"type": "string", "required": true},
         "label": {"type": "string", "required": true},
         "percent": {"type": "boolean", "required":false},
+        "money": {
+            "type": "object", 
+            "required":false,
+            "properties": {
+                "locale": {"type": "string", "required": false},
+                "moneyOptions": {
+                    "type": "object", 
+                    "required": false,
+                },
+            }
+        },
         "link": {
             "type": "object", 
             "required": false,

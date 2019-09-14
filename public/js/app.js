@@ -3010,8 +3010,9 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! lodash/orderBy */ "./node_modules/lodash/orderBy.js");
 /* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(lodash_orderBy__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _helpers_validateObject__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @helpers/validateObject */ "./resources/js/helpers/validateObject.js");
-/* harmony import */ var _components_shared_Search__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/shared/Search */ "./resources/js/components/shared/Search.vue");
-/* harmony import */ var _fieldsSchema__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./fieldsSchema */ "./resources/js/components/shared/DataTable/fieldsSchema.js");
+/* harmony import */ var _helpers_moneyFormat__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @helpers/moneyFormat */ "./resources/js/helpers/moneyFormat.js");
+/* harmony import */ var _components_shared_Search__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/shared/Search */ "./resources/js/components/shared/Search.vue");
+/* harmony import */ var _fieldsSchema__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./fieldsSchema */ "./resources/js/components/shared/DataTable/fieldsSchema.js");
 //
 //
 //
@@ -3068,6 +3069,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+
 
 
 
@@ -3075,7 +3077,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'search-input': _components_shared_Search__WEBPACK_IMPORTED_MODULE_3__["default"]
+    'search-input': _components_shared_Search__WEBPACK_IMPORTED_MODULE_4__["default"]
   },
   props: {
     dataIsReady: {
@@ -3092,7 +3094,7 @@ __webpack_require__.r(__webpack_exports__);
       type: Array,
 
       validator(value) {
-        return value.every(field => Object(_helpers_validateObject__WEBPACK_IMPORTED_MODULE_2__["default"])(field, _fieldsSchema__WEBPACK_IMPORTED_MODULE_4__["default"]));
+        return value.every(field => Object(_helpers_validateObject__WEBPACK_IMPORTED_MODULE_2__["default"])(field, _fieldsSchema__WEBPACK_IMPORTED_MODULE_5__["default"]));
       }
 
     }
@@ -3113,7 +3115,7 @@ __webpack_require__.r(__webpack_exports__);
 
   computed: {
     /**
-     *  helper method, use first item in collection as key
+     * helper method, use first item in collection as key
      * (usually id)
      */
     getFirstFieldProperty() {
@@ -3130,7 +3132,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     /**
-      *  unsort, results are sorted by fuse.js
+      *  unsort first, results are sorted by fuse.js
       */
     handleSearchResult(data) {
       this.unsort();
@@ -3183,6 +3185,10 @@ __webpack_require__.r(__webpack_exports__);
       return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_0__["default"])(options, value);
     },
 
+    moneyFormat(digits, options) {
+      return Object(_helpers_moneyFormat__WEBPACK_IMPORTED_MODULE_3__["default"])(digits, options);
+    },
+
     getContent(data, field) {
       let content = data[field.name];
       if (!content || !content.length) return content;
@@ -3193,6 +3199,10 @@ __webpack_require__.r(__webpack_exports__);
 
       if (field.percent) {
         content += '%';
+      }
+
+      if (field.money) {
+        content = this.moneyFormat(content, field.money);
       }
 
       return content;
@@ -30064,7 +30074,13 @@ __webpack_require__.r(__webpack_exports__);
   }
 }, {
   name: 'net_amount',
-  label: 'Net amount'
+  label: 'Net amount',
+  money: {// Intl.NumberFormat options
+    // locale: 'ja-JP',
+    // moneyOptions: {
+    //     style: 'currency', currency: 'JPY'
+    // }
+  }
 }, {
   name: 'tax',
   label: 'Tax',
@@ -30689,6 +30705,20 @@ __webpack_require__.r(__webpack_exports__);
       "type": "boolean",
       "required": false
     },
+    "money": {
+      "type": "object",
+      "required": false,
+      "properties": {
+        "locale": {
+          "type": "string",
+          "required": false
+        },
+        "moneyOptions": {
+          "type": "object",
+          "required": false
+        }
+      }
+    },
     "link": {
       "type": "object",
       "required": false,
@@ -30985,8 +31015,34 @@ __webpack_require__.r(__webpack_exports__);
  * @param {String} dateString
  */
 /* harmony default export */ __webpack_exports__["default"] = (function (dateOptions = {}, dateString) {
-  const locale = dateOptions.locale || 'en-US';
+  const locale = dateOptions.locale || 'en-GB';
   return new Date(dateString).toLocaleDateString(locale, dateOptions);
+});
+
+/***/ }),
+
+/***/ "./resources/js/helpers/moneyFormat.js":
+/*!*********************************************!*\
+  !*** ./resources/js/helpers/moneyFormat.js ***!
+  \*********************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/**
+ * money format with defaults
+ * 
+ * @param {Number} digits 
+ * @param {Object} options
+ */
+/* harmony default export */ __webpack_exports__["default"] = (function (digits, options) {
+  const locale = options.locale || 'en-GB';
+  const params = options.moneyOptions || {
+    style: 'currency',
+    currency: 'EUR'
+  };
+  return new Intl.NumberFormat(locale, params).format(digits);
 });
 
 /***/ }),

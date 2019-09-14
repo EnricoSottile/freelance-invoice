@@ -15,7 +15,17 @@ export default [
             params: {name: 'customerId', property: 'customer_id'}
         }
     },
-    {name: 'net_amount', label: 'Net amount'},
+    {
+        name: 'net_amount', 
+        label: 'Net amount',
+        money: {
+            // Intl.NumberFormat options
+            // locale: 'ja-JP',
+            // moneyOptions: {
+            //     style: 'currency', currency: 'JPY'
+            // }
+        },
+    },
     {
         name: 'tax', 
         label: 'Tax',

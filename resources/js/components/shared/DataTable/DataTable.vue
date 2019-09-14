@@ -58,6 +58,7 @@
     import _formatDate from '@helpers/formatDate'
     import _orderBy from 'lodash/orderBy'
     import _validateObject from '@helpers/validateObject'
+    import _moneyFormat from '@helpers/moneyFormat'
     import Search from '@components/shared/Search'
     import JSONSchema from './fieldsSchema'
 
@@ -101,7 +102,7 @@
 
         computed: {
             /**
-             *  helper method, use first item in collection as key
+             * helper method, use first item in collection as key
              * (usually id)
              */
             getFirstFieldProperty(){
@@ -118,7 +119,7 @@
         methods: {
            
            /**
-             *  unsort, results are sorted by fuse.js
+             *  unsort first, results are sorted by fuse.js
              */
             handleSearchResult(data) {
                 this.unsort();
@@ -171,6 +172,10 @@
                 return _formatDate(options, value)
             },
 
+            moneyFormat(digits, options) {
+                return _moneyFormat(digits, options);
+            },
+
             getContent(data, field) {
                 let content = data[field.name];
                 if (!content || !content.length) return content;
@@ -181,6 +186,10 @@
 
                 if (field.percent) {
                     content += '%';
+                }
+
+                if (field.money) {
+                    content = this.moneyFormat(content, field.money);
                 }
 
                 return content;
