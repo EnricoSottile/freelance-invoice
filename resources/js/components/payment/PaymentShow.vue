@@ -20,18 +20,15 @@
 </template>
 
 <script>
-    import Payment from '../../classes/Payment'
-    import Upload from '../upload/Upload'
+    import Payment from '@classes/Payment'
+    import Upload from '@components/upload/Upload'
 
 
     export default {
         props: {
             paymentId: {
                 required: true,
-                validator(value) {
-                    const type = typeof(value);
-                    return type === 'string' || type === 'number';
-                }
+                type: [String, Number]
             },
         },
 

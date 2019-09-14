@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
-import CustomerIndex from '../../../components/customer/CustomerIndex'
+import CustomerIndex from '@components/customer/Index/CustomerIndex'
 
-import Customer from '../../../classes/Customer'
+import Customer from '@classes/Customer'
 const customerClass = new Customer();
 
 const getCustomersObj = [{id:1}, {id:2}];
@@ -36,7 +36,8 @@ describe('CustomerIndex', () => {
     const expectedData = [
       'customerClass', 
       'customers', 
-      'customersAreReady'
+      'customersAreReady',
+      'fields'
     ];
 
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());

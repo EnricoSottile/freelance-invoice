@@ -32,7 +32,7 @@
 </template>
 
 <script>
-    import Upload from '../../classes/Upload'
+    import Upload from '@classes/Upload'
     const MODELS = ['invoice', 'customer', 'payment'];
 
     export default {
@@ -40,17 +40,14 @@
         props: {
             resourceType: {
                 required: true,
+                type: String,
                 validator(value) {
-                    const type = typeof(value);
-                    return type === 'string' && MODELS.includes(value);
+                    return MODELS.includes(value);
                 }
             },
             resourceId: {
                 required: true,
-                validator(value) {
-                    const type = typeof(value);
-                    return type === 'string' || type === 'number';
-                }
+                type: [String, Number]
             },
             allowUploads: {
                 required: true,

@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
-import AddPayment from '../../../components/payment/AddPayment'
+import AddPayment from '@components/payment/AddPayment'
 
-import Payment from '../../../classes/Payment'
+import Payment from '@classes/Payment'
 const paymentClass = Payment;
 
 const mockInvoice = {

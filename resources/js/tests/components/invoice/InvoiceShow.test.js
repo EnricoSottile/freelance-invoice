@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
-import InvoiceShow from '../../../components/invoice/InvoiceShow'
+import InvoiceShow from '@components/invoice/InvoiceShow'
 
-import Invoice from '../../../classes/Invoice'
+import Invoice from '@classes/Invoice'
 const invoiceClass = new Invoice();
 
 const getInvoiceObj = {'id': 1,registered_date: null};

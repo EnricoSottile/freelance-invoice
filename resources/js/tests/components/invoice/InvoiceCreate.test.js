@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import InvoiceCreate from '../../../components/invoice/InvoiceCreate'
-import Invoice from '../../../classes/Invoice'
+import InvoiceCreate from '@components/invoice/InvoiceCreate'
+import Invoice from '@classes/Invoice'
 
 const invoiceClass = jest.fn();
 

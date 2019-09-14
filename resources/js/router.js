@@ -1,7 +1,7 @@
 import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
-import CustomerIndex from './components/customer/CustomerIndex'
+import CustomerIndex from './components/customer/Index/CustomerIndex'
 import CustomerShow from './components/customer/CustomerShow'
 import CustomerCreate from './components/customer/CustomerCreate'
 

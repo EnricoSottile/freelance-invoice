@@ -56,10 +56,10 @@
 </template>
 
 <script>
-    import Customer from '../../classes/Customer'
-    import InvoiceIndex from '../invoice/InvoiceIndex'
-    import PaymentIndex from '../payment/PaymentIndex'
-    import Upload from '../upload/Upload'
+    import Customer from '@classes/Customer'
+    import InvoiceIndex from '@components/invoice/InvoiceIndex'
+    import PaymentIndex from '@components/payment/PaymentIndex'
+    import Upload from '@components/upload/Upload'
 
 
 
@@ -67,10 +67,7 @@
         props: {
             customerId: {
                 required: true,
-                validator(value) {
-                    const type = typeof(value);
-                    return type === 'string' || type === 'number';
-                }
+                type: [String, Number]
             },
         },
 

@@ -32,7 +32,7 @@
 </template>
 
 <script>    
-    import Invoice from '../../classes/Invoice'
+    import Invoice from '@classes/Invoice'
 
 
     export default {
@@ -41,10 +41,7 @@
             customerId: {
                 required: false,
                 default: null,
-                validator(value) {
-                    const type = typeof(value);
-                    return type === 'string' || type === 'number';
-                }
+                type: [String, Number]
             },
         },
 

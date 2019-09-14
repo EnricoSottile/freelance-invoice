@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import Upload from '../../../components/upload/Upload'
-import UploadClass from '../../../classes/Upload'
+import Upload from '@components/upload/Upload'
+import UploadClass from '@classes/Upload'
 
 
 window.axios = {};

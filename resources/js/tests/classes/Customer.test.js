@@ -1,4 +1,4 @@
-import Customer from '../../classes/Customer'
+import Customer from '@classes/Customer'
 const customerClass = Customer
 
 

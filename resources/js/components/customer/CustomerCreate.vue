@@ -15,7 +15,7 @@
 </template>
 
 <script>    
-    import Customer from '../../classes/Customer'
+    import Customer from '@classes/Customer'
 
 
     export default {

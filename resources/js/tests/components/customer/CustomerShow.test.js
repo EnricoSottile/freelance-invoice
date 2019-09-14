@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
-import CustomerShow from '../../../components/customer/CustomerShow'
+import CustomerShow from '@components/customer/CustomerShow'
 
-import Customer from '../../../classes/Customer'
+import Customer from '@classes/Customer'
 const customerClass = new Customer();
 
 const getCustomerObj = {'id': 1};

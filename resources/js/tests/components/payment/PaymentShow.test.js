@@ -1,7 +1,7 @@
 import { shallowMount } from '@vue/test-utils'
-import PaymentShow from '../../../components/payment/PaymentShow'
+import PaymentShow from '@components/payment/PaymentShow'
 
-import Payment from '../../../classes/Payment'
+import Payment from '@classes/Payment'
 const paymentClass = Payment;
 
 const getPaymentObj = {'id': 1,payed_date: null};

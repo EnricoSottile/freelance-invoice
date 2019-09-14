@@ -57,19 +57,16 @@
 </template>
 
 <script>
-    import Invoice from '../../classes/Invoice'
-    import PaymentIndex from '../payment/PaymentIndex'
-    import Upload from '../upload/Upload'
+    import Invoice from '@classes/Invoice'
+    import PaymentIndex from '@components/payment/PaymentIndex'
+    import Upload from '@components/upload/Upload'
 
 
     export default {
         props: {
             invoiceId: {
                 required: true,
-                validator(value) {
-                    const type = typeof(value);
-                    return type === 'string' || type === 'number';
-                }
+                type: [String, Number]
             },
         },
 

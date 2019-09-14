@@ -1,6 +1,6 @@
 import { shallowMount } from '@vue/test-utils'
-import CustomerCreate from '../../../components/customer/CustomerCreate'
-import Customer from '../../../classes/Customer'
+import CustomerCreate from '@components/customer/CustomerCreate'
+import Customer from '@classes/Customer'
 
 const customerClass = jest.fn();
 

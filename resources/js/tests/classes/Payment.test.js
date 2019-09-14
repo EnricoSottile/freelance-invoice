@@ -1,4 +1,4 @@
-import Payment from '../../classes/Payment'
+import Payment from '@classes/Payment'
 const paymentClass = Payment
 
 

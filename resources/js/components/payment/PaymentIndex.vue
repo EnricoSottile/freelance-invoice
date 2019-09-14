@@ -49,7 +49,7 @@
 </template>
 
 <script>
-    import Payment from '../../classes/Payment'
+    import Payment from '@classes/Payment'
     import PaymentRow from './PaymentRow'
     import AddPayment from './AddPayment'
     

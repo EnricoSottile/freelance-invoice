@@ -32,16 +32,15 @@
                     <tr v-else v-for="data in getSortedData" v-bind:key="data[getFirstFieldProperty]">
                         <td v-for="field in fields" v-bind:key="field.name">
 
-                            <template v-if="field.options && field.options.type === 'link' ">
+                            <template v-if="field.link ">
                                 <router-link 
-                                    :to="{name: field.options.view, params: getParams(field.options.params, data)}">
+                                    :to="getLinkOptions(field.link, data)">
                                     {{ data[field.name] }}
                                 </router-link>
                             </template>
 
-
-                            <template v-else-if="field.options && field.options.type === 'date' ">
-                                {{ formatDate(field.options, data[field.name])}}
+                            <template v-else-if="field.date ">
+                                {{ formatDate(field.date, data[field.name])}}
                             </template>
 
                             <template v-else>{{ data[field.name] }}</template>
@@ -56,9 +55,11 @@
 </template>
 
 <script>
+    import _formatDate from '@helpers/formatDate'
     import _orderBy from 'lodash/orderBy'
-    import Search from '../shared/Search'
-    import _formatDate from '../../helpers/formatDate'
+    import _validateObject from '@helpers/validateObject'
+    import Search from '@components/shared/Search'
+    import JSONSchema from './fieldsSchema'
 
     export default {
 
@@ -78,11 +79,9 @@
             },
             fields: {
                 required: true,
+                type: Array,
                 validator(value) {
-                    // match atleast [{name: '', label: ''}]
-                    return Array.isArray(value) && value.every(field => {
-                        return field.name && field.label;
-                    })
+                    return value.every(field => _validateObject(field, JSONSchema));
                 }
             }
         },
@@ -91,7 +90,7 @@
             return {
                 sortColumn: '',
                 sortDirection: 'asc',
-                searchResults: null,
+                searchResults: null, // [] only when search query.length
             }
         },
 
@@ -117,6 +116,10 @@
         },
 
         methods: {
+           
+           /**
+             *  unsort, results are sorted by fuse.js
+             */
             handleSearchResult(data) {
                 this.unsort();
                 this.searchResults = data;
@@ -149,14 +152,19 @@
 
 
             /**
-             * construct the object needed for the router-link to.params
-             * ie: {customerId: customer.id}
+             * construct the object needed for the router-link .to
+             * ie: {name: 'customer.show', params: {customerId: customer.id}}
              * 
-             * @param {Object} params 
+             * @param {Object} link 
              * @param {Object} data
              */ 
-            getParams(params, data) {
-                return {[params.name]: data[params.property]};
+            getLinkOptions(link, data){
+                return {
+                    name: link.view,
+                    params: {
+                        [link.params.name]: data[link.params.property]
+                    }
+                }
             },
 
             formatDate(options, value) {

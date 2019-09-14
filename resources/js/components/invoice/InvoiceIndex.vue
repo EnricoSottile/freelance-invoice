@@ -38,7 +38,7 @@
 </template>
 
 <script>
-    import Invoice from '../../classes/Invoice'
+    import Invoice from '@classes/Invoice'
     
 
     export default {
