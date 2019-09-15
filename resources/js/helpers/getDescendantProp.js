@@ -1,16 +1,19 @@
 
 
 /**
- * money format with defaults
+ * retrieve an object's nested prop using dot notation
+ * 
+ * let obj = {a: {b: {c: 'd'}}};
+ * let val = func(obj, 'a.b.c') // results => 'd'
  * 
  * @param {Object} obj 
- * @param {String} desc (prop1 || prop1.prop2 || ..... )
+ * @param {String} descendant (prop1 || prop1.prop2 || ..... )
  * 
  * https://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
  * 
  */ 
-export default function getDescendantProp (obj, desc) {
-    let arr = desc.split('.');
+export default function (obj, descendant) {
+    let arr = descendant.split('.');
     while (arr.length && (obj = obj[arr.shift()]));
     return obj;
 }

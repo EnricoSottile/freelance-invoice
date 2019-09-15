@@ -1,7 +1,7 @@
 import _getDescendantProp from '@helpers/getDescendantProp'
 
 /**
- * Get a property from a nested object and pull up
+ * Get a property from a nested object and pull it up
  * 
  * @param {Array} collection 
  * @param {String} key 

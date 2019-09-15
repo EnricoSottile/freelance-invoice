@@ -31183,7 +31183,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_getDescendantProp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/getDescendantProp */ "./resources/js/helpers/getDescendantProp.js");
 
 /**
- * Get a property from a nested object and pull up
+ * Get a property from a nested object and pull it up
  * 
  * @param {Array} collection 
  * @param {String} key 
@@ -31219,14 +31219,17 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _userPreferences__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userPreferences */ "./resources/js/userPreferences.js");
+
 /**
  * date format with defaults
  * 
  * @param {Object} options 
  * @param {String} dateString
  */
+
 /* harmony default export */ __webpack_exports__["default"] = (function (dateOptions = {}, dateString) {
-  const locale = dateOptions.locale || 'en-GB';
+  const locale = dateOptions.locale || _userPreferences__WEBPACK_IMPORTED_MODULE_0__["default"].locale;
   return new Date(dateString).toLocaleDateString(locale, dateOptions);
 });
 
@@ -31241,23 +31244,25 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "default", function() { return getDescendantProp; });
 /**
- * money format with defaults
+ * retrieve an object's nested prop using dot notation
+ * 
+ * let obj = {a: {b: {c: 'd'}}};
+ * let val = func(obj, 'a.b.c') // results => 'd'
  * 
  * @param {Object} obj 
- * @param {String} desc (prop1 || prop1.prop2 || ..... )
+ * @param {String} descendant (prop1 || prop1.prop2 || ..... )
  * 
  * https://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
  * 
  */
-function getDescendantProp(obj, desc) {
-  let arr = desc.split('.');
+/* harmony default export */ __webpack_exports__["default"] = (function (obj, descendant) {
+  let arr = descendant.split('.');
 
   while (arr.length && (obj = obj[arr.shift()]));
 
   return obj;
-}
+});
 
 /***/ }),
 
@@ -31270,17 +31275,20 @@ function getDescendantProp(obj, desc) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _userPreferences__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../userPreferences */ "./resources/js/userPreferences.js");
+
 /**
  * money format with defaults
  * 
  * @param {Number} digits 
  * @param {Object} options
  */
+
 /* harmony default export */ __webpack_exports__["default"] = (function (digits, options) {
-  const locale = options.locale || 'en-GB';
+  const locale = options.locale || _userPreferences__WEBPACK_IMPORTED_MODULE_0__["default"].locale;
   const params = options.moneyOptions || {
     style: 'currency',
-    currency: 'EUR'
+    currency: _userPreferences__WEBPACK_IMPORTED_MODULE_0__["default"].currency
   };
   return new Intl.NumberFormat(locale, params).format(digits);
 });
@@ -31402,6 +31410,22 @@ const routes = [// CUSTOMER
 }];
 window.router = new vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]({
   routes
+});
+
+/***/ }),
+
+/***/ "./resources/js/userPreferences.js":
+/*!*****************************************!*\
+  !*** ./resources/js/userPreferences.js ***!
+  \*****************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony default export */ __webpack_exports__["default"] = ({
+  locale: 'en-GB',
+  currency: 'EUR'
 });
 
 /***/ }),
