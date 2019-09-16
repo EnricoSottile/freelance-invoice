@@ -5,13 +5,25 @@
             <table class="table table-sortable">
                 <thead>
                     <tr>
-                        <th :colspan="fields.length">
+                        <th :colspan="fields.length -2" class="paginate">
+                            <span class="mx-1"
+                                v-for="page in pages" 
+                                v-bind:key="page">
+                                <template v-if="page === currentPage">
+                                    <span>{{ page }}</span>
+                                </template>
+                                <template v-else>
+                                    <a @click="setPage(page)" href="#"><span>{{ page }}</span></a>
+                                </template>
+                            </span>                            
+                        </th>
+                        <th :colspan="2">
                             <search-input 
                             v-if="dataIsReady" 
                             :collection="collection" 
                             :fields="fields" 
                             @search="handleSearchResult($event)"></search-input>
-                            <small v-if="searchResults" class="text-xs font-light text-gray-600">Showing {{ getSortedData.length }} results</small>
+                            <small v-if="searchResults" class="text-xs font-light text-gray-600">Showing {{ getData.length }} results</small>
                         </th>
                     </tr>
                     <tr>
@@ -28,10 +40,10 @@
                             <span class="text-xl">Loading</span>
                         </td>
                     </tr>
-                    <tr v-else v-for="data in getSortedData" v-bind:key="data[getFirstFieldProperty]">
+                    <tr v-else v-for="data in getData" v-bind:key="data[getFirstFieldProperty]">
                         <td v-for="field in fields" v-bind:key="field.name">
-
-                            <table-row :field="field" :data="data"></table-row>
+                            
+                            <table-cell :field="field" :data="data"></table-cell>
                             
                         </td>
                     </tr>
@@ -43,18 +55,19 @@
 </template>
 
 <script>
-    import DataTableRow from './DataTableRow'
+    import DataTableCell from './DataTableCell'
     import Search from '@components/shared/Search'
     import JSONSchema from './fieldsSchema'
 
     import _orderBy from 'lodash/orderBy'
+    import _chunk from 'lodash/chunk'
     import _validateObject from '@helpers/validateObject'
     
 
     export default {
 
         components: {
-            'table-row': DataTableRow,
+            'table-cell': DataTableCell,
             'search-input': Search,
         },
 
@@ -71,8 +84,8 @@
             fields: {
                 required: true,
                 type: Array,
-                validator(value) {
-                    return value.every(field => _validateObject(field, JSONSchema));
+                validator(collection) {
+                    return collection.every(field => _validateObject(field, JSONSchema));
                 }
             }
         },
@@ -81,11 +94,14 @@
             return {
                 sortColumn: '',
                 sortDirection: 'asc',
-                searchResults: null, // [] only when search query.length
+                searchResults: null, // [] only when search query.length,
+
+                pages: 0,
+                currentPage: 1
             }
         },
 
-        mounted(){
+        created(){
             this.sortColumn = this.getFirstFieldProperty;
         },
 
@@ -98,15 +114,45 @@
             getFirstFieldProperty(){
                 return this.fields[0].name;
             },
-            getSortedData(){
-                const property = this.sortColumn;
-                const order = this.sortDirection;
-                const data = this.searchResults !== null ? this.searchResults : this.collection;
-                return _orderBy(data, (c) => c[property], order);
+
+            /**
+             * shows full collection of data || search results
+             * the list is then ordered and paginated
+             */
+            getData(){
+                // if search input is empty, 
+                // 'this.searchResults' is always 'null'
+                const data = this.searchResults || this.collection;
+                const orderedData = this._orderData(data);
+
+                // sort and 'search', then paginate
+                return this.paginate(orderedData);                
             },
         },
 
         methods: {
+            paginate(data) {
+                const chunks = _chunk(data, 15);
+                this.pages = chunks.length;
+
+                if (!data.length) return data;
+
+                return chunks[ this.currentPage -1 ];
+            },
+
+            setPage(page) {
+                this.currentPage = page;
+            },
+
+            /**
+             *  helper function, returns ordered data
+             *  used in computed.getData
+             */
+            _orderData(data){
+                const property = this.sortColumn;
+                const order = this.sortDirection;
+                return _orderBy(data, (c) => c[property], order);
+            },
            
            /**
              *  unsort first, results are sorted by fuse.js
@@ -115,6 +161,7 @@
                 this.unsort();
                 this.searchResults = data;
             },
+
 
             /**
              *  onclick, set the column and direction of sort
@@ -213,4 +260,22 @@
     .table-sortable .sort-desc:after {
         content: '\2193';
     }
+
+    .table-sortable > thead > tr > th.paginate {
+        text-align:left;
+    }
+
+    .table-sortable th.paginate > span {
+         @apply font-light text-teal-500;
+
+    }
+
+    .table-sortable th.paginate a {
+        @apply text-gray-500;
+    }
+
+    .table-sortable th.paginate a:hover {
+        @apply text-teal-500;
+    }
+
 </style>

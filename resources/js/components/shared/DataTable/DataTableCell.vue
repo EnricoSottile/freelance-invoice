@@ -62,8 +62,9 @@ export default {
         },
 
         getContent(data, field) {
-            let content = data[field.name];
-            if (!content || !content.length) return content;
+            let key = field.name;
+            let content = data[key];
+            if (!content) return content;
 
             if (content.length > 25) {
                 content = content.substr(0, 25) + "...";

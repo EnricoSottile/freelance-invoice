@@ -30,7 +30,6 @@
     import Invoice from '@classes/Invoice'
     import DataTable from '@components/shared/DataTable/DataTable'
     import DataTableFields from './DataTableFields'
-    import _append from '@helpers/appendFromNestedProp'
 
     export default {
 
@@ -95,7 +94,7 @@
                 let invoices;
                 if (this.shouldHandleOwnLoading) {
                     const { data } = await this.invoiceClass.index();
-                    this.invoices = _append(data, {key: 'full_name', selector: 'customer.full_name'});;
+                    this.invoices = data.map(i => ({...i, full_name: i.customer.full_name}))
                 } else {
                     this.invoices = this.filteredInvoices;
                 }

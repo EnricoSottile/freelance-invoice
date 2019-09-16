@@ -2189,36 +2189,40 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/Invoice */ "./resources/js/classes/Invoice.js");
 /* harmony import */ var _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/shared/DataTable/DataTable */ "./resources/js/components/shared/DataTable/DataTable.vue");
 /* harmony import */ var _DataTableFields__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DataTableFields */ "./resources/js/components/invoice/Index/DataTableFields.js");
-/* harmony import */ var _helpers_appendFromNestedProp__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @helpers/appendFromNestedProp */ "./resources/js/helpers/appendFromNestedProp.js");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2285,11 +2289,9 @@ __webpack_require__.r(__webpack_exports__);
         const {
           data
         } = await this.invoiceClass.index();
-        this.invoices = Object(_helpers_appendFromNestedProp__WEBPACK_IMPORTED_MODULE_3__["default"])(data, {
-          key: 'full_name',
-          selector: 'customer.full_name'
-        });
-        ;
+        this.invoices = data.map(i => _objectSpread({}, i, {
+          full_name: i.customer.full_name
+        }));
       } else {
         this.invoices = this.filteredInvoices;
       }
@@ -3031,12 +3033,14 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _DataTableRow__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DataTableRow */ "./resources/js/components/shared/DataTable/DataTableRow.vue");
+/* harmony import */ var _DataTableCell__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DataTableCell */ "./resources/js/components/shared/DataTable/DataTableCell.vue");
 /* harmony import */ var _components_shared_Search__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/shared/Search */ "./resources/js/components/shared/Search.vue");
 /* harmony import */ var _fieldsSchema__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./fieldsSchema */ "./resources/js/components/shared/DataTable/fieldsSchema.js");
 /* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! lodash/orderBy */ "./node_modules/lodash/orderBy.js");
 /* harmony import */ var lodash_orderBy__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(lodash_orderBy__WEBPACK_IMPORTED_MODULE_3__);
-/* harmony import */ var _helpers_validateObject__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @helpers/validateObject */ "./resources/js/helpers/validateObject.js");
+/* harmony import */ var lodash_chunk__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! lodash/chunk */ "./node_modules/lodash/chunk.js");
+/* harmony import */ var lodash_chunk__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(lodash_chunk__WEBPACK_IMPORTED_MODULE_4__);
+/* harmony import */ var _helpers_validateObject__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @helpers/validateObject */ "./resources/js/helpers/validateObject.js");
 //
 //
 //
@@ -3081,6 +3085,19 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
 
 
 
@@ -3088,7 +3105,7 @@ __webpack_require__.r(__webpack_exports__);
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'table-row': _DataTableRow__WEBPACK_IMPORTED_MODULE_0__["default"],
+    'table-cell': _DataTableCell__WEBPACK_IMPORTED_MODULE_0__["default"],
     'search-input': _components_shared_Search__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   props: {
@@ -3105,8 +3122,8 @@ __webpack_require__.r(__webpack_exports__);
       required: true,
       type: Array,
 
-      validator(value) {
-        return value.every(field => Object(_helpers_validateObject__WEBPACK_IMPORTED_MODULE_4__["default"])(field, _fieldsSchema__WEBPACK_IMPORTED_MODULE_2__["default"]));
+      validator(collection) {
+        return collection.every(field => Object(_helpers_validateObject__WEBPACK_IMPORTED_MODULE_5__["default"])(field, _fieldsSchema__WEBPACK_IMPORTED_MODULE_2__["default"]));
       }
 
     }
@@ -3116,12 +3133,14 @@ __webpack_require__.r(__webpack_exports__);
     return {
       sortColumn: '',
       sortDirection: 'asc',
-      searchResults: null // [] only when search query.length
-
+      searchResults: null,
+      // [] only when search query.length,
+      pages: 0,
+      currentPage: 1
     };
   },
 
-  mounted() {
+  created() {
     this.sortColumn = this.getFirstFieldProperty;
   },
 
@@ -3134,15 +3153,45 @@ __webpack_require__.r(__webpack_exports__);
       return this.fields[0].name;
     },
 
-    getSortedData() {
-      const property = this.sortColumn;
-      const order = this.sortDirection;
-      const data = this.searchResults !== null ? this.searchResults : this.collection;
-      return lodash_orderBy__WEBPACK_IMPORTED_MODULE_3___default()(data, c => c[property], order);
+    /**
+     * shows full collection of data || search results
+     * the list is then ordered and paginated
+     */
+    getData() {
+      // if search input is empty, 
+      // 'this.searchResults' is always 'null'
+      const data = this.searchResults || this.collection;
+
+      const orderedData = this._orderData(data); // sort and 'search', then paginate
+
+
+      return this.paginate(orderedData);
     }
 
   },
   methods: {
+    paginate(data) {
+      const chunks = lodash_chunk__WEBPACK_IMPORTED_MODULE_4___default()(data, 15);
+
+      this.pages = chunks.length;
+      if (!data.length) return data;
+      return chunks[this.currentPage - 1];
+    },
+
+    setPage(page) {
+      this.currentPage = page;
+    },
+
+    /**
+     *  helper function, returns ordered data
+     *  used in computed.getData
+     */
+    _orderData(data) {
+      const property = this.sortColumn;
+      const order = this.sortDirection;
+      return lodash_orderBy__WEBPACK_IMPORTED_MODULE_3___default()(data, c => c[property], order);
+    },
+
     /**
       *  unsort first, results are sorted by fuse.js
       */
@@ -3182,10 +3231,10 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=script&lang=js&":
-/*!****************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=script&lang=js& ***!
-  \****************************************************************************************************************************************************************************************/
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3252,8 +3301,9 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     getContent(data, field) {
-      let content = data[field.name];
-      if (!content || !content.length) return content;
+      let key = field.name;
+      let content = data[key];
+      if (!content) return content;
 
       if (content.length > 25) {
         content = content.substr(0, 25) + "...";
@@ -3360,6 +3410,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted() {
     this.fuse = new fuse_js__WEBPACK_IMPORTED_MODULE_0___default.a(this.collection, {
       shouldSort: true,
+      // includeMatches: true,
       threshold: 0.3,
       location: 0,
       distance: 100,
@@ -3378,9 +3429,10 @@ __webpack_require__.r(__webpack_exports__);
   methods: {
     search() {
       let results = null;
+      let matches = null;
 
       if (this.query.length > 0) {
-        results = this.fuse.search(this.query);
+        results = this.fuse.search(this.query); // results = this.addMatches(results);
       }
 
       this.$emit('search', results);
@@ -3542,7 +3594,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, ".scrollable-container {\n  max-height:65vh;\n  overflow: scroll;\n}\n.table {\n  width: 100%;\n  margin-top:1rem;\n}\n.table > thead > tr,\n.table > tbody > tr {\n  border-bottom-width:1px;\n  border-color:#e2e8f0;\n  transition: all .1s linear;\n}\n.table > thead > tr:first-child {\n  border-width:0;\n}\n.table > thead > tr:first-child > th {\n  text-align:right;\n}\n.table > tbody > tr:hover {\n  background-color:#f7fafc;\n}\n.table th,\n.table td {\n  padding-top:1rem;\n  padding-bottom:1rem;\n  padding-left:2rem;\n  padding-right:2rem;\n  color:#4a5568;\n}\n.table th,\n.table th button {\n  font-weight:600;\n}\n.table td {\n  font-weight:300;\n  text-align:center;\n}\n.table-sortable > thead > tr > th {\n  position:relative;\n}\n.table-sortable .sort-asc,\n.table-sortable .sort-desc {\n  color:#38b2ac;\n}\n.table-sortable .sort-asc:after,\n.table-sortable .sort-desc:after {\n  position:absolute;\n  display: inline-block;\n}\n.table-sortable .sort-asc:after {\n  content: '\\2191';\n}\n.table-sortable .sort-desc:after {\n  content: '\\2193';\n}\n", ""]);
+exports.push([module.i, ".scrollable-container {\n  max-height:65vh;\n  overflow: scroll;\n}\n.table {\n  width: 100%;\n  margin-top:1rem;\n}\n.table > thead > tr,\n.table > tbody > tr {\n  border-bottom-width:1px;\n  border-color:#e2e8f0;\n  transition: all .1s linear;\n}\n.table > thead > tr:first-child {\n  border-width:0;\n}\n.table > thead > tr:first-child > th {\n  text-align:right;\n}\n.table > tbody > tr:hover {\n  background-color:#f7fafc;\n}\n.table th,\n.table td {\n  padding-top:1rem;\n  padding-bottom:1rem;\n  padding-left:2rem;\n  padding-right:2rem;\n  color:#4a5568;\n}\n.table th,\n.table th button {\n  font-weight:600;\n}\n.table td {\n  font-weight:300;\n  text-align:center;\n}\n.table-sortable > thead > tr > th {\n  position:relative;\n}\n.table-sortable .sort-asc,\n.table-sortable .sort-desc {\n  color:#38b2ac;\n}\n.table-sortable .sort-asc:after,\n.table-sortable .sort-desc:after {\n  position:absolute;\n  display: inline-block;\n}\n.table-sortable .sort-asc:after {\n  content: '\\2191';\n}\n.table-sortable .sort-desc:after {\n  content: '\\2193';\n}\n.table-sortable > thead > tr > th.paginate {\n  text-align:left;\n}\n.table-sortable th.paginate > span {\n  font-weight:300;\n  color:#38b2ac;\n}\n.table-sortable th.paginate a {\n  color:#a0aec0;\n}\n.table-sortable th.paginate a:hover {\n  color:#38b2ac;\n}\n\n", ""]);
 
 // exports
 
@@ -6721,6 +6773,48 @@ module.exports = basePropertyDeep;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/_baseSlice.js":
+/*!*******************************************!*\
+  !*** ./node_modules/lodash/_baseSlice.js ***!
+  \*******************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+/**
+ * The base implementation of `_.slice` without an iteratee call guard.
+ *
+ * @private
+ * @param {Array} array The array to slice.
+ * @param {number} [start=0] The start position.
+ * @param {number} [end=array.length] The end position.
+ * @returns {Array} Returns the slice of `array`.
+ */
+function baseSlice(array, start, end) {
+  var index = -1,
+      length = array.length;
+
+  if (start < 0) {
+    start = -start > length ? 0 : (length + start);
+  }
+  end = end > length ? length : end;
+  if (end < 0) {
+    end += length;
+  }
+  length = start > end ? 0 : ((end - start) >>> 0);
+  start >>>= 0;
+
+  var result = Array(length);
+  while (++index < length) {
+    result[index] = array[index + start];
+  }
+  return result;
+}
+
+module.exports = baseSlice;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/_baseSortBy.js":
 /*!********************************************!*\
   !*** ./node_modules/lodash/_baseSortBy.js ***!
@@ -8008,6 +8102,47 @@ module.exports = isIndex;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/_isIterateeCall.js":
+/*!************************************************!*\
+  !*** ./node_modules/lodash/_isIterateeCall.js ***!
+  \************************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var eq = __webpack_require__(/*! ./eq */ "./node_modules/lodash/eq.js"),
+    isArrayLike = __webpack_require__(/*! ./isArrayLike */ "./node_modules/lodash/isArrayLike.js"),
+    isIndex = __webpack_require__(/*! ./_isIndex */ "./node_modules/lodash/_isIndex.js"),
+    isObject = __webpack_require__(/*! ./isObject */ "./node_modules/lodash/isObject.js");
+
+/**
+ * Checks if the given arguments are from an iteratee call.
+ *
+ * @private
+ * @param {*} value The potential iteratee value argument.
+ * @param {*} index The potential iteratee index or key argument.
+ * @param {*} object The potential iteratee object argument.
+ * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+ *  else `false`.
+ */
+function isIterateeCall(value, index, object) {
+  if (!isObject(object)) {
+    return false;
+  }
+  var type = typeof index;
+  if (type == 'number'
+        ? (isArrayLike(object) && isIndex(index, object.length))
+        : (type == 'string' && index in object)
+      ) {
+    return eq(object[index], value);
+  }
+  return false;
+}
+
+module.exports = isIterateeCall;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/_isKey.js":
 /*!***************************************!*\
   !*** ./node_modules/lodash/_isKey.js ***!
@@ -9065,6 +9200,67 @@ module.exports = toSource;
 
 /***/ }),
 
+/***/ "./node_modules/lodash/chunk.js":
+/*!**************************************!*\
+  !*** ./node_modules/lodash/chunk.js ***!
+  \**************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var baseSlice = __webpack_require__(/*! ./_baseSlice */ "./node_modules/lodash/_baseSlice.js"),
+    isIterateeCall = __webpack_require__(/*! ./_isIterateeCall */ "./node_modules/lodash/_isIterateeCall.js"),
+    toInteger = __webpack_require__(/*! ./toInteger */ "./node_modules/lodash/toInteger.js");
+
+/* Built-in method references for those with the same name as other `lodash` methods. */
+var nativeCeil = Math.ceil,
+    nativeMax = Math.max;
+
+/**
+ * Creates an array of elements split into groups the length of `size`.
+ * If `array` can't be split evenly, the final chunk will be the remaining
+ * elements.
+ *
+ * @static
+ * @memberOf _
+ * @since 3.0.0
+ * @category Array
+ * @param {Array} array The array to process.
+ * @param {number} [size=1] The length of each chunk
+ * @param- {Object} [guard] Enables use as an iteratee for methods like `_.map`.
+ * @returns {Array} Returns the new array of chunks.
+ * @example
+ *
+ * _.chunk(['a', 'b', 'c', 'd'], 2);
+ * // => [['a', 'b'], ['c', 'd']]
+ *
+ * _.chunk(['a', 'b', 'c', 'd'], 3);
+ * // => [['a', 'b', 'c'], ['d']]
+ */
+function chunk(array, size, guard) {
+  if ((guard ? isIterateeCall(array, size, guard) : size === undefined)) {
+    size = 1;
+  } else {
+    size = nativeMax(toInteger(size), 0);
+  }
+  var length = array == null ? 0 : array.length;
+  if (!length || size < 1) {
+    return [];
+  }
+  var index = 0,
+      resIndex = 0,
+      result = Array(nativeCeil(length / size));
+
+  while (index < length) {
+    result[resIndex++] = baseSlice(array, index, (index += size));
+  }
+  return result;
+}
+
+module.exports = chunk;
+
+
+/***/ }),
+
 /***/ "./node_modules/lodash/eq.js":
 /*!***********************************!*\
   !*** ./node_modules/lodash/eq.js ***!
@@ -9958,6 +10154,183 @@ function stubFalse() {
 }
 
 module.exports = stubFalse;
+
+
+/***/ }),
+
+/***/ "./node_modules/lodash/toFinite.js":
+/*!*****************************************!*\
+  !*** ./node_modules/lodash/toFinite.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var toNumber = __webpack_require__(/*! ./toNumber */ "./node_modules/lodash/toNumber.js");
+
+/** Used as references for various `Number` constants. */
+var INFINITY = 1 / 0,
+    MAX_INTEGER = 1.7976931348623157e+308;
+
+/**
+ * Converts `value` to a finite number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.12.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted number.
+ * @example
+ *
+ * _.toFinite(3.2);
+ * // => 3.2
+ *
+ * _.toFinite(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toFinite(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toFinite('3.2');
+ * // => 3.2
+ */
+function toFinite(value) {
+  if (!value) {
+    return value === 0 ? value : 0;
+  }
+  value = toNumber(value);
+  if (value === INFINITY || value === -INFINITY) {
+    var sign = (value < 0 ? -1 : 1);
+    return sign * MAX_INTEGER;
+  }
+  return value === value ? value : 0;
+}
+
+module.exports = toFinite;
+
+
+/***/ }),
+
+/***/ "./node_modules/lodash/toInteger.js":
+/*!******************************************!*\
+  !*** ./node_modules/lodash/toInteger.js ***!
+  \******************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var toFinite = __webpack_require__(/*! ./toFinite */ "./node_modules/lodash/toFinite.js");
+
+/**
+ * Converts `value` to an integer.
+ *
+ * **Note:** This method is loosely based on
+ * [`ToInteger`](http://www.ecma-international.org/ecma-262/7.0/#sec-tointeger).
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to convert.
+ * @returns {number} Returns the converted integer.
+ * @example
+ *
+ * _.toInteger(3.2);
+ * // => 3
+ *
+ * _.toInteger(Number.MIN_VALUE);
+ * // => 0
+ *
+ * _.toInteger(Infinity);
+ * // => 1.7976931348623157e+308
+ *
+ * _.toInteger('3.2');
+ * // => 3
+ */
+function toInteger(value) {
+  var result = toFinite(value),
+      remainder = result % 1;
+
+  return result === result ? (remainder ? result - remainder : result) : 0;
+}
+
+module.exports = toInteger;
+
+
+/***/ }),
+
+/***/ "./node_modules/lodash/toNumber.js":
+/*!*****************************************!*\
+  !*** ./node_modules/lodash/toNumber.js ***!
+  \*****************************************/
+/*! no static exports found */
+/***/ (function(module, exports, __webpack_require__) {
+
+var isObject = __webpack_require__(/*! ./isObject */ "./node_modules/lodash/isObject.js"),
+    isSymbol = __webpack_require__(/*! ./isSymbol */ "./node_modules/lodash/isSymbol.js");
+
+/** Used as references for various `Number` constants. */
+var NAN = 0 / 0;
+
+/** Used to match leading and trailing whitespace. */
+var reTrim = /^\s+|\s+$/g;
+
+/** Used to detect bad signed hexadecimal string values. */
+var reIsBadHex = /^[-+]0x[0-9a-f]+$/i;
+
+/** Used to detect binary string values. */
+var reIsBinary = /^0b[01]+$/i;
+
+/** Used to detect octal string values. */
+var reIsOctal = /^0o[0-7]+$/i;
+
+/** Built-in method references without a dependency on `root`. */
+var freeParseInt = parseInt;
+
+/**
+ * Converts `value` to a number.
+ *
+ * @static
+ * @memberOf _
+ * @since 4.0.0
+ * @category Lang
+ * @param {*} value The value to process.
+ * @returns {number} Returns the number.
+ * @example
+ *
+ * _.toNumber(3.2);
+ * // => 3.2
+ *
+ * _.toNumber(Number.MIN_VALUE);
+ * // => 5e-324
+ *
+ * _.toNumber(Infinity);
+ * // => Infinity
+ *
+ * _.toNumber('3.2');
+ * // => 3.2
+ */
+function toNumber(value) {
+  if (typeof value == 'number') {
+    return value;
+  }
+  if (isSymbol(value)) {
+    return NAN;
+  }
+  if (isObject(value)) {
+    var other = typeof value.valueOf == 'function' ? value.valueOf() : value;
+    value = isObject(other) ? (other + '') : other;
+  }
+  if (typeof value != 'string') {
+    return value === 0 ? value : +value;
+  }
+  value = value.replace(reTrim, '');
+  var isBinary = reIsBinary.test(value);
+  return (isBinary || reIsOctal.test(value))
+    ? freeParseInt(value.slice(2), isBinary ? 2 : 8)
+    : (reIsBadHex.test(value) ? NAN : +value);
+}
+
+module.exports = toNumber;
 
 
 /***/ }),
@@ -14184,7 +14557,41 @@ var render = function() {
           _c("tr", [
             _c(
               "th",
-              { attrs: { colspan: _vm.fields.length } },
+              {
+                staticClass: "paginate",
+                attrs: { colspan: _vm.fields.length - 2 }
+              },
+              _vm._l(_vm.pages, function(page) {
+                return _c(
+                  "span",
+                  { key: page, staticClass: "mx-1" },
+                  [
+                    page === _vm.currentPage
+                      ? [_c("span", [_vm._v(_vm._s(page))])]
+                      : [
+                          _c(
+                            "a",
+                            {
+                              attrs: { href: "#" },
+                              on: {
+                                click: function($event) {
+                                  return _vm.setPage(page)
+                                }
+                              }
+                            },
+                            [_c("span", [_vm._v(_vm._s(page))])]
+                          )
+                        ]
+                  ],
+                  2
+                )
+              }),
+              0
+            ),
+            _vm._v(" "),
+            _c(
+              "th",
+              { attrs: { colspan: 2 } },
               [
                 _vm.dataIsReady
                   ? _c("search-input", {
@@ -14203,9 +14610,7 @@ var render = function() {
                       { staticClass: "text-xs font-light text-gray-600" },
                       [
                         _vm._v(
-                          "Showing " +
-                            _vm._s(_vm.getSortedData.length) +
-                            " results"
+                          "Showing " + _vm._s(_vm.getData.length) + " results"
                         )
                       ]
                     )
@@ -14262,7 +14667,7 @@ var render = function() {
                     ]
                   )
                 ])
-              : _vm._l(_vm.getSortedData, function(data) {
+              : _vm._l(_vm.getData, function(data) {
                   return _c(
                     "tr",
                     { key: data[_vm.getFirstFieldProperty] },
@@ -14271,7 +14676,7 @@ var render = function() {
                         "td",
                         { key: field.name },
                         [
-                          _c("table-row", {
+                          _c("table-cell", {
                             attrs: { field: field, data: data }
                           })
                         ],
@@ -14295,10 +14700,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=template&id=e4d80f60&":
-/*!********************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=template&id=e4d80f60& ***!
-  \********************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=template&id=23826448&":
+/*!*********************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=template&id=23826448& ***!
+  \*********************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -30777,17 +31182,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/shared/DataTable/DataTableRow.vue":
-/*!*******************************************************************!*\
-  !*** ./resources/js/components/shared/DataTable/DataTableRow.vue ***!
-  \*******************************************************************/
+/***/ "./resources/js/components/shared/DataTable/DataTableCell.vue":
+/*!********************************************************************!*\
+  !*** ./resources/js/components/shared/DataTable/DataTableCell.vue ***!
+  \********************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _DataTableRow_vue_vue_type_template_id_e4d80f60___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DataTableRow.vue?vue&type=template&id=e4d80f60& */ "./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=template&id=e4d80f60&");
-/* harmony import */ var _DataTableRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DataTableRow.vue?vue&type=script&lang=js& */ "./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=script&lang=js&");
+/* harmony import */ var _DataTableCell_vue_vue_type_template_id_23826448___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./DataTableCell.vue?vue&type=template&id=23826448& */ "./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=template&id=23826448&");
+/* harmony import */ var _DataTableCell_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DataTableCell.vue?vue&type=script&lang=js& */ "./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -30797,9 +31202,9 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _DataTableRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _DataTableRow_vue_vue_type_template_id_e4d80f60___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _DataTableRow_vue_vue_type_template_id_e4d80f60___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _DataTableCell_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _DataTableCell_vue_vue_type_template_id_23826448___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _DataTableCell_vue_vue_type_template_id_23826448___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
   null,
@@ -30809,38 +31214,38 @@ var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "resources/js/components/shared/DataTable/DataTableRow.vue"
+component.options.__file = "resources/js/components/shared/DataTable/DataTableCell.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=script&lang=js&":
-/*!********************************************************************************************!*\
-  !*** ./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=script&lang=js& ***!
-  \********************************************************************************************/
+/***/ "./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=script&lang=js&":
+/*!*********************************************************************************************!*\
+  !*** ./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=script&lang=js& ***!
+  \*********************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./DataTableRow.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableRow_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableCell_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./DataTableCell.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableCell_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=template&id=e4d80f60&":
-/*!**************************************************************************************************!*\
-  !*** ./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=template&id=e4d80f60& ***!
-  \**************************************************************************************************/
+/***/ "./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=template&id=23826448&":
+/*!***************************************************************************************************!*\
+  !*** ./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=template&id=23826448& ***!
+  \***************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableRow_vue_vue_type_template_id_e4d80f60___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./DataTableRow.vue?vue&type=template&id=e4d80f60& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/DataTable/DataTableRow.vue?vue&type=template&id=e4d80f60&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableRow_vue_vue_type_template_id_e4d80f60___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableCell_vue_vue_type_template_id_23826448___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./DataTableCell.vue?vue&type=template&id=23826448& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/shared/DataTable/DataTableCell.vue?vue&type=template&id=23826448&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableCell_vue_vue_type_template_id_23826448___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableRow_vue_vue_type_template_id_e4d80f60___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_DataTableCell_vue_vue_type_template_id_23826448___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -31171,45 +31576,6 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/helpers/appendFromNestedProp.js":
-/*!******************************************************!*\
-  !*** ./resources/js/helpers/appendFromNestedProp.js ***!
-  \******************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers_getDescendantProp__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/getDescendantProp */ "./resources/js/helpers/getDescendantProp.js");
-
-/**
- * Get a property from a nested object and pull it up
- * 
- * @param {Array} collection 
- * @param {String} key 
- * @param {String} selector (prop1 || prop1.prop2 || ..... )
- * 
- * 
- * collection = [{a: 'b', c: {d: 'e'}}]  
- * {key: 'foo', selector: 'c.d'}
- * result => [ {a: 'b', c: {d: 'e'}, foo: 'e' } ]
- */
-
-/* harmony default export */ __webpack_exports__["default"] = (function (collection, {
-  key,
-  selector
-}) {
-  return collection.map(item => {
-    const value = Object(_helpers_getDescendantProp__WEBPACK_IMPORTED_MODULE_0__["default"])(item, selector);
-
-    if (!value) console.warn(`Value not found: [${selector}]`);
-    item[key] = value;
-    return item;
-  });
-});
-
-/***/ }),
-
 /***/ "./resources/js/helpers/formatDate.js":
 /*!********************************************!*\
   !*** ./resources/js/helpers/formatDate.js ***!
@@ -31229,39 +31595,10 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 /* harmony default export */ __webpack_exports__["default"] = (function (dateOptions = {}, dateString) {
+  dateString = dateString && dateString.substr(0, 10); // only ymd
+
   const locale = dateOptions.locale || _userPreferences__WEBPACK_IMPORTED_MODULE_0__["default"].locale;
   return new Date(dateString).toLocaleDateString(locale, dateOptions);
-});
-
-/***/ }),
-
-/***/ "./resources/js/helpers/getDescendantProp.js":
-/*!***************************************************!*\
-  !*** ./resources/js/helpers/getDescendantProp.js ***!
-  \***************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/**
- * retrieve an object's nested prop using dot notation
- * 
- * let obj = {a: {b: {c: 'd'}}};
- * let val = func(obj, 'a.b.c') // results => 'd'
- * 
- * @param {Object} obj 
- * @param {String} descendant (prop1 || prop1.prop2 || ..... )
- * 
- * https://stackoverflow.com/questions/8051975/access-object-child-properties-using-a-dot-notation-string
- * 
- */
-/* harmony default export */ __webpack_exports__["default"] = (function (obj, descendant) {
-  let arr = descendant.split('.');
-
-  while (arr.length && (obj = obj[arr.shift()]));
-
-  return obj;
 });
 
 /***/ }),

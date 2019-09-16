@@ -35,6 +35,7 @@
         mounted() {
             this.fuse = new Fuse(this.collection, {
                 shouldSort: true,
+                // includeMatches: true,
                 threshold: 0.3,
                 location: 0,
                 distance: 100,
@@ -53,11 +54,18 @@
         methods: {
             search(){
                 let results = null;
+                let matches = null;
                 if (this.query.length > 0) {
                     results = this.fuse.search(this.query);
+                    // results = this.addMatches(results);
                 }
+                
                 this.$emit('search', results);
             },
+            // addMatches(results){
+            //     if (!results.length) return results;
+            //     return  results.map(r => ({ ...r.item, matches: r.matches }));
+            // }
         }
     }
 </script>
