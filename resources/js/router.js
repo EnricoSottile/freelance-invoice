@@ -9,7 +9,7 @@ import InvoiceIndex from './components/invoice/Index/InvoiceIndex'
 import InvoiceCreate from './components/invoice/InvoiceCreate'
 import InvoiceShow from './components/invoice/InvoiceShow'
 
-import PaymentIndex from './components/payment/PaymentIndex'
+import PaymentIndex from './components/payment/Index/PaymentIndex'
 import PaymentShow from './components/payment/PaymentShow'
 
 const routes = [

@@ -20,7 +20,11 @@ class PaymentController extends Controller
      */
     public function index()
     {
-        return Auth::user()->payments()->get()->toJson();
+        return Auth::user()
+            ->payments()
+            ->with('invoice:id,number')
+            ->get()
+            ->toJson();
     }
 
 

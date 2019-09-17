@@ -44,7 +44,8 @@
                 <payment-index 
                     v-if="paymentsAreReady" 
                     :shouldHandleOwnLoading="false" 
-                    :filteredPayments="payments">
+                    :filteredPayments="payments"
+                    :hiddenFields="['invoice_number', 'created']">
                 </payment-index>
             </div>
 
@@ -59,7 +60,7 @@
 <script>
     import Customer from '@classes/Customer'
     import InvoiceIndex from '@components/invoice/Index/InvoiceIndex'
-    import PaymentIndex from '@components/payment/PaymentIndex'
+    import PaymentIndex from '@components/payment/Index/PaymentIndex'
     import Upload from '@components/upload/Upload'
 
 

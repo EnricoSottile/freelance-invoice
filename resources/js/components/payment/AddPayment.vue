@@ -3,6 +3,7 @@
 
         <!-- ADD NEW PAYMENT -->
         <button id="addPayment" 
+            class="btn btn-default"
             v-if="!newPayment" 
             @click.prevent="addNewPayment()">
             add new payment

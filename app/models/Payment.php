@@ -2,12 +2,17 @@
 
 namespace App\models;
 
+use App\Models\Invoice;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Payment extends Model
 {
     use SoftDeletes;
+
+    public function invoice(){
+        return $this->belongsTo(Invoice::class);
+    }
 
     /**
      * 

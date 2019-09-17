@@ -1,8 +1,9 @@
 <template>
     <div>
 
-        <div class="scrollable-container">
-            <table class="table table-sortable">
+        <div class="mt-8 pt-4 border-gray-200 border-t-2">
+           <div class="scrollable-container">
+                <table class="table table-sortable">
                 <thead>
                     <tr>
                         <th :colspan="fields.length -2" class="paginate">
@@ -41,14 +42,17 @@
                         </td>
                     </tr>
                     <tr v-else v-for="data in getData" v-bind:key="data[getFirstFieldProperty]">
-                        <td v-for="field in fields" v-bind:key="field.name">
-                            
-                            <table-cell :field="field" :data="data"></table-cell>
-                            
-                        </td>
+
+                        <!-- <slot name="table-row"> -->
+                            <td v-for="field in fields" v-bind:key="field.name">
+                                <table-cell :field="field" :data="data"></table-cell>
+                            </td>
+                        <!-- </slot> -->
+
                     </tr>
                 </tbody>
             </table>
+           </div>
         </div>
         
     </div>

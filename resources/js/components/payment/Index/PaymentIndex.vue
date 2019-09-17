@@ -1,57 +1,40 @@
 <template>
-    <div>
-        <h1>Payment index</h1>
+    <div class="card">
+        
 
-            <p v-if="!paymentsAreReady">Loading</p>
-
-            <template v-else>
+        <div class="flex mt-10 justify-between">
+                <h1 class="font-light text-2xl text-gray-500">Payments</h1>
                 
-
-
-                <!-- ADD NEW PAYMENT -->
                 <add-payment
                     v-if="invoice"
                     :invoice="invoice"
                     :paymentClass="paymentClass"
                     v-on:paymentWasSaved="handlePaymentWasSaved">
                 </add-payment>
+        </div>
+
+
+        <data-table 
+        :collection="payments" 
+        :fields="fields" 
+        :dataIsReady="paymentsAreReady">
+        </data-table>
 
 
 
-                <!-- EXISTING PAYMENTS -->
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Id</th>
-                            <th>User id</th>
-                            <th>Invoice id</th>
-                            <th>net_amount</th>
-                            <th>due_date</th>
-                            <th>payed_date</th>
-                            <th>actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <payment-row 
-                            v-for="payment in payments" 
-                            :paymentClass="paymentClass"
-                            :payment="payment" 
-                            v-on:paymentWasUpdated="handlePaymentWasUpdated"
-                            v-on:paymentWasDeleted="handlePaymentWasDeleted($event, payment.id)"
-                            v-bind:key="payment.id">
-                        </payment-row>
-                    </tbody>
-                </table>
-
-            </template>
 
     </div>
+
+
 </template>
 
 <script>
     import Payment from '@classes/Payment'
-    import PaymentRow from './PaymentRow'
-    import AddPayment from './AddPayment'
+    import PaymentRow from '../PaymentRow'
+    import AddPayment from '../AddPayment'
+
+    import DataTable from '@components/shared/DataTable/DataTable'
+    import DataTableFields from './DataTableFields'
     
 
     export default {
@@ -68,20 +51,31 @@
             invoice: {
                 type: Object,
                 required: false,
+            },
+            hiddenFields: {
+                type: Array,
+                required: false,
+
+                // Props with type Object/Array must use a factory function 
+                // to return the default value.
+                default: () => []
             }
         },
 
         components: {
             'payment-row': PaymentRow,
-            'add-payment': AddPayment
+            'add-payment': AddPayment,
+            'data-table': DataTable
         },
 
         created(){
             this.getPayments();
+            this.setDataTableFields();
         },
 
         beforeRouteUpdate (to, from, next) {
             this.getPayments();
+            this.setDataTableFields();
             next();
         },
 
@@ -91,6 +85,8 @@
                 paymentClass: Payment,
                 payments: [],
                 paymentsAreReady: false,
+
+                fields: null
             }
         },
 
@@ -101,10 +97,17 @@
         },
 
         methods: {
+            // programmatically hide fields from DataTable
+            setDataTableFields(){
+                this.fields = DataTableFields.filter(field => {
+                    return ! this.hiddenFields.includes(field.name);
+                });
+            },
+
             async getPayments(){
                 if (this.shouldHandleOwnLoading) {
                     const { data } = await this.paymentClass.index();
-                    this.payments = data;
+                    this.payments =  data.map(p => ({...p, invoice_number: p.invoice.number}));
                 } else {
                     this.payments = this.filteredPayments;
                 }

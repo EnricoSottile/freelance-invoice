@@ -1,7 +1,10 @@
 <template>
     <div class="card">
 
-        <div class="flex">
+
+        <div class="flex mt-10 justify-between">
+            <h1 class="font-light text-2xl text-gray-500">Customers</h1>
+
             <router-link :to="{ name: 'customer.create'}" class="btn btn-default">
                 Add new Customer
             </router-link>
@@ -11,7 +14,8 @@
         <data-table 
         :collection="customers" 
         :fields="fields" 
-        :dataIsReady="customersAreReady"></data-table>
+        :dataIsReady="customersAreReady">
+        </data-table>
 
     </div>
 </template>

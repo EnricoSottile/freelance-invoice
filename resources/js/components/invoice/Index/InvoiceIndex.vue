@@ -1,7 +1,11 @@
 <template>
     <div class="card">
 
-        <div class="flex">
+        
+
+        <div class="flex mt-10 justify-between">
+                <h1 class="font-light text-2xl text-gray-500">Invoices</h1>
+
                 <!-- ADD NEW INVOICE -->
                 <template v-if="customer !== null">
                     <router-link class="btn btn-default" :to="{ name: 'customer.invoice.create', params: {customer}}">
