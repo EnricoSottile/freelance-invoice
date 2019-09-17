@@ -4,54 +4,35 @@
         <div class="mt-8 pt-4 border-gray-200 border-t-2">
            <div class="scrollable-container">
 
+                <!-- TOOLBAR -->
                 <div class="flex items-center px-6 mb-6">
-                        <div class="paginate w-1/3">
-                            <span class="mx-1 flex items-center justify-between">
+                    <div class="paginate w-1/3">
 
-                                <span class="">
-                                    <small class="text-gray-500">items per page</small>
-                                    <custom-select v-model="itemsPerPage" @change="currentPage = 1">
-                                        <option value="5">5</option>
-                                        <option value="10">10</option>
-                                        <option value="25">25</option>
-                                        <option value="100">100</option>
-                                    </custom-select>
-                                </span>
-                                
-                                <small class="text-gray-500">
-                                    {{ getPaginationSegment.first }}
-                                    -
-                                    {{ getPaginationSegment.last }}
-                                    of 
-                                    {{ getPaginationSegment.total }}
-                                </small>
+                        <paginator-controls 
+                            v-model="itemsPerPage"
+                            :totalItems="totalItemsLength" 
+                            :currentPage="currentPage"
+                            :itemsPerPage="itemsPerPage"
+                            :pages="pages"
+                            @setPage="setPage($event)"></paginator-controls>                        
 
-                                <span class="flex">
-                                    <button class="btn btn-xs btn-default btn-circle text-xl" 
-                                        :disabled="!hasPrevPage" 
-                                        @click.prevent="setPage('prev')">&lsaquo;</button>
-                                    <button class="btn btn-xs btn-default btn-circle text-xl" 
-                                        :disabled="!hasNextPage" 
-                                        @click.prevent="setPage('next')">&rsaquo;</button>
-                                </span>
+                    </div>
+                    <div class="w-1/3"></div>
+                    <div class="w-1/3 flex justify-end">
 
-                            </span>
-
-                        </div>
-                        <div class="w-1/3"></div>
-                        <div class="w-1/3 flex justify-end">
-                            <div class="relative">
-                                <search-input 
-                                    v-if="dataIsReady" 
-                                    :collection="collection" 
-                                    :fields="fields" 
-                                    @search="handleSearchResult($event)"></search-input>
+                        <div class="relative">
+                            <search-input 
+                                v-if="dataIsReady" 
+                                :collection="collection" 
+                                :fields="fields" 
+                                @search="handleSearchResult($event)"></search-input>
                             <small v-if="searchResults" class="text-xs absolute font-light text-gray-600">Showing {{ getData.length }} results</small>
-                            </div>
                         </div>
+
+                    </div>
                 </div>
 
-
+                <!-- TABLE -->
                 <table class="table table-sortable">
                 <thead>
                     <tr>
@@ -86,7 +67,7 @@
 </template>
 
 <script>
-    import Select from '@components/shared/Select'
+    import PaginatorControls from '@components/shared/PaginatorControls'
     import DataTableCell from './DataTableCell'
     import Search from '@components/shared/Search'
     import JSONSchema from './fieldsSchema'
@@ -100,7 +81,7 @@
 
         components: {
             'table-cell': DataTableCell,
-            'custom-select': Select,
+            'paginator-controls': PaginatorControls,
             'search-input': Search,
         },
 
@@ -142,6 +123,16 @@
 
 
         computed: {
+
+            /**
+             * Used in paginator-controls
+             * returns the length of all items available
+             * because doing getData.length returns number of chunks
+             */
+            totalItemsLength(){
+                return (this.searchResults || this.collection).length
+            },
+
             /**
              * helper method, use first item in collection as key
              * (usually id)
@@ -164,23 +155,7 @@
                 return this.paginate(orderedData);                
             },
 
-            getPaginationSegment(){
-                const first = (this.itemsPerPage * (this.currentPage-1)) +1;
-                const last = this.currentPage * this.itemsPerPage;
-                const total = (this.searchResults || this.collection).length
-                
-                return {
-                    first,
-                    last: last > total ? total : last,
-                    total
-                }
-            },
-            hasPrevPage(){
-                return this.currentPage > 1;
-            },
-            hasNextPage(){
-                return this.currentPage < this.pages;
-            }
+
         },
 
         methods: {
@@ -193,14 +168,11 @@
                 return chunks[ this.currentPage -1 ];
             },
 
-            setPage(direction) {
-                if (direction === 'next' && this.hasNextPage) {
-                    this.currentPage++;
-                }
-
-                if (direction === 'prev' && this.hasPrevPage) {
-                     this.currentPage--;
-                }
+            setPage(param) {
+                param === 'next' && this.currentPage++;
+                param === 'prev' && this.currentPage--;
+                
+                if (param === 'first') this.currentPage = 1;
             },
 
             /**
@@ -270,13 +242,6 @@
         transition: all .1s linear;
     }
 
-    .table > thead > tr:first-child {
-        @apply border-0;
-    }
-
-    .table > thead > tr:first-child > th {
-        @apply text-right;
-    }
 
     .table > tbody > tr:hover {
         @apply bg-gray-100;
