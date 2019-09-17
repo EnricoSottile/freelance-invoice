@@ -13,7 +13,7 @@
                                     <span>{{ page }}</span>
                                 </template>
                                 <template v-else>
-                                    <a @click="setPage(page)" href="#"><span>{{ page }}</span></a>
+                                    <a @click.prevent="setPage(page)" href="#"><span>{{ page }}</span></a>
                                 </template>
                             </span>                            
                         </th>
@@ -266,12 +266,12 @@
     }
 
     .table-sortable th.paginate > span {
-         @apply font-light text-teal-500;
+         @apply font-medium text-teal-500;
 
     }
 
     .table-sortable th.paginate a {
-        @apply text-gray-500;
+        @apply text-gray-500 font-light;
     }
 
     .table-sortable th.paginate a:hover {

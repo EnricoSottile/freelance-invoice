@@ -3594,7 +3594,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../../node_modules/c
 
 
 // module
-exports.push([module.i, ".scrollable-container {\n  max-height:65vh;\n  overflow: scroll;\n}\n.table {\n  width: 100%;\n  margin-top:1rem;\n}\n.table > thead > tr,\n.table > tbody > tr {\n  border-bottom-width:1px;\n  border-color:#e2e8f0;\n  transition: all .1s linear;\n}\n.table > thead > tr:first-child {\n  border-width:0;\n}\n.table > thead > tr:first-child > th {\n  text-align:right;\n}\n.table > tbody > tr:hover {\n  background-color:#f7fafc;\n}\n.table th,\n.table td {\n  padding-top:1rem;\n  padding-bottom:1rem;\n  padding-left:2rem;\n  padding-right:2rem;\n  color:#4a5568;\n}\n.table th,\n.table th button {\n  font-weight:600;\n}\n.table td {\n  font-weight:300;\n  text-align:center;\n}\n.table-sortable > thead > tr > th {\n  position:relative;\n}\n.table-sortable .sort-asc,\n.table-sortable .sort-desc {\n  color:#38b2ac;\n}\n.table-sortable .sort-asc:after,\n.table-sortable .sort-desc:after {\n  position:absolute;\n  display: inline-block;\n}\n.table-sortable .sort-asc:after {\n  content: '\\2191';\n}\n.table-sortable .sort-desc:after {\n  content: '\\2193';\n}\n.table-sortable > thead > tr > th.paginate {\n  text-align:left;\n}\n.table-sortable th.paginate > span {\n  font-weight:300;\n  color:#38b2ac;\n}\n.table-sortable th.paginate a {\n  color:#a0aec0;\n}\n.table-sortable th.paginate a:hover {\n  color:#38b2ac;\n}\n\n", ""]);
+exports.push([module.i, ".scrollable-container {\n  max-height:65vh;\n  overflow: scroll;\n}\n.table {\n  width: 100%;\n  margin-top:1rem;\n}\n.table > thead > tr,\n.table > tbody > tr {\n  border-bottom-width:1px;\n  border-color:#e2e8f0;\n  transition: all .1s linear;\n}\n.table > thead > tr:first-child {\n  border-width:0;\n}\n.table > thead > tr:first-child > th {\n  text-align:right;\n}\n.table > tbody > tr:hover {\n  background-color:#f7fafc;\n}\n.table th,\n.table td {\n  padding-top:1rem;\n  padding-bottom:1rem;\n  padding-left:2rem;\n  padding-right:2rem;\n  color:#4a5568;\n}\n.table th,\n.table th button {\n  font-weight:600;\n}\n.table td {\n  font-weight:300;\n  text-align:center;\n}\n.table-sortable > thead > tr > th {\n  position:relative;\n}\n.table-sortable .sort-asc,\n.table-sortable .sort-desc {\n  color:#38b2ac;\n}\n.table-sortable .sort-asc:after,\n.table-sortable .sort-desc:after {\n  position:absolute;\n  display: inline-block;\n}\n.table-sortable .sort-asc:after {\n  content: '\\2191';\n}\n.table-sortable .sort-desc:after {\n  content: '\\2193';\n}\n.table-sortable > thead > tr > th.paginate {\n  text-align:left;\n}\n.table-sortable th.paginate > span {\n  font-weight:500;\n  color:#38b2ac;\n}\n.table-sortable th.paginate a {\n  color:#a0aec0;\n  font-weight:300;\n}\n.table-sortable th.paginate a:hover {\n  color:#38b2ac;\n}\n\n", ""]);
 
 // exports
 
@@ -14575,6 +14575,7 @@ var render = function() {
                               attrs: { href: "#" },
                               on: {
                                 click: function($event) {
+                                  $event.preventDefault()
                                   return _vm.setPage(page)
                                 }
                               }
