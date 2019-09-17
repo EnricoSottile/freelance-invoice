@@ -3122,6 +3122,16 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -3161,7 +3171,8 @@ __webpack_require__.r(__webpack_exports__);
       searchResults: null,
       // [] only when search query.length,
       pages: 0,
-      currentPage: 1
+      currentPage: 1,
+      itemsPerPage: 25
     };
   },
 
@@ -3191,20 +3202,45 @@ __webpack_require__.r(__webpack_exports__);
 
 
       return this.paginate(orderedData);
+    },
+
+    getPaginationSegment() {
+      const first = this.itemsPerPage * (this.currentPage - 1) + 1;
+      const last = this.currentPage * this.itemsPerPage;
+      const total = (this.searchResults || this.collection).length;
+      return {
+        first,
+        last: last > total ? total : last,
+        total
+      };
+    },
+
+    hasPrevPage() {
+      return this.currentPage > 1;
+    },
+
+    hasNextPage() {
+      return this.currentPage < this.pages;
     }
 
   },
   methods: {
     paginate(data) {
-      const chunks = lodash_chunk__WEBPACK_IMPORTED_MODULE_4___default()(data, 15);
+      const chunks = lodash_chunk__WEBPACK_IMPORTED_MODULE_4___default()(data, this.itemsPerPage);
 
       this.pages = chunks.length;
       if (!data.length) return data;
       return chunks[this.currentPage - 1];
     },
 
-    setPage(page) {
-      this.currentPage = page;
+    setPage(direction) {
+      if (direction === 'next' && this.hasNextPage) {
+        this.currentPage++;
+      }
+
+      if (direction === 'prev' && this.hasPrevPage) {
+        this.currentPage--;
+      }
     },
 
     /**
@@ -3222,6 +3258,7 @@ __webpack_require__.r(__webpack_exports__);
       */
     handleSearchResult(data) {
       this.unsort();
+      this.currentPage = 1;
       this.searchResults = data;
     },
 
@@ -14565,33 +14602,94 @@ var render = function() {
                   staticClass: "paginate",
                   attrs: { colspan: _vm.fields.length - 2 }
                 },
-                _vm._l(_vm.pages, function(page) {
-                  return _c(
-                    "span",
-                    { key: page, staticClass: "mx-1" },
-                    [
-                      page === _vm.currentPage
-                        ? [_c("span", [_vm._v(_vm._s(page))])]
-                        : [
-                            _c(
-                              "a",
-                              {
-                                attrs: { href: "#" },
-                                on: {
-                                  click: function($event) {
-                                    $event.preventDefault()
-                                    return _vm.setPage(page)
-                                  }
-                                }
-                              },
-                              [_c("span", [_vm._v(_vm._s(page))])]
-                            )
+                [
+                  _c("span", { staticClass: "mx-1" }, [
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.itemsPerPage,
+                            expression: "itemsPerPage"
+                          }
+                        ],
+                        on: {
+                          change: [
+                            function($event) {
+                              var $$selectedVal = Array.prototype.filter
+                                .call($event.target.options, function(o) {
+                                  return o.selected
+                                })
+                                .map(function(o) {
+                                  var val = "_value" in o ? o._value : o.value
+                                  return val
+                                })
+                              _vm.itemsPerPage = $event.target.multiple
+                                ? $$selectedVal
+                                : $$selectedVal[0]
+                            },
+                            function($event) {
+                              _vm.currentPage = 1
+                            }
                           ]
-                    ],
-                    2
-                  )
-                }),
-                0
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { value: "5" } }, [_vm._v("5")]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "10" } }, [
+                          _vm._v("10")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "25" } }, [
+                          _vm._v("25")
+                        ]),
+                        _vm._v(" "),
+                        _c("option", { attrs: { value: "100" } }, [
+                          _vm._v("100")
+                        ])
+                      ]
+                    ),
+                    _vm._v(
+                      "\n\n                            " +
+                        _vm._s(_vm.getPaginationSegment.first) +
+                        "\n                            -\n                            " +
+                        _vm._s(_vm.getPaginationSegment.last) +
+                        "\n                            of \n                            " +
+                        _vm._s(_vm.getPaginationSegment.total) +
+                        "\n\n                            "
+                    ),
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#", disabled: !_vm.hasPrevPage },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.setPage("prev")
+                          }
+                        }
+                      },
+                      [_vm._v("<")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "a",
+                      {
+                        attrs: { href: "#", disabled: !_vm.hasNextPage },
+                        on: {
+                          click: function($event) {
+                            $event.preventDefault()
+                            return _vm.setPage("next")
+                          }
+                        }
+                      },
+                      [_vm._v(">")]
+                    )
+                  ])
+                ]
               ),
               _vm._v(" "),
               _c(

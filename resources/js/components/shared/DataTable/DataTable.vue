@@ -7,16 +7,26 @@
                 <thead>
                     <tr>
                         <th :colspan="fields.length -2" class="paginate">
-                            <span class="mx-1"
-                                v-for="page in pages" 
-                                v-bind:key="page">
-                                <template v-if="page === currentPage">
-                                    <span>{{ page }}</span>
-                                </template>
-                                <template v-else>
-                                    <a @click.prevent="setPage(page)" href="#"><span>{{ page }}</span></a>
-                                </template>
-                            </span>                            
+                            <span class="mx-1">
+                                
+                                <select v-model="itemsPerPage" @change="currentPage = 1">
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="100">100</option>
+                                </select>
+
+                                {{ getPaginationSegment.first }}
+                                -
+                                {{ getPaginationSegment.last }}
+                                of 
+                                {{ getPaginationSegment.total }}
+
+                                <a href="#" :disabled="!hasPrevPage" @click.prevent="setPage('prev')">&lt;</a>
+                                <a href="#" :disabled="!hasNextPage" @click.prevent="setPage('next')">&gt;</a>
+
+                            </span>
+
                         </th>
                         <th :colspan="2">
                             <search-input 
@@ -100,8 +110,10 @@
                 sortDirection: 'asc',
                 searchResults: null, // [] only when search query.length,
 
+
                 pages: 0,
-                currentPage: 1
+                currentPage: 1,
+                itemsPerPage: 25,
             }
         },
 
@@ -128,15 +140,33 @@
                 // 'this.searchResults' is always 'null'
                 const data = this.searchResults || this.collection;
                 const orderedData = this._orderData(data);
-
+                
                 // sort and 'search', then paginate
                 return this.paginate(orderedData);                
             },
+
+            getPaginationSegment(){
+                const first = (this.itemsPerPage * (this.currentPage-1)) +1;
+                const last = this.currentPage * this.itemsPerPage;
+                const total = (this.searchResults || this.collection).length
+                
+                return {
+                    first,
+                    last: last > total ? total : last,
+                    total
+                }
+            },
+            hasPrevPage(){
+                return this.currentPage > 1;
+            },
+            hasNextPage(){
+                return this.currentPage < this.pages;
+            }
         },
 
         methods: {
             paginate(data) {
-                const chunks = _chunk(data, 15);
+                const chunks = _chunk(data, this.itemsPerPage);
                 this.pages = chunks.length;
 
                 if (!data.length) return data;
@@ -144,8 +174,14 @@
                 return chunks[ this.currentPage -1 ];
             },
 
-            setPage(page) {
-                this.currentPage = page;
+            setPage(direction) {
+                if (direction === 'next' && this.hasNextPage) {
+                    this.currentPage++;
+                }
+
+                if (direction === 'prev' && this.hasPrevPage) {
+                     this.currentPage--;
+                }
             },
 
             /**
@@ -163,6 +199,7 @@
              */
             handleSearchResult(data) {
                 this.unsort();
+                this.currentPage = 1;
                 this.searchResults = data;
             },
 
