@@ -3,40 +3,57 @@
 
         <div class="mt-8 pt-4 border-gray-200 border-t-2">
            <div class="scrollable-container">
-                <table class="table table-sortable">
-                <thead>
-                    <tr>
-                        <th :colspan="fields.length -2" class="paginate">
-                            <span class="mx-1">
+
+                <div class="flex items-center px-6 mb-6">
+                        <div class="paginate w-1/3">
+                            <span class="mx-1 flex items-center justify-between">
+
+                                <span class="">
+                                    <small class="text-gray-500">items per page</small>
+                                    <custom-select v-model="itemsPerPage" @change="currentPage = 1">
+                                        <option value="5">5</option>
+                                        <option value="10">10</option>
+                                        <option value="25">25</option>
+                                        <option value="100">100</option>
+                                    </custom-select>
+                                </span>
                                 
-                                <select v-model="itemsPerPage" @change="currentPage = 1">
-                                    <option value="5">5</option>
-                                    <option value="10">10</option>
-                                    <option value="25">25</option>
-                                    <option value="100">100</option>
-                                </select>
+                                <small class="text-gray-500">
+                                    {{ getPaginationSegment.first }}
+                                    -
+                                    {{ getPaginationSegment.last }}
+                                    of 
+                                    {{ getPaginationSegment.total }}
+                                </small>
 
-                                {{ getPaginationSegment.first }}
-                                -
-                                {{ getPaginationSegment.last }}
-                                of 
-                                {{ getPaginationSegment.total }}
-
-                                <a href="#" :disabled="!hasPrevPage" @click.prevent="setPage('prev')">&lt;</a>
-                                <a href="#" :disabled="!hasNextPage" @click.prevent="setPage('next')">&gt;</a>
+                                <span class="flex">
+                                    <button class="btn btn-xs btn-default btn-circle text-xl" 
+                                        :disabled="!hasPrevPage" 
+                                        @click.prevent="setPage('prev')">&lsaquo;</button>
+                                    <button class="btn btn-xs btn-default btn-circle text-xl" 
+                                        :disabled="!hasNextPage" 
+                                        @click.prevent="setPage('next')">&rsaquo;</button>
+                                </span>
 
                             </span>
 
-                        </th>
-                        <th :colspan="2">
-                            <search-input 
-                            v-if="dataIsReady" 
-                            :collection="collection" 
-                            :fields="fields" 
-                            @search="handleSearchResult($event)"></search-input>
-                            <small v-if="searchResults" class="text-xs font-light text-gray-600">Showing {{ getData.length }} results</small>
-                        </th>
-                    </tr>
+                        </div>
+                        <div class="w-1/3"></div>
+                        <div class="w-1/3 flex justify-end">
+                            <div class="relative">
+                                <search-input 
+                                    v-if="dataIsReady" 
+                                    :collection="collection" 
+                                    :fields="fields" 
+                                    @search="handleSearchResult($event)"></search-input>
+                            <small v-if="searchResults" class="text-xs absolute font-light text-gray-600">Showing {{ getData.length }} results</small>
+                            </div>
+                        </div>
+                </div>
+
+
+                <table class="table table-sortable">
+                <thead>
                     <tr>
                         <th v-for="field in fields" v-bind:key="field.name">
                             <button @click.prevent="sort(field.name)" :class="getSortedClass(field.name)">
@@ -69,6 +86,7 @@
 </template>
 
 <script>
+    import Select from '@components/shared/Select'
     import DataTableCell from './DataTableCell'
     import Search from '@components/shared/Search'
     import JSONSchema from './fieldsSchema'
@@ -82,6 +100,7 @@
 
         components: {
             'table-cell': DataTableCell,
+            'custom-select': Select,
             'search-input': Search,
         },
 

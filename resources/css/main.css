@@ -16,6 +16,10 @@ a:hover {
     transition: all .1s linear;
 }
 
+.btn-xs {
+    @apply p-1;
+}
+
 .btn:hover {
     @apply text-teal-500;
 }
@@ -27,6 +31,21 @@ a:hover {
 .btn-default:hover {
     @apply bg-gray-200;
 }
+
+.btn-circle {
+    @apply p-0 m-2 rounded-full h-10 w-10 flex items-center justify-center;
+}
+
+
+.btn:disabled {
+    @apply bg-gray-100 text-gray-300;
+}
+
+.btn:disabled:hover {
+    @apply bg-gray-100 text-gray-300;
+    cursor:not-allowed;
+}
+
 
 
 /* CARD */
