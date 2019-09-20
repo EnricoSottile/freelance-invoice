@@ -4,6 +4,22 @@
         <div class="card-title">
             <h1>
                 Payment {{ payment.id }} of {{ formatDate({}, payment.created_at) }}
+
+
+                <button 
+                    v-if="isDestroyable"
+                    id="destroyPayment"
+                    @click="destroyPayment"
+                    class="btn btn-xs btn-danger btn-circle text-xl inline-block">
+                    <span v-html="getIcon('trash')" class="flex justify-center align-middle"></span>
+                </button>
+
+                <label v-if="!isDestroyable" class="inline-block">
+                    <span v-html="getIcon('lock')" class="flex justify-center align-middle text-gray-500"></span>
+                </label>
+
+
+                
             </h1>
             <small>Last update: {{ formatDate({}, payment.updated_at) }}</small>
         </div>
@@ -78,7 +94,6 @@
                         </template>
                         <template v-else>
                             <button v-if="isEditable" class="btn btn-default"  id="editPayment" @click="editPayment">Edit</button>
-                            <button v-if="isDestroyable" class="btn btn-danger"  id="destroyPayment" @click="destroyPayment">Delete</button>
                         </template>                        
                     </div>
 
@@ -112,6 +127,7 @@
 </template>
 
 <script>
+    import _getIcon from '@helpers/getIcon'
     import Select from '@components/shared/Select'
     import Payment from '@classes/Payment'
     import Upload from '@components/shared/Upload/Upload'
@@ -164,7 +180,7 @@
             },
             isDestroyable() {
                 return this.payment.payed_date === null;
-            }
+            },
         },
 
         methods: {
@@ -200,6 +216,9 @@
             formatDate(options, value) {
                 return _formatDate(options, value)
             },
+            getIcon(icon) {
+                return _getIcon(icon);
+            }
         },
 
 
