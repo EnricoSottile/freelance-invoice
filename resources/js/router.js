@@ -11,6 +11,7 @@ import InvoiceShow from './components/invoice/InvoiceShow'
 
 import PaymentIndex from './components/payment/Index/PaymentIndex'
 import PaymentShow from './components/payment/PaymentShow'
+import PaymentCreate from './components/payment/PaymentCreate'
 
 const routes = [
 
@@ -61,6 +62,17 @@ const routes = [
         name: 'payment.index', 
         component: PaymentIndex,
         props: {shouldHandleOwnLoading: true}
+    },
+    { 
+        path: '/payment/create', 
+        name: 'payment.create', 
+        component: PaymentCreate, 
+    },
+    { 
+        path: '/invoice/:invoiceId/payment/create', 
+        name: 'invoice.payment.create', 
+        component: PaymentCreate, 
+        props: true
     },
     { 
         path: '/payment/:paymentId', 

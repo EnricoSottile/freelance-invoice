@@ -4,13 +4,21 @@
 
         <div class="flex mt-10 justify-between">
                 <h1 class="font-light text-2xl text-gray-500">Payments</h1>
+
+
+                <!-- ADD NEW PAYMENT -->
+                <template v-if="invoice !== null">
+                    <router-link class="btn btn-default" :to="{ name: 'invoice.payment.create', params: {invoice}}">
+                        Add new Payment
+                    </router-link>
+                </template>
+                <template v-else>
+                    <router-link class="btn btn-default" :to="{ name: 'payment.create'}">
+                        Add new Payment
+                    </router-link>
+                </template>
                 
-                <add-payment
-                    v-if="invoice"
-                    :invoice="invoice"
-                    :paymentClass="paymentClass"
-                    v-on:paymentWasSaved="handlePaymentWasSaved">
-                </add-payment>
+
         </div>
 
 
@@ -31,7 +39,6 @@
 <script>
     import Payment from '@classes/Payment'
     import PaymentRow from '../PaymentRow'
-    import AddPayment from '../AddPayment'
 
     import DataTable from '@components/shared/DataTable/DataTable'
     import DataTableFields from './DataTableFields'
@@ -51,6 +58,7 @@
             invoice: {
                 type: Object,
                 required: false,
+                default: null,
             },
             hiddenFields: {
                 type: Array,
@@ -64,7 +72,6 @@
 
         components: {
             'payment-row': PaymentRow,
-            'add-payment': AddPayment,
             'data-table': DataTable
         },
 
@@ -90,11 +97,6 @@
             }
         },
 
-        computed: {
-            canAddNewPayment(){
-                return this.invoice && this.invoice.id
-            }
-        },
 
         methods: {
             // programmatically hide fields from DataTable
@@ -117,9 +119,6 @@
             handlePaymentWasDeleted(event, paymentId) {
                 alert("payment was deleted");
                 this.payments = this.payments.filter(payment => payment.id !== paymentId);
-            },
-            handlePaymentWasSaved(event) {
-                this.payments.push(event.data.payment);
             },
             handlePaymentWasUpdated(event) {
                 const payment = event.data.payment;

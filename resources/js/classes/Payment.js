@@ -21,6 +21,14 @@ class Payment {
         }
     }
 
+    static invoices(paymentId){
+        // keep it simple for now
+        // should the requirements change, do not touch InvoiceController,
+        // but create a new PaymentInvoiceController and a corresponding route
+        const uri = `app/invoice`;
+        return axios.get(uri)
+    }
+
     static store(data){
         return axios.post(BASE_URI, data);
     }

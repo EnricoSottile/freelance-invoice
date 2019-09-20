@@ -6,12 +6,22 @@
  * 
  */ 
 export default [
-    {name: 'id', label: 'Id'},
-    {name: 'invoice_number', label: 'Invoice'},
-    {name: 'net_amount', label: 'Amount'},
-    {name: 'due_date', label: 'Due'},
-    {name: 'payed_date', label: 'Payed'},
-    {name: 'created_at', label: 'Created'},
+    {
+        name: 'id', 
+        label: 'Id'
+    },
+    {
+        name: 'invoice_number', 
+        label: 'Invoice',
+        link: {
+            view: 'invoice.show',
+            params: {name: 'invoiceId', property: 'invoice_id'}
+        }
+    },
+    {name: 'net_amount', label: 'Amount', money: {} },
+    {name: 'due_date', label: 'Due', date: {} },
+    {name: 'payed_date', label: 'Payed', date: {} },
+    {name: 'created_at', label: 'Created', date: {} },
 ];
 
 

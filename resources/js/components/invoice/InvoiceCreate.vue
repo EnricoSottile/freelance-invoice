@@ -4,7 +4,7 @@
         <div>Invoice create</div>
 
         <div v-if="customersAreReady">
-            <select v-model="invoice.customer_id">
+            <select :disabled="customerId !== null"  v-model="invoice.customer_id">
                 <option default selected value="">Choose a customer</option>
                 <option 
                     v-bind:key="customer.id" 
