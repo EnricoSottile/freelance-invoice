@@ -38,7 +38,6 @@
 
 <script>
     import Payment from '@classes/Payment'
-    import PaymentRow from '../PaymentRow'
 
     import DataTable from '@components/shared/DataTable/DataTable'
     import DataTableFields from './DataTableFields'
@@ -71,7 +70,6 @@
         },
 
         components: {
-            'payment-row': PaymentRow,
             'data-table': DataTable
         },
 

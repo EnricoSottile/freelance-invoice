@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="card">
         <div>Payment show</div>
 
         <div v-if="paymentBeingEdited">
