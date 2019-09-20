@@ -8,7 +8,11 @@
 export default [
     {
         name: 'id', 
-        label: 'Id'
+        label: 'Id',
+        link: {
+            view: 'payment.show',
+            params: {name: 'paymentId', property: 'id'}
+        }
     },
     {
         name: 'invoice_number', 

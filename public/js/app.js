@@ -3000,6 +3000,35 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_Payment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/Payment */ "./resources/js/classes/Payment.js");
 /* harmony import */ var _components_upload_Upload__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/upload/Upload */ "./resources/js/components/upload/Upload.vue");
+function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+
+function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -3036,11 +3065,13 @@ __webpack_require__.r(__webpack_exports__);
 
   created() {
     this.getPayment(this.paymentId);
+    this.getInvoices();
   },
 
   beforeRouteUpdate(to, from, next) {
     const paymentId = to.params.paymentId;
-    this.getPayment(invoiceId);
+    this.getPayment(paymentId);
+    this.getInvoices();
     next();
   },
 
@@ -3048,7 +3079,10 @@ __webpack_require__.r(__webpack_exports__);
     return {
       paymentClass: _classes_Payment__WEBPACK_IMPORTED_MODULE_0__["default"],
       payment: {},
-      paymentIsReady: false
+      invoice: [],
+      paymentIsReady: false,
+      invoicesAreReady: false,
+      paymentBeingEdited: null
     };
   },
 
@@ -3069,6 +3103,41 @@ __webpack_require__.r(__webpack_exports__);
       } = await this.paymentClass.show(paymentId);
       this.payment = data;
       this.paymentIsReady = true;
+    },
+
+    async getInvoices() {
+      const {
+        data
+      } = await this.paymentClass.invoices();
+      this.invoices = data;
+      this.invoicesAreReady = true;
+    },
+
+    async destroyPayment() {
+      const response = await this.paymentClass.destroy(this.paymentId);
+      alert("payment was deleted");
+      router.go(-1);
+    },
+
+    editPayment() {
+      const paymentBeingEdited = _objectSpread({}, this.payment);
+
+      this.paymentBeingEdited = paymentBeingEdited;
+    },
+
+    async updatePayment() {
+      const {
+        data: {
+          payment
+        }
+      } = await this.paymentClass.update(this.payment.id, this.paymentBeingEdited);
+      this.paymentBeingEdited = null;
+      this.payment = _objectSpread({}, payment);
+      alert('payment was updated');
+    },
+
+    cancelEditPayment(event, paymentId) {
+      this.paymentBeingEdited = null;
     }
 
   }
@@ -14770,7 +14839,204 @@ var render = function() {
     [
       _c("div", [_vm._v("Payment show")]),
       _vm._v(" "),
-      _c("div", [_c("pre", [_vm._v(_vm._s(_vm.payment))])]),
+      _vm.paymentBeingEdited
+        ? _c("div", [
+            _c(
+              "select",
+              {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.paymentBeingEdited.invoice_id,
+                    expression: "paymentBeingEdited.invoice_id"
+                  }
+                ],
+                on: {
+                  change: function($event) {
+                    var $$selectedVal = Array.prototype.filter
+                      .call($event.target.options, function(o) {
+                        return o.selected
+                      })
+                      .map(function(o) {
+                        var val = "_value" in o ? o._value : o.value
+                        return val
+                      })
+                    _vm.$set(
+                      _vm.paymentBeingEdited,
+                      "invoice_id",
+                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+                    )
+                  }
+                }
+              },
+              [
+                _c(
+                  "option",
+                  { attrs: { default: "", selected: "", value: "" } },
+                  [_vm._v("Choose an invoice")]
+                ),
+                _vm._v(" "),
+                _vm._l(_vm.invoices, function(invoice) {
+                  return _c(
+                    "option",
+                    { key: invoice.id, domProps: { value: invoice.id } },
+                    [
+                      _vm._v(
+                        "\n                " +
+                          _vm._s(invoice.number) +
+                          "\n                "
+                      )
+                    ]
+                  )
+                })
+              ],
+              2
+            ),
+            _vm._v(
+              "\n        " +
+                _vm._s(_vm.paymentBeingEdited.invoice_id) +
+                "\n        "
+            ),
+            _c("br"),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.paymentBeingEdited.net_amount,
+                  expression: "paymentBeingEdited.net_amount"
+                }
+              ],
+              attrs: {
+                name: "net_amount",
+                placeholder: "Net amount",
+                type: "number"
+              },
+              domProps: { value: _vm.paymentBeingEdited.net_amount },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.paymentBeingEdited,
+                    "net_amount",
+                    $event.target.value
+                  )
+                }
+              }
+            }),
+            _c("br"),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.paymentBeingEdited.due_date,
+                  expression: "paymentBeingEdited.due_date"
+                }
+              ],
+              attrs: {
+                name: "due_date",
+                placeholder: "Due date",
+                type: "date"
+              },
+              domProps: { value: _vm.paymentBeingEdited.due_date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.paymentBeingEdited,
+                    "due_date",
+                    $event.target.value
+                  )
+                }
+              }
+            }),
+            _c("br"),
+            _vm._v(" "),
+            _c("input", {
+              directives: [
+                {
+                  name: "model",
+                  rawName: "v-model",
+                  value: _vm.paymentBeingEdited.payed_date,
+                  expression: "paymentBeingEdited.payed_date"
+                }
+              ],
+              attrs: {
+                name: "payed_date",
+                placeholder: "Payed date",
+                type: "date"
+              },
+              domProps: { value: _vm.paymentBeingEdited.payed_date },
+              on: {
+                input: function($event) {
+                  if ($event.target.composing) {
+                    return
+                  }
+                  _vm.$set(
+                    _vm.paymentBeingEdited,
+                    "payed_date",
+                    $event.target.value
+                  )
+                }
+              }
+            }),
+            _c("br"),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                attrs: { id: "updatePayment" },
+                on: { click: _vm.updatePayment }
+              },
+              [_vm._v("Update")]
+            ),
+            _vm._v(" "),
+            _c(
+              "button",
+              {
+                attrs: { id: "cancelEditPayment" },
+                on: { click: _vm.cancelEditPayment }
+              },
+              [_vm._v("Cancel")]
+            )
+          ])
+        : _c("div", [
+            _c("pre", [_vm._v(_vm._s(_vm.payment))]),
+            _vm._v(" "),
+            _vm.isEditable
+              ? _c(
+                  "button",
+                  {
+                    attrs: { id: "editPayment" },
+                    on: { click: _vm.editPayment }
+                  },
+                  [_vm._v("Edit")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _vm.isDestroyable
+              ? _c(
+                  "button",
+                  {
+                    attrs: { id: "destroyPayment" },
+                    on: { click: _vm.destroyPayment }
+                  },
+                  [_vm._v("Delete")]
+                )
+              : _vm._e(),
+            _vm._v(" "),
+            _c("br"),
+            _c("br"),
+            _c("br")
+          ]),
       _vm._v(" "),
       _vm.paymentIsReady
         ? _c("upload", {
@@ -31268,7 +31534,14 @@ __webpack_require__.r(__webpack_exports__);
  */
 /* harmony default export */ __webpack_exports__["default"] = ([{
   name: 'id',
-  label: 'Id'
+  label: 'Id',
+  link: {
+    view: 'payment.show',
+    params: {
+      name: 'paymentId',
+      property: 'id'
+    }
+  }
 }, {
   name: 'invoice_number',
   label: 'Invoice',
@@ -32213,7 +32486,8 @@ __webpack_require__.r(__webpack_exports__);
  */
 
 /* harmony default export */ __webpack_exports__["default"] = (function (dateOptions = {}, dateString) {
-  dateString = dateString && dateString.substr(0, 10); // only ymd
+  if (!dateString) return '';
+  dateString = dateString.substr(0, 10); // only ymd
 
   const locale = dateOptions.locale || _userPreferences__WEBPACK_IMPORTED_MODULE_0__["default"].locale;
   return new Date(dateString).toLocaleDateString(locale, dateOptions);
