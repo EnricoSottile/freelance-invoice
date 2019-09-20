@@ -16,7 +16,7 @@
                 </div>
             </div>
 
-            <gallery @destroy="destroyUpload($event)" :allowDeletes="allowDeletes" :files="existingUploads"></gallery>
+            <gallery :loading="!galleryIsReady" @destroy="destroyUpload($event)" :allowDeletes="allowDeletes" :files="existingUploads"></gallery>
 
     </div>
 </template>
@@ -63,6 +63,7 @@
                 filesSrc: [],
                 filesToUpload: [],
                 existingUploads: [],
+                galleryIsReady: false
             }
         },
 
@@ -77,8 +78,10 @@
                 this.uploadClass = new Upload(this.resourceType, this.resourceId)
             },
             async getUploads(){
+                this.galleryIsReady = false;
                 const { data: {uploads} } = await this.uploadClass.index();
                 this.existingUploads = uploads;
+                this.galleryIsReady = true;
             },
             async destroyUpload(uploadId){
                 const response = await this.uploadClass.destroy(uploadId);

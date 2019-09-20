@@ -4,6 +4,7 @@
         <span>
             <small class="text-gray-500">items per page</small>
             <custom-select 
+                :small="true"
                 v-bind:value="itemsPerPage"
                 v-on:input="handleInput($event)">
                     <option value="5">5</option>

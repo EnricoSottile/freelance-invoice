@@ -30,7 +30,8 @@
 
         </modal>
         
-        <button v-if="files.length" class="btn btn-default" @click.prevent="toggleModal">Show existings</button>
+        <button v-if="loading" disabled class="btn btn-default">Loading</button>
+        <button v-if="!loading && files.length" class="btn btn-default" @click.prevent="toggleModal">Show files</button>
 
     </div>
 </template>
@@ -50,6 +51,11 @@
             allowDeletes: {
                 required: true,
                 type: Boolean,
+            },
+            loading: {
+                required: false,
+                type: Boolean,
+                default: true,
             }
         },
 

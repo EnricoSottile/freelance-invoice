@@ -654,6 +654,16 @@ a:hover {
   color: #fff;
 }
 
+.btn-success {
+  background-color: #38b2ac;
+  color: #fff;
+}
+
+.btn-success:hover {
+  background-color: #319795;
+  color: #fff;
+}
+
 .btn-circle {
   padding: 0;
   margin: 0.5rem;
@@ -693,12 +703,51 @@ a:hover {
 .card .card-title h1 {
   font-weight: 300;
   font-size: 1.5rem;
-  color: #a0aec0;
+  color: #4a5568;
 }
 
 .card .card-title small {
   font-weight: 300;
   color: #a0aec0;
+}
+
+.input-default {
+  background-color: #edf2f7;
+  -webkit-appearance: none;
+     -moz-appearance: none;
+          appearance: none;
+  border-width: 2px;
+  border-color: #edf2f7;
+  border-radius: 0.25rem;
+  width: 100%;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  color: #4a5568;
+  line-height: 1.25;
+}
+
+.input-default:focus:not(:disabled):not(:readonly) {
+  outline: 0;
+  background-color: #fff;
+  border-color: #9f7aea;
+}
+
+.input-default:-moz-read-only {
+  color: #a0aec0;
+}
+
+.input-default:read-only {
+  color: #a0aec0;
+}
+
+.label-default {
+  display: block;
+  color: #4a5568;
+  font-size: 0.875rem;
+  font-weight: 400;
+  margin-bottom: 0.5rem;
 }
 
 .container {

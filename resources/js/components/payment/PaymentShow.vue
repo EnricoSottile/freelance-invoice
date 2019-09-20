@@ -12,33 +12,82 @@
         <div class="flex mt-10">
 
             <!-- payment -->
-            <div class="w-1/2">
-                <div v-if="paymentBeingEdited">
-                    <select v-model="paymentBeingEdited.invoice_id">
-                        <option default selected value="">Choose an invoice</option>
-                        <option 
-                            v-bind:key="invoice.id" 
-                            v-for="invoice in invoices" 
-                            :value="invoice.id">
-                            {{ invoice.number }}
-                            </option>
-                    </select>
-                    {{ paymentBeingEdited.invoice_id }}
-                    <br/>
-                    <input v-model="paymentBeingEdited.net_amount" name="net_amount" placeholder="Net amount" type="number"/><br/>
-                    <input v-model="paymentBeingEdited.due_date" name="due_date" placeholder="Due date" type="date"/><br/>
-                    <input v-model="paymentBeingEdited.payed_date" name="payed_date" placeholder="Payed date" type="date"/><br/>
-                    <button id="updatePayment" @click="updatePayment">Update</button>
-                    <button id="cancelEditPayment" @click="cancelEditPayment">Cancel</button>
+            <div class="w-1/2" v-if="paymentIsReady && invoicesAreReady">
+                <div class="pr-6 flex flex-wrap">
+
+                    <div class="mb-6 w-1/2 px-2">
+                        <label class="label-default">
+                            Invoice
+                        </label>
+
+                        <custom-select 
+                            :disabled="!paymentBeingEdited"
+                            v-model="getPaymentModel.invoice_id">
+                                <option default selected value="">Choose an invoice</option>
+                                <option 
+                                    v-bind:key="invoice.id" 
+                                    v-for="invoice in invoices" 
+                                    :value="invoice.id">
+                                    {{ invoice.number }}
+                                </option>
+                        </custom-select>
+                    </div>
+
+                    <div class="mb-6 w-1/2 px-2">
+                        <label class="label-default">
+                            Net amount
+                        </label>
+                        <input class="input-default" 
+                            :readonly="!paymentBeingEdited"
+                            v-model="getPaymentModel.net_amount" 
+                            name="net_amount" 
+                            placeholder="Net amount" 
+                            type="number"/>
+                    </div>
+
+                    <div class="mb-6 w-1/2 px-2">
+                        <label class="label-default">
+                            Due date
+                        </label>
+
+                        <input class="input-default"
+                            :readonly="!paymentBeingEdited" 
+                            v-model="getPaymentModel.due_date" 
+                            name="due_date" 
+                            placeholder="Due date" 
+                            type="date"/>
+                    </div>
+
+                    <div class="mb-6 w-1/2 px-2">
+                        <label class="label-default">
+                            Payed date
+                        </label>
+
+                        <input class="input-default" 
+                            :readonly="!paymentBeingEdited"
+                            v-model="getPaymentModel.payed_date" 
+                            name="payed_date" 
+                            placeholder="Payed date" 
+                            type="date"/>
+                    </div>
+
+                    <div class="mb-6 w-1/2 px-2">
+                        <template  v-if="paymentBeingEdited">
+                            <button class="btn btn-default" id="cancelEditPayment" @click="cancelEditPayment">Cancel</button>
+                            <button class="btn btn-success" id="updatePayment" @click="updatePayment">Update</button>
+                        </template>
+                        <template v-else>
+                            <button v-if="isEditable" class="btn btn-default"  id="editPayment" @click="editPayment">Edit</button>
+                            <button v-if="isDestroyable" class="btn btn-danger"  id="destroyPayment" @click="destroyPayment">Delete</button>
+                        </template>                        
+                    </div>
+
+                    
+                    
                 </div>
-                <div v-else>
-                    <pre>{{ payment }}</pre>
 
+                    
 
-                    <button v-if="isEditable"  id="editPayment" @click="editPayment">Edit</button>
-                    <button v-if="isDestroyable"  id="destroyPayment" @click="destroyPayment">Delete</button>
-                    <br/><br/><br/>
-                </div>  
             </div>
 
             <!-- upload -->
@@ -63,6 +112,7 @@
 </template>
 
 <script>
+    import Select from '@components/shared/Select'
     import Payment from '@classes/Payment'
     import Upload from '@components/shared/Upload/Upload'
     import _formatDate from '@helpers/formatDate'
@@ -76,6 +126,7 @@
         },
 
         components: {
+            'custom-select': Select,
             'upload': Upload
         },
 
@@ -105,6 +156,9 @@
         },
 
         computed: {
+            getPaymentModel(){
+                return this.paymentBeingEdited ? this.paymentBeingEdited : this.payment;
+            },
             isEditable() {
                 return this.payment.payed_date === null;
             },
