@@ -3,14 +3,16 @@
         <div>Upload</div>
 
             <div v-if="allowUploads">
-                <div v-if="!imageSrc">
-                    <h2>Select an image</h2>
-                    <input type="file" @change="onFileChange">
+                <div v-if="!filesSrc.length">
+                    <h2>Select a file/s</h2>
+                    <input type="file" multiple @change="onFileChange">
                 </div>
-                <div v-else>
-                    <img :src="imageSrc" style="max-width:100%; height:50px;"/>
-                    <button id="removeImage" @click="removeImage">Remove image</button>
-                    <button id="uploadImage" @click="uploadImage">Upload</button>
+                <div v-else >
+                    <div v-for="(file, key) in filesSrc" v-bind:key="key">
+                        <img :src="file.src" style="max-width:100%; height:50px;"/>
+                        <button id="removeFile" @click="removeFile(file.id)">Remove image</button>
+                    </div>
+                    <button id="uploadFiles" @click="uploadFiles">Upload</button>
                 </div>
             </div>
 
@@ -19,7 +21,7 @@
                 <ul>
                     <li                     
                         v-bind:key="upload.id" 
-                        v-for="upload in uploads">
+                        v-for="upload in existingUploads">
                         {{ upload.id }} - {{ upload.path }}
                         <img :src="'data:image/jpeg;base64,'+upload.encoded_image" style="max-width:100%; height:50px;"/>
                         <button v-if="allowDeletes" id="destroyUpload" @click="destroyUpload(upload.id)">Delete</button>
@@ -63,9 +65,9 @@
         data(){  
             return {
                 uploadClass: null,
-                imageSrc: '',
-                upload: '',
-                uploads: [],
+                filesSrc: [],
+                filesToUpload: [],
+                existingUploads: [],
             }
         },
 
@@ -80,37 +82,44 @@
             },
             async getUploads(){
                 const { data: {uploads} } = await this.uploadClass.index();
-                this.uploads = uploads;
+                this.existingUploads = uploads;
             },
             async destroyUpload(uploadId){
                 const response = await this.uploadClass.destroy(uploadId);
                 alert("upload was deleted");
-                this.uploads = this.uploads.filter(u => u.id !== uploadId);
+                this.existingUploads = this.existingUploads.filter(u => u.id !== uploadId);
             },
             onFileChange(e) {
                 var files = e.target.files || e.dataTransfer.files;
                 if (!files.length) return;
-                this.createImage(files[0]);
+                
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i]
+                    this.createImage(files[i]);
+                }
             },
             createImage(file) {
-                var imageSrc = new Image();
-                var reader = new FileReader();
-                var vm = this;
+                const id = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
+                const filesSrc = new Image();
+                const reader = new FileReader();
+                const vm = this;
 
                 reader.onload = (e) => {
-                    vm.imageSrc = e.target.result;
+                    vm.filesSrc.push( {id, src: e.target.result } );
                 };
                 reader.readAsDataURL(file);
-                this.upload = file;
+                this.filesToUpload.push({id, data: file});
             },
-            removeImage: function (e) {
-                this.imageSrc = '';
+            removeFile(fileId) {
+                this.filesSrc = this.filesSrc.filter(f => f.id !== fileId);
             },
-            async uploadImage(){
-                const response = await this.uploadClass.store(this.upload);
-                this.uploads.push(response.data.upload);
-                alert("image uploaded");
-                this.removeImage();
+            uploadFiles(){
+                this.filesToUpload.forEach(async (file) => {
+                    const response = await this.uploadClass.store(file.data);
+                    this.existingUploads.push(response.data.upload);
+                    console.log("image uploaded", file, response.data.upload);
+                    this.removeFile(file.id);
+                });
             }
         },
 

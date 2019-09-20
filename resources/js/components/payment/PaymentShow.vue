@@ -44,7 +44,7 @@
 
 <script>
     import Payment from '@classes/Payment'
-    import Upload from '@components/upload/Upload'
+    import Upload from '@components/shared/Upload'
 
 
     export default {

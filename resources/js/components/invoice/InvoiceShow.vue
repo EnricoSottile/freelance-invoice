@@ -60,7 +60,7 @@
 <script>
     import Invoice from '@classes/Invoice'
     import PaymentIndex from '@components/payment/Index/PaymentIndex'
-    import Upload from '@components/upload/Upload'
+    import Upload from '@components/shared/Upload'
 
 
     export default {
