@@ -32,6 +32,14 @@ a:hover {
     @apply bg-gray-200;
 }
 
+.btn-danger {
+    @apply bg-red-500 text-white;
+}
+
+.btn-danger:hover {
+    @apply bg-red-600 text-white;
+}
+
 .btn-circle {
     @apply p-0 m-2 rounded-full h-10 w-10 flex items-center justify-center;
 }
@@ -51,6 +59,18 @@ a:hover {
 /* CARD */
 .card {
     @apply p-5 m-5 shadow-lg bg-white rounded;
+}
+
+.card .card-title {
+    @apply mt-10;
+}
+
+.card .card-title h1 {
+    @apply font-light text-2xl text-gray-500;
+}
+
+.card .card-title small {
+    @apply font-light text-gray-500;
 }
 
 

@@ -1,42 +1,62 @@
 <template>
     <div class="card">
-        <div>Payment show</div>
 
-        <div v-if="paymentBeingEdited">
-            <select v-model="paymentBeingEdited.invoice_id">
-                <option default selected value="">Choose an invoice</option>
-                <option 
-                    v-bind:key="invoice.id" 
-                    v-for="invoice in invoices" 
-                    :value="invoice.id">
-                    {{ invoice.number }}
-                    </option>
-            </select>
-            {{ paymentBeingEdited.invoice_id }}
-            <br/>
-            <input v-model="paymentBeingEdited.net_amount" name="net_amount" placeholder="Net amount" type="number"/><br/>
-            <input v-model="paymentBeingEdited.due_date" name="due_date" placeholder="Due date" type="date"/><br/>
-            <input v-model="paymentBeingEdited.payed_date" name="payed_date" placeholder="Payed date" type="date"/><br/>
-            <button id="updatePayment" @click="updatePayment">Update</button>
-            <button id="cancelEditPayment" @click="cancelEditPayment">Cancel</button>
+        <div class="card-title">
+            <h1>
+                Payment {{ payment.id }} of {{ formatDate({}, payment.created_at) }}
+            </h1>
+            <small>Last update: {{ formatDate({}, payment.updated_at) }}</small>
         </div>
-        <div v-else>
-            <pre>{{ payment }}</pre>
 
 
-            <button v-if="isEditable"  id="editPayment" @click="editPayment">Edit</button>
-            <button v-if="isDestroyable"  id="destroyPayment" @click="destroyPayment">Delete</button>
-            <br/><br/><br/>
-        </div>  
+        <div class="flex mt-10">
+
+            <!-- payment -->
+            <div class="w-1/2">
+                <div v-if="paymentBeingEdited">
+                    <select v-model="paymentBeingEdited.invoice_id">
+                        <option default selected value="">Choose an invoice</option>
+                        <option 
+                            v-bind:key="invoice.id" 
+                            v-for="invoice in invoices" 
+                            :value="invoice.id">
+                            {{ invoice.number }}
+                            </option>
+                    </select>
+                    {{ paymentBeingEdited.invoice_id }}
+                    <br/>
+                    <input v-model="paymentBeingEdited.net_amount" name="net_amount" placeholder="Net amount" type="number"/><br/>
+                    <input v-model="paymentBeingEdited.due_date" name="due_date" placeholder="Due date" type="date"/><br/>
+                    <input v-model="paymentBeingEdited.payed_date" name="payed_date" placeholder="Payed date" type="date"/><br/>
+                    <button id="updatePayment" @click="updatePayment">Update</button>
+                    <button id="cancelEditPayment" @click="cancelEditPayment">Cancel</button>
+                </div>
+                <div v-else>
+                    <pre>{{ payment }}</pre>
 
 
-        <upload 
-            resource-type="payment" 
-            :resource-id="payment.id" 
-            :allowUploads="isEditable"
-            :allowDeletes="isDestroyable"
-            v-if="paymentIsReady">
-        </upload>
+                    <button v-if="isEditable"  id="editPayment" @click="editPayment">Edit</button>
+                    <button v-if="isDestroyable"  id="destroyPayment" @click="destroyPayment">Delete</button>
+                    <br/><br/><br/>
+                </div>  
+            </div>
+
+            <!-- upload -->
+            <div class="w-1/2">
+                <upload 
+                    resource-type="payment" 
+                    :resource-id="payment.id" 
+                    :allowUploads="isEditable"
+                    :allowDeletes="isDestroyable"
+                    v-if="paymentIsReady">
+                </upload>
+            </div>
+        </div>
+
+
+
+
+
 
 
     </div>
@@ -45,7 +65,7 @@
 <script>
     import Payment from '@classes/Payment'
     import Upload from '@components/shared/Upload'
-
+    import _formatDate from '@helpers/formatDate'
 
     export default {
         props: {
@@ -121,7 +141,11 @@
             },
             cancelEditPayment(event, paymentId) {
                 this.paymentBeingEdited = null;
-            }
+            },
+
+            formatDate(options, value) {
+                return _formatDate(options, value)
+            },
         },
 
 

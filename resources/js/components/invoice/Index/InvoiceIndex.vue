@@ -3,8 +3,8 @@
 
         
 
-        <div class="flex mt-10 justify-between">
-                <h1 class="font-light text-2xl text-gray-500">Invoices</h1>
+        <div class="card-title flex justify-between">
+                <h1>Invoices</h1>
 
                 <!-- ADD NEW INVOICE -->
                 <template v-if="customer !== null">

@@ -644,6 +644,16 @@ a:hover {
   background-color: #edf2f7;
 }
 
+.btn-danger {
+  background-color: #f56565;
+  color: #fff;
+}
+
+.btn-danger:hover {
+  background-color: #e53e3e;
+  color: #fff;
+}
+
 .btn-circle {
   padding: 0;
   margin: 0.5rem;
@@ -674,6 +684,21 @@ a:hover {
   box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
   background-color: #fff;
   border-radius: 0.25rem;
+}
+
+.card .card-title {
+  margin-top: 2.5rem;
+}
+
+.card .card-title h1 {
+  font-weight: 300;
+  font-size: 1.5rem;
+  color: #a0aec0;
+}
+
+.card .card-title small {
+  font-weight: 300;
+  color: #a0aec0;
 }
 
 .container {
