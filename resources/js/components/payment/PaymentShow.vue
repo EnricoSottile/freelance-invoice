@@ -64,7 +64,7 @@
 
 <script>
     import Payment from '@classes/Payment'
-    import Upload from '@components/shared/Upload'
+    import Upload from '@components/shared/Upload/Upload'
     import _formatDate from '@helpers/formatDate'
 
     export default {
