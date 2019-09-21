@@ -4169,9 +4169,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 const MODELS = ['invoice', 'customer', 'payment'];
 
 
@@ -22278,14 +22275,14 @@ var render = function() {
   return _c(
     "div",
     [
+      _c("h2", { staticClass: "font-light text-gray-600" }, [
+        _vm._v("File uploads")
+      ]),
+      _vm._v(" "),
       _vm.allowUploads
         ? _c(
             "div",
             [
-              _c("h2", { staticClass: "font-light text-gray-600" }, [
-                _vm._v("File uploads")
-              ]),
-              _vm._v(" "),
               _c("dropzone-wrapper", {
                 attrs: { url: _vm.getUploadUrl },
                 on: {

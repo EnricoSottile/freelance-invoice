@@ -196,7 +196,6 @@ class InvoiceTest extends TestCase
      */
     public function testInvoiceCanBeDestroyedIfHasUnpayedPayments()
     {
-        $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $invoice = factory( Invoice::class)

@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Invoice;
 use App\Models\Payment;
 use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Filesystem\Filesystem;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,6 +20,8 @@ class DatabaseSeeder extends Seeder
     {
 
         echo "Running Seeder...\n";
+
+        $this->cleanStorage();
 
         // Users
         $users = factory(User::class, 25)->create();
@@ -38,6 +41,11 @@ class DatabaseSeeder extends Seeder
                 });
             });
         });
+    }
+
+    private function cleanStorage(){
+        $file = new Filesystem();
+        $file->cleanDirectory('storage/app/private');
     }
 
  

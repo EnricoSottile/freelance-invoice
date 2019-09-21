@@ -1,12 +1,9 @@
 <template>
     <div>
 
+            <h2 class="font-light text-gray-600">File uploads</h2>
             <div v-if="allowUploads">
-
-                <h2 class="font-light text-gray-600">File uploads</h2>
-
                 <dropzone-wrapper @upload-success="handleUpload($event)":url="getUploadUrl"/>
-
             </div>
 
             <gallery :loading="!galleryIsReady" @destroy="destroyUpload($event)" :allowDeletes="allowDeletes" :files="existingUploads"></gallery>

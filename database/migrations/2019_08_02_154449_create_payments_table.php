@@ -23,8 +23,8 @@ class CreatePaymentsTable extends Migration
             $table->foreign('invoice_id')->references('id')->on('invoices');
 
             $table->decimal('net_amount', 10,2)->default(0.00);
-            $table->dateTime('due_date')->nullable();
-            $table->dateTime('payed_date')->nullable();
+            $table->date('due_date')->nullable();
+            $table->date('payed_date')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
