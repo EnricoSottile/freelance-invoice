@@ -36,6 +36,7 @@ describe('PaymentShow', () => {
       'paymentClass', 
       'payment', 
       'paymentIsReady',
+      'paymentBeingEdited'
     ];
   
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());

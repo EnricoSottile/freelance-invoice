@@ -1,10 +1,10 @@
 import { shallowMount } from '@vue/test-utils'
-import PaymentIndex from '@components/payment/PaymentIndex'
+import PaymentIndex from '@components/payment/Index/PaymentIndex'
 
 import Payment from '@classes/Payment'
 const paymentClass = Payment;
 
-const getPaymentsObj = [{id:1}, {id:2}];
+const getPaymentsObj = [{id:1, invoice: {number: 'abc'}}, {id:2, invoice: {number: 'abc'}}];
 paymentClass.index = jest.fn().mockReturnValue({data: getPaymentsObj});
 
 const mount = (shouldHandleOwnLoading = true, filteredPayments = null, invoice = null) => {
@@ -51,6 +51,7 @@ describe('PaymentIndex with own loading', () => {
   test('has correct initial data keys', () => {
     const data = wrapper.vm._data;
     const expectedData = [
+      'fields',
       'paymentClass', 
       'payments', 
       'paymentsAreReady'
@@ -59,10 +60,13 @@ describe('PaymentIndex with own loading', () => {
     expect( Object.keys(data).sort() ).toEqual(expectedData.sort());
 })
 
-  test('loads data correctly', () => {
-    expect(wrapper.vm.paymentClass.index).toBeCalled()
-    expect(wrapper.vm.payments).toEqual(getPaymentsObj)
-    expect(wrapper.vm.paymentsAreReady).toBeTruthy()
+  test('loads data correctly', async () => {
+    expect(wrapper.vm.paymentClass.index).toBeCalled();
+
+    setTimeout(() => {
+      expect(wrapper.vm.paymentsAreReady).toBeTruthy()
+    }, 50)
+    
   })
 
 
@@ -81,19 +85,6 @@ describe('PaymentIndex with own loading', () => {
   })
 
 
-  test('correctly adds the new payment to the array', () => {
-    window.alert = () => {};
-    wrapper.vm.payments = [
-      {id:1},
-      {id:2},
-      {id:3},
-    ];     
-
-    const newPayment = { data: {payment: {id: 4}}};
-
-    wrapper.vm.handlePaymentWasSaved(newPayment);
-    expect(wrapper.vm.payments).toEqual([{id:1},{id:2},{id:3},{id:4}]);
-})
 
 
 test('correctly updates the payment in the array', () => {

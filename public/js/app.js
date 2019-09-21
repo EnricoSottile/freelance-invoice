@@ -3989,7 +3989,7 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     handleError(file, errorMessage, xhr) {
-      const msg = errorMessage.message ? errorMessage.message : errorMessage;
+      const msg = (errorMessage === null || errorMessage === void 0 ? void 0 : errorMessage.message) || errorMessage;
       const retryBtn = file.previewElement.querySelector('.dropzone-retry');
       file.previewElement.className += ' dz-error';
       file.previewElement.querySelector('.dz-error-message').innerHTML = msg;
@@ -4008,15 +4008,18 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     handleSuccess(file, response) {
+      const src = `data:image/jpeg;base64,${response.upload.encoded_image}`;
       file.previewElement.className += ' dz-success';
+      file.previewElement.querySelector('img').setAttribute("src", src);
       this.$emit('upload-success', response.upload);
     },
 
     handleComplete(file) {
       const bar = file.previewElement.querySelector('.progress-bar');
+      const hideBtn = file.previewElement.querySelector('.dropzone-hide');
       file.previewElement.className += ' dz-complete';
       document.querySelector('.dropzone-placeholder').innerHTML = '';
-      file.previewElement.querySelector('.dropzone-hide').addEventListener("click", function () {
+      hideBtn.addEventListener("click", function () {
         file.previewElement.parentNode.removeChild(file.previewElement);
       }, {
         once: true
@@ -4206,8 +4209,7 @@ const MODELS = ['invoice', 'customer', 'payment'];
     return {
       uploadClass: null,
       existingUploads: [],
-      galleryIsReady: false,
-      dropzone: null
+      galleryIsReady: false
     };
   },
 
@@ -37607,23 +37609,18 @@ class Upload {
 
   index() {
     return axios.get(this.url);
-  }
+  } // store(file){
+  //     const url = this.url;
+  //     let data = new FormData();
+  //     data.append('upload', file); 
+  //     return axios({
+  //         method: 'post',
+  //         url,
+  //         data,
+  //         config: { headers: {'Content-Type': 'multipart/form-data' }}
+  //     })
+  // }
 
-  store(file) {
-    const url = this.url;
-    let data = new FormData();
-    data.append('upload', file);
-    return axios({
-      method: 'post',
-      url,
-      data,
-      config: {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      }
-    });
-  }
 
   destroy(uploadId) {
     return axios.delete(`${this.url}/${uploadId}`);

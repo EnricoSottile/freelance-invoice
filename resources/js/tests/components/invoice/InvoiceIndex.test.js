@@ -5,7 +5,9 @@ import Invoice from '@classes/Invoice'
 const invoiceClass = new Invoice();
 
 const getInvoicesObj = [{id:1, customer: {full_name: 'a'}}, {id:2, customer: {full_name: 'b'}}];
+const expectedInvoices = [{id:1, full_name: 'a',customer: {full_name: 'a'}}, {id:2, full_name: 'b',customer: {full_name: 'b'}}];
 invoiceClass.index = jest.fn().mockReturnValue({data: getInvoicesObj});
+
 
 const mount = (shouldHandleOwnLoading = true, filteredInvoices = null) => {
  return shallowMount(InvoiceIndex, {
@@ -47,10 +49,10 @@ describe('InvoiceIndex with own loading', () => {
     wrapper = mount();
     expect(wrapper.isVueInstance()).toBeTruthy()    
   })
-
+   
   test('loads data correctly', () => {
     expect(wrapper.vm.invoiceClass.index).toBeCalled()
-    expect(wrapper.vm.invoices).toEqual(getInvoicesObj)
+    expect(wrapper.vm.invoices).toEqual(expectedInvoices)
     expect(wrapper.vm.invoicesAreReady).toBeTruthy()
   })
 
