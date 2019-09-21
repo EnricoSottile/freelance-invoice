@@ -1,64 +1,88 @@
 <template>
     <div>
-        <div>Invoice show</div>
 
-        <div v-if="invoiceBeingEdited">
-            <select v-model="invoiceBeingEdited.customer_id">
-                <option default selected value="">Choose a customer</option>
-                <option 
-                    v-bind:key="customer.id" 
-                    v-for="customer in customers" 
-                    :value="customer.id">
-                    {{ customer.full_name }}
-                    </option>
-            </select>
-            {{ invoiceBeingEdited.customer_id }}
-            <br/>
-            <input v-model="invoiceBeingEdited.number" name="number" placeholder="Number" type="number"/><br/>
-            <input v-model="invoiceBeingEdited.net_amount" name="net_amount" placeholder="Net amount" type="number"/><br/>
-            <input v-model="invoiceBeingEdited.tax" name="tax" placeholder="Tax" type="number"/><br/>
-            <input v-model="invoiceBeingEdited.description" name="description" placeholder="Description" type="text"/><br/>
-            <input v-model="invoiceBeingEdited.date" name="date" placeholder="Date" type="date"/><br/>
-            <input v-model="invoiceBeingEdited.sent_date" name="sent_date" placeholder="Sent date" type="date"/><br/>
-            <input v-model="invoiceBeingEdited.registered_date" name="registered_date" placeholder="Registered date" type="date"/><br/>
-            <button id="updateInvoice" @click="updateInvoice">Update</button>
-            <button id="cancelEditInvoice" @click="cancelEditInvoice">Cancel</button>
+
+        <div class="card-title">
+            <h1>
+                Invoice {{ invoice.id }} of {{ formatDate({}, invoice.created_at) }}
+
+                <button 
+                    v-if="isDestroyable"
+                    id="destroyInvoice"
+                    @click="destroyInvoice"
+                    class="btn btn-xs btn-danger btn-circle text-xl inline-block">
+                    <span v-html="getIcon('trash')" class="flex justify-center align-middle"></span>
+                </button>
+
+                <label v-if="!isDestroyable" class="inline-block">
+                    <span v-html="getIcon('lock')" class="flex justify-center align-middle text-gray-500"></span>
+                </label>
+
+                
+            </h1>
+            <small>Last update: {{ formatDate({}, invoice.updated_at) }}</small>
+
         </div>
-        <div v-else>
-            <pre>{{ invoice }}</pre>
 
 
-            <button v-if="isEditable"  id="editInvoice" @click="editInvoice">Edit</button>
-            <button v-if="isDestroyable"  id="destroyInvoice" @click="destroyInvoice">Delete</button>
-            <br/><br/><br/>
-        </div>  
+        <div class="flex flex-wrap mt-10">
+
+            <!-- invoice -->
+            <div class="w-1/2">
+                <invoice-form
+                    :isReady="invoiceIsReady"
+                    :invoiceClass="invoiceClass"
+                    :model="getInvoiceModel"
+                    :isEdit="invoiceBeingEdited !== null">
+
+                    <template v-slot:buttons>
+                        <template  v-if="invoiceBeingEdited">
+                            <button class="btn btn-default" id="cancelEditInvoice" @click="cancelEditInvoice">Cancel</button>
+                            <button class="btn btn-success" id="updateInvoice" @click="updateInvoice">Update</button>
+                        </template>
+                        <template v-else>
+                            <button v-if="isEditable" class="btn btn-default"  id="editInvoice" @click="editInvoice">Edit</button>
+                        </template>  
+                    </template>
+
+                </invoice-form>                    
+            </div>
+
+            <!-- upload -->
+            <div class="w-1/2">
+                <upload 
+                    resource-type="invoice" 
+                    :resource-id="invoice.id" 
+                    :allowUploads="isEditable"
+                    :allowDeletes="isDestroyable"
+                    v-if="invoiceIsReady">
+                </upload>
+            </div>
+
+            <div class="w-full" v-if="invoiceIsReady">
+                <payment-index 
+                    v-if="paymentsAreReady" 
+                    :shouldHandleOwnLoading="false" 
+                    :invoice="invoice"
+                    :filteredPayments="payments"
+                    :hiddenFields="['invoice_number', 'created']">
+                </payment-index>
+            </div>
 
 
-        <upload 
-            resource-type="invoice" 
-            :resource-id="invoice.id" 
-            :allowUploads="isEditable"
-            :allowDeletes="isDestroyable"
-            v-if="invoiceIsReady">
-        </upload>
+        </div>
 
-        <template v-if="invoiceIsReady">
 
-            <payment-index 
-                v-if="paymentsAreReady" 
-                :shouldHandleOwnLoading="false" 
-                :invoice="invoice"
-                :filteredPayments="payments"
-                :hiddenFields="['invoice_number', 'created']">
-            </payment-index>
-
-        </template>
 
     </div>
 </template>
 
 <script>
+    import _getIcon from '@helpers/getIcon'
+    import _formatDate from '@helpers/formatDate'
+
     import Invoice from '@classes/Invoice'
+    import InvoiceForm from '@components/invoice/shared/InvoiceForm'
     import PaymentIndex from '@components/payment/Index/PaymentIndex'
     import Upload from '@components/shared/Upload/Upload'
 
@@ -73,6 +97,7 @@
 
         components: {
             'payment-index': PaymentIndex,
+            'invoice-form': InvoiceForm,
             'upload': Upload
         },
 
@@ -80,14 +105,12 @@
         created(){
             this.getInvoice(this.invoiceId);
             this.getInvoicePayments(this.invoiceId);
-            this.getCustomers();
         },
 
         beforeRouteUpdate (to, from, next) {
             const invoiceId = to.params.invoiceId;
             this.getInvoice(invoiceId);
             this.getInvoicePayments(invoiceId);
-            this.getCustomers();
             next();
         },
 
@@ -97,16 +120,17 @@
                 invoiceClass: Invoice,
                 invoice: {},
                 payments: [],
-                customers: [],
                 invoiceIsReady: false,
                 paymentsAreReady: false,
-                customersAreReady: false,
                 invoiceBeingEdited: null,
 
             }
         },
 
         computed: {
+            getInvoiceModel(){
+                return this.invoiceBeingEdited ? this.invoiceBeingEdited : this.invoice;
+            },
             hasPayedPayments(){
                 return this.payments 
                 && this.payments.filter(p => p.payed_date).length;
@@ -132,11 +156,6 @@
                 this.payments = data;
                 this.paymentsAreReady = true;
             },
-            async getCustomers(){
-                const { data } = await this.invoiceClass.customers();
-                this.customers = data;
-                this.customersAreReady = true;
-            },
             async destroyInvoice(){
                 const response = await this.invoiceClass.destroy(this.invoiceId);
                 alert("invoice was deleted");
@@ -154,8 +173,14 @@
             },
             cancelEditInvoice(event, invoiceId) {
                 this.invoiceBeingEdited = null;
-            }
+            },
 
+            formatDate(options, value) {
+                return _formatDate(options, value)
+            },
+            getIcon(icon) {
+                return _getIcon(icon);
+            }
         },
 
 

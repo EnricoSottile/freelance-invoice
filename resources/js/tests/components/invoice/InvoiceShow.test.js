@@ -44,10 +44,8 @@ describe('InvoiceShow', () => {
       'invoiceClass', 
       'invoice', 
       'payments', 
-      'customers', 
       'invoiceIsReady',
       'paymentsAreReady',
-      'customersAreReady',
       'invoiceBeingEdited',
     ];
 
@@ -56,10 +54,8 @@ describe('InvoiceShow', () => {
     expect( wrapper.vm.invoiceClass ).toBeInstanceOf(Invoice);
     expect( wrapper.vm.invoice ).toEqual(getInvoiceObj);
     expect( wrapper.vm.payments ).toEqual(getInvoicePaymentsArr);
-    expect( wrapper.vm.customers ).toEqual(mockData);
     expect( wrapper.vm.invoiceIsReady ).toBeTruthy();
     expect( wrapper.vm.paymentsAreReady ).toBeTruthy();
-    expect( wrapper.vm.customersAreReady ).toBeTruthy();
     expect( wrapper.vm.invoiceBeingEdited ).toBeNull();
   })
 
@@ -81,32 +77,32 @@ describe('InvoiceShow', () => {
   })
 
 
-  test('edit button works correctly', async() => {
-    const btnEdit = wrapper.find('#editInvoice');
-    btnEdit.trigger('click');
-    expect( wrapper.vm.invoiceBeingEdited).toEqual(getInvoiceObj)
-  })
+  // test('edit button works correctly', async() => {
+  //   const btnEdit = wrapper.find('#editInvoice');
+  //   btnEdit.trigger('click');
+  //   expect( wrapper.vm.invoiceBeingEdited).toEqual(getInvoiceObj)
+  // })
 
 
-  test('update button works correctly', async() => {
-    window.alert = () => {};
-    const btnUpdate = wrapper.find('#updateInvoice');
+  // test('update button works correctly', async() => {
+  //   window.alert = () => {};
+  //   const btnUpdate = wrapper.find('#updateInvoice');
 
-    btnUpdate.trigger('click');
+  //   btnUpdate.trigger('click');
     
-    await expect(wrapper.vm.invoiceClass.update).toBeCalled();
-    await expect( wrapper.vm.invoiceBeingEdited).toBeNull();
-    await expect( wrapper.vm.invoice).toEqual(mockUpdatedInvoice);
-  })
+  //   await expect(wrapper.vm.invoiceClass.update).toBeCalled();
+  //   await expect( wrapper.vm.invoiceBeingEdited).toBeNull();
+  //   await expect( wrapper.vm.invoice).toEqual(mockUpdatedInvoice);
+  // })
 
-  test('cancel button works correctly', async() => {
-    const btnEdit = wrapper.find('#editInvoice');
-    btnEdit.trigger('click');
+  // test('cancel button works correctly', async() => {
+  //   const btnEdit = wrapper.find('#editInvoice');
+  //   btnEdit.trigger('click');
 
-    const btnCancel = wrapper.find('#cancelEditInvoice');
-    btnCancel.trigger('click');
-    expect( wrapper.vm.invoiceBeingEdited).toEqual(null)
-  });
+  //   const btnCancel = wrapper.find('#cancelEditInvoice');
+  //   btnCancel.trigger('click');
+  //   expect( wrapper.vm.invoiceBeingEdited).toEqual(null)
+  // });
 
 
 })

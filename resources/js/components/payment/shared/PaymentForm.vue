@@ -79,7 +79,7 @@
 
         props: {
             paymentClass: {
-                type: Function,
+                type: [Function, Object],
                 required: true,
             },
             isReady: {

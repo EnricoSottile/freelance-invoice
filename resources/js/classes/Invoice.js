@@ -10,16 +10,16 @@ class Invoice {
         return axios.get(BASE_URI);  
     }
 
-    static create(customerId = null){
+    static create(customerId = ''){
         return {
             customer_id: customerId,
-            number: null,
-            net_amount: null,
-            tax: null,
-            description: null,
-            date: null,
-            sent_date: null,
-            registered_date: null
+            number: '',
+            net_amount: '',
+            tax: '',
+            description: '',
+            date: '',
+            sent_date: '',
+            registered_date: ''
         }
     }
 

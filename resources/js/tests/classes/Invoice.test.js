@@ -8,13 +8,13 @@ describe('InvoiceClass', () => {
         const id = 1;
         const expected = {
             customer_id: id,
-            number: null,
-            net_amount: null,
-            tax: null,
-            description: null,
-            date: null,
-            sent_date: null,
-            registered_date: null
+            number: '',
+            net_amount: '',
+            tax: '',
+            description: '',
+            date: '',
+            sent_date: '',
+            registered_date: ''
         }
         expect(invoiceClass.create(id)).toEqual(expected);
     })

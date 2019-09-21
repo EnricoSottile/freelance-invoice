@@ -13,10 +13,10 @@ class Customer {
 
     static create(){
         return {
-            full_name: null,
-            email: null,
-            phone: null,
-            vat_code: null
+            full_name: '',
+            email: '',
+            phone: '',
+            vat_code: ''
         }
     }
 

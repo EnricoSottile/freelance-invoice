@@ -2330,6 +2330,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/Invoice */ "./resources/js/classes/Invoice.js");
+/* harmony import */ var _components_invoice_shared_InvoiceForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/invoice/shared/InvoiceForm */ "./resources/js/components/invoice/shared/InvoiceForm.vue");
 //
 //
 //
@@ -2357,12 +2358,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2372,18 +2368,19 @@ __webpack_require__.r(__webpack_exports__);
       type: [String, Number]
     }
   },
+  components: {
+    'invoice-form': _components_invoice_shared_InvoiceForm__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
 
   created() {
     this.invoice = this.invoiceClass.create();
     this.setCustomer(this.customerId);
-    this.getCustomers();
   },
 
   beforeRouteUpdate(to, from, next) {
     const customerId = to.params.customerId;
     this.invoice = this.invoiceClass.create();
     this.setCustomer(customerId);
-    this.getCustomers();
     next();
   },
 
@@ -2412,14 +2409,6 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
 
-    async getCustomers() {
-      const {
-        data
-      } = await this.invoiceClass.customers();
-      this.customers = data;
-      this.customersAreReady = true;
-    },
-
     setCustomer(customerId) {
       if (customerId === null) return;
       this.invoice.customer_id = customerId;
@@ -2439,9 +2428,12 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/Invoice */ "./resources/js/classes/Invoice.js");
-/* harmony import */ var _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/payment/Index/PaymentIndex */ "./resources/js/components/payment/Index/PaymentIndex.vue");
-/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
+/* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
+/* harmony import */ var _helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @helpers/formatDate */ "./resources/js/helpers/formatDate.js");
+/* harmony import */ var _classes_Invoice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @classes/Invoice */ "./resources/js/classes/Invoice.js");
+/* harmony import */ var _components_invoice_shared_InvoiceForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/invoice/shared/InvoiceForm */ "./resources/js/components/invoice/shared/InvoiceForm.vue");
+/* harmony import */ var _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/payment/Index/PaymentIndex */ "./resources/js/components/payment/Index/PaymentIndex.vue");
+/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2507,6 +2499,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
 
 
 
@@ -2518,38 +2533,39 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   components: {
-    'payment-index': _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_1__["default"],
-    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_2__["default"]
+    'payment-index': _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'invoice-form': _components_invoice_shared_InvoiceForm__WEBPACK_IMPORTED_MODULE_3__["default"],
+    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
 
   created() {
     this.getInvoice(this.invoiceId);
     this.getInvoicePayments(this.invoiceId);
-    this.getCustomers();
   },
 
   beforeRouteUpdate(to, from, next) {
     const invoiceId = to.params.invoiceId;
     this.getInvoice(invoiceId);
     this.getInvoicePayments(invoiceId);
-    this.getCustomers();
     next();
   },
 
   data() {
     return {
-      invoiceClass: _classes_Invoice__WEBPACK_IMPORTED_MODULE_0__["default"],
+      invoiceClass: _classes_Invoice__WEBPACK_IMPORTED_MODULE_2__["default"],
       invoice: {},
       payments: [],
-      customers: [],
       invoiceIsReady: false,
       paymentsAreReady: false,
-      customersAreReady: false,
       invoiceBeingEdited: null
     };
   },
 
   computed: {
+    getInvoiceModel() {
+      return this.invoiceBeingEdited ? this.invoiceBeingEdited : this.invoice;
+    },
+
     hasPayedPayments() {
       return this.payments && this.payments.filter(p => p.payed_date).length;
     },
@@ -2580,14 +2596,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.paymentsAreReady = true;
     },
 
-    async getCustomers() {
-      const {
-        data
-      } = await this.invoiceClass.customers();
-      this.customers = data;
-      this.customersAreReady = true;
-    },
-
     async destroyInvoice() {
       const response = await this.invoiceClass.destroy(this.invoiceId);
       alert("invoice was deleted");
@@ -2613,6 +2621,218 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     cancelEditInvoice(event, invoiceId) {
       this.invoiceBeingEdited = null;
+    },
+
+    formatDate(options, value) {
+      return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__["default"])(options, value);
+    },
+
+    getIcon(icon) {
+      return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__["default"])(icon);
+    }
+
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_shared_Select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @components/shared/Select */ "./resources/js/components/shared/Select.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    invoiceClass: {
+      type: [Function, Object],
+      required: true
+    },
+    isReady: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    // the payment model
+    // it can be edited whitouth "emit"
+    // because on the parent it's cloned from the main data object
+    // and returned as computed
+    model: {
+      type: Object,
+      required: true
+    },
+    isEdit: {
+      type: Boolean,
+      required: true
+    }
+  },
+  components: {
+    'custom-select': _components_shared_Select__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+
+  created() {
+    this.getCustomers();
+  },
+
+  data() {
+    return {
+      customers: [],
+      customersAreReady: false
+    };
+  },
+
+  methods: {
+    async getCustomers() {
+      const {
+        data
+      } = await this.invoiceClass.customers();
+      this.customers = data;
+      this.customersAreReady = true;
     }
 
   }
@@ -3136,7 +3356,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     paymentClass: {
-      type: Function,
+      type: [Function, Object],
       required: true
     },
     isReady: {
@@ -20249,249 +20469,57 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", [_vm._v("Invoice create")]),
+    _vm._m(0),
     _vm._v(" "),
-    _vm.customersAreReady
-      ? _c("div", [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.invoice.customer_id,
-                  expression: "invoice.customer_id"
-                }
-              ],
-              attrs: { disabled: _vm.customerId !== null },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.invoice,
-                    "customer_id",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
+    _c("div", { staticClass: "flex mt-10" }, [
+      _c(
+        "div",
+        { staticClass: "w-1/2" },
+        [
+          _c("invoice-form", {
+            attrs: {
+              invoiceClass: _vm.invoiceClass,
+              model: _vm.invoice,
+              isEdit: true
             },
-            [
-              _c(
-                "option",
-                { attrs: { default: "", selected: "", value: "" } },
-                [_vm._v("Choose a customer")]
-              ),
-              _vm._v(" "),
-              _vm._l(_vm.customers, function(customer) {
-                return _c(
-                  "option",
-                  { key: customer.id, domProps: { value: customer.id } },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(customer.full_name) +
-                        "\n                "
+            scopedSlots: _vm._u([
+              {
+                key: "buttons",
+                fn: function() {
+                  return [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        attrs: { id: "saveNewInvoice" },
+                        on: { click: _vm.saveNewInvoice }
+                      },
+                      [_vm._v("Save")]
                     )
                   ]
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v("\n        " + _vm._s(_vm.invoice.customer_id) + "\n        "),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.invoice.number,
-                expression: "invoice.number"
+                },
+                proxy: true
               }
-            ],
-            attrs: { name: "number", placeholder: "Number", type: "number" },
-            domProps: { value: _vm.invoice.number },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.invoice, "number", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.invoice.net_amount,
-                expression: "invoice.net_amount"
-              }
-            ],
-            attrs: {
-              name: "net_amount",
-              placeholder: "Net amount",
-              type: "number"
-            },
-            domProps: { value: _vm.invoice.net_amount },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.invoice, "net_amount", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.invoice.tax,
-                expression: "invoice.tax"
-              }
-            ],
-            attrs: { name: "tax", placeholder: "Tax", type: "number" },
-            domProps: { value: _vm.invoice.tax },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.invoice, "tax", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.invoice.description,
-                expression: "invoice.description"
-              }
-            ],
-            attrs: {
-              name: "description",
-              placeholder: "Description",
-              type: "text"
-            },
-            domProps: { value: _vm.invoice.description },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.invoice, "description", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.invoice.date,
-                expression: "invoice.date"
-              }
-            ],
-            attrs: { name: "date", placeholder: "Date", type: "date" },
-            domProps: { value: _vm.invoice.date },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.invoice, "date", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.invoice.sent_date,
-                expression: "invoice.sent_date"
-              }
-            ],
-            attrs: {
-              name: "sent_date",
-              placeholder: "Sent date",
-              type: "date"
-            },
-            domProps: { value: _vm.invoice.sent_date },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.invoice, "sent_date", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.invoice.registered_date,
-                expression: "invoice.registered_date"
-              }
-            ],
-            attrs: {
-              name: "registered_date",
-              placeholder: "Registered date",
-              type: "date"
-            },
-            domProps: { value: _vm.invoice.registered_date },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.invoice, "registered_date", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              attrs: { id: "saveNewInvoice" },
-              on: { click: _vm.saveNewInvoice }
-            },
-            [_vm._v("Save")]
-          )
-        ])
-      : _c("p", [_vm._v("\n        loading\n    ")])
+            ])
+          })
+        ],
+        1
+      )
+    ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-title" }, [
+      _c("h1", [
+        _vm._v("\n            Create new invoice                \n        ")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -20513,340 +20541,518 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
+  return _c("div", [
+    _c("div", { staticClass: "card-title" }, [
+      _c("h1", [
+        _vm._v(
+          "\n            Invoice " +
+            _vm._s(_vm.invoice.id) +
+            " of " +
+            _vm._s(_vm.formatDate({}, _vm.invoice.created_at)) +
+            "\n\n            "
+        ),
+        _vm.isDestroyable
+          ? _c(
+              "button",
+              {
+                staticClass:
+                  "btn btn-xs btn-danger btn-circle text-xl inline-block",
+                attrs: { id: "destroyInvoice" },
+                on: { click: _vm.destroyInvoice }
+              },
+              [
+                _c("span", {
+                  staticClass: "flex justify-center align-middle",
+                  domProps: { innerHTML: _vm._s(_vm.getIcon("trash")) }
+                })
+              ]
+            )
+          : _vm._e(),
+        _vm._v(" "),
+        !_vm.isDestroyable
+          ? _c("label", { staticClass: "inline-block" }, [
+              _c("span", {
+                staticClass: "flex justify-center align-middle text-gray-500",
+                domProps: { innerHTML: _vm._s(_vm.getIcon("lock")) }
+              })
+            ])
+          : _vm._e()
+      ]),
+      _vm._v(" "),
+      _c("small", [
+        _vm._v(
+          "Last update: " + _vm._s(_vm.formatDate({}, _vm.invoice.updated_at))
+        )
+      ])
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "flex flex-wrap mt-10" }, [
+      _c(
+        "div",
+        { staticClass: "w-1/2" },
+        [
+          _c("invoice-form", {
+            attrs: {
+              isReady: _vm.invoiceIsReady,
+              invoiceClass: _vm.invoiceClass,
+              model: _vm.getInvoiceModel,
+              isEdit: _vm.invoiceBeingEdited !== null
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "buttons",
+                fn: function() {
+                  return [
+                    _vm.invoiceBeingEdited
+                      ? [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-default",
+                              attrs: { id: "cancelEditInvoice" },
+                              on: { click: _vm.cancelEditInvoice }
+                            },
+                            [_vm._v("Cancel")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-success",
+                              attrs: { id: "updateInvoice" },
+                              on: { click: _vm.updateInvoice }
+                            },
+                            [_vm._v("Update")]
+                          )
+                        ]
+                      : [
+                          _vm.isEditable
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-default",
+                                  attrs: { id: "editInvoice" },
+                                  on: { click: _vm.editInvoice }
+                                },
+                                [_vm._v("Edit")]
+                              )
+                            : _vm._e()
+                        ]
+                  ]
+                },
+                proxy: true
+              }
+            ])
+          })
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "w-1/2" },
+        [
+          _vm.invoiceIsReady
+            ? _c("upload", {
+                attrs: {
+                  "resource-type": "invoice",
+                  "resource-id": _vm.invoice.id,
+                  allowUploads: _vm.isEditable,
+                  allowDeletes: _vm.isDestroyable
+                }
+              })
+            : _vm._e()
+        ],
+        1
+      ),
+      _vm._v(" "),
+      _vm.invoiceIsReady
+        ? _c(
+            "div",
+            { staticClass: "w-full" },
+            [
+              _vm.paymentsAreReady
+                ? _c("payment-index", {
+                    attrs: {
+                      shouldHandleOwnLoading: false,
+                      invoice: _vm.invoice,
+                      filteredPayments: _vm.payments,
+                      hiddenFields: ["invoice_number", "created"]
+                    }
+                  })
+                : _vm._e()
+            ],
+            1
+          )
+        : _vm._e()
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=template&id=277b22f4&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=template&id=277b22f4& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
   return _c(
     "div",
+    { staticClass: "pr-6 flex flex-wrap" },
     [
-      _c("div", [_vm._v("Invoice show")]),
-      _vm._v(" "),
-      _vm.invoiceBeingEdited
-        ? _c("div", [
+      _vm.customersAreReady && _vm.isReady
+        ? [
             _c(
-              "select",
-              {
+              "div",
+              { staticClass: "mb-6 w-1/2 px-2" },
+              [
+                _c("label", { staticClass: "label-default" }, [
+                  _vm._v("\n                Customer\n            ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "custom-select",
+                  {
+                    attrs: { disabled: !_vm.isEdit },
+                    model: {
+                      value: _vm.model.customer_id,
+                      callback: function($$v) {
+                        _vm.$set(_vm.model, "customer_id", $$v)
+                      },
+                      expression: "model.customer_id"
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { default: "", selected: "", value: "" } },
+                      [_vm._v("Choose a customer")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.customers, function(customer) {
+                      return _c(
+                        "option",
+                        { key: customer.id, domProps: { value: customer.id } },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(customer.full_name) +
+                              "\n                    "
+                          )
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Number\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
                 directives: [
                   {
                     name: "model",
                     rawName: "v-model",
-                    value: _vm.invoiceBeingEdited.customer_id,
-                    expression: "invoiceBeingEdited.customer_id"
+                    value: _vm.model.number,
+                    expression: "model.number"
                   }
                 ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "number",
+                  placeholder: "Number",
+                  type: "number"
+                },
+                domProps: { value: _vm.model.number },
                 on: {
-                  change: function($event) {
-                    var $$selectedVal = Array.prototype.filter
-                      .call($event.target.options, function(o) {
-                        return o.selected
-                      })
-                      .map(function(o) {
-                        var val = "_value" in o ? o._value : o.value
-                        return val
-                      })
-                    _vm.$set(
-                      _vm.invoiceBeingEdited,
-                      "customer_id",
-                      $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                    )
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "number", $event.target.value)
                   }
                 }
-              },
-              [
-                _c(
-                  "option",
-                  { attrs: { default: "", selected: "", value: "" } },
-                  [_vm._v("Choose a customer")]
-                ),
-                _vm._v(" "),
-                _vm._l(_vm.customers, function(customer) {
-                  return _c(
-                    "option",
-                    { key: customer.id, domProps: { value: customer.id } },
-                    [
-                      _vm._v(
-                        "\n                " +
-                          _vm._s(customer.full_name) +
-                          "\n                "
-                      )
-                    ]
-                  )
-                })
-              ],
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Net amount\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model.net_amount,
+                    expression: "model.net_amount"
+                  }
+                ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "net_amount",
+                  placeholder: "Net amount",
+                  type: "number"
+                },
+                domProps: { value: _vm.model.net_amount },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "net_amount", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Tax\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model.tax,
+                    expression: "model.tax"
+                  }
+                ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "tax",
+                  placeholder: "Tax",
+                  type: "number"
+                },
+                domProps: { value: _vm.model.tax },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "tax", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Date\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model.date,
+                    expression: "model.date"
+                  }
+                ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "date",
+                  placeholder: "date",
+                  type: "date"
+                },
+                domProps: { value: _vm.model.date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "date", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Sent date\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model.sent_date,
+                    expression: "model.sent_date"
+                  }
+                ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "sent_date",
+                  placeholder: "Sent date",
+                  type: "date"
+                },
+                domProps: { value: _vm.model.sent_date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "sent_date", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Registered date\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model.registered_date,
+                    expression: "model.registered_date"
+                  }
+                ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "registered_date",
+                  placeholder: "Registered date",
+                  type: "date"
+                },
+                domProps: { value: _vm.model.registered_date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "registered_date", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-full px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Description\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model.description,
+                    expression: "model.description"
+                  }
+                ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "description",
+                  placeholder: "Description",
+                  type: "text"
+                },
+                domProps: { value: _vm.model.description },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "description", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "mb-6 w-1/2 px-2" },
+              [_vm._t("buttons")],
               2
-            ),
-            _vm._v(
-              "\n        " +
-                _vm._s(_vm.invoiceBeingEdited.customer_id) +
-                "\n        "
-            ),
-            _c("br"),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.invoiceBeingEdited.number,
-                  expression: "invoiceBeingEdited.number"
-                }
-              ],
-              attrs: { name: "number", placeholder: "Number", type: "number" },
-              domProps: { value: _vm.invoiceBeingEdited.number },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(
-                    _vm.invoiceBeingEdited,
-                    "number",
-                    $event.target.value
-                  )
-                }
-              }
-            }),
-            _c("br"),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.invoiceBeingEdited.net_amount,
-                  expression: "invoiceBeingEdited.net_amount"
-                }
-              ],
-              attrs: {
-                name: "net_amount",
-                placeholder: "Net amount",
-                type: "number"
-              },
-              domProps: { value: _vm.invoiceBeingEdited.net_amount },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(
-                    _vm.invoiceBeingEdited,
-                    "net_amount",
-                    $event.target.value
-                  )
-                }
-              }
-            }),
-            _c("br"),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.invoiceBeingEdited.tax,
-                  expression: "invoiceBeingEdited.tax"
-                }
-              ],
-              attrs: { name: "tax", placeholder: "Tax", type: "number" },
-              domProps: { value: _vm.invoiceBeingEdited.tax },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.invoiceBeingEdited, "tax", $event.target.value)
-                }
-              }
-            }),
-            _c("br"),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.invoiceBeingEdited.description,
-                  expression: "invoiceBeingEdited.description"
-                }
-              ],
-              attrs: {
-                name: "description",
-                placeholder: "Description",
-                type: "text"
-              },
-              domProps: { value: _vm.invoiceBeingEdited.description },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(
-                    _vm.invoiceBeingEdited,
-                    "description",
-                    $event.target.value
-                  )
-                }
-              }
-            }),
-            _c("br"),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.invoiceBeingEdited.date,
-                  expression: "invoiceBeingEdited.date"
-                }
-              ],
-              attrs: { name: "date", placeholder: "Date", type: "date" },
-              domProps: { value: _vm.invoiceBeingEdited.date },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(_vm.invoiceBeingEdited, "date", $event.target.value)
-                }
-              }
-            }),
-            _c("br"),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.invoiceBeingEdited.sent_date,
-                  expression: "invoiceBeingEdited.sent_date"
-                }
-              ],
-              attrs: {
-                name: "sent_date",
-                placeholder: "Sent date",
-                type: "date"
-              },
-              domProps: { value: _vm.invoiceBeingEdited.sent_date },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(
-                    _vm.invoiceBeingEdited,
-                    "sent_date",
-                    $event.target.value
-                  )
-                }
-              }
-            }),
-            _c("br"),
-            _vm._v(" "),
-            _c("input", {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.invoiceBeingEdited.registered_date,
-                  expression: "invoiceBeingEdited.registered_date"
-                }
-              ],
-              attrs: {
-                name: "registered_date",
-                placeholder: "Registered date",
-                type: "date"
-              },
-              domProps: { value: _vm.invoiceBeingEdited.registered_date },
-              on: {
-                input: function($event) {
-                  if ($event.target.composing) {
-                    return
-                  }
-                  _vm.$set(
-                    _vm.invoiceBeingEdited,
-                    "registered_date",
-                    $event.target.value
-                  )
-                }
-              }
-            }),
-            _c("br"),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                attrs: { id: "updateInvoice" },
-                on: { click: _vm.updateInvoice }
-              },
-              [_vm._v("Update")]
-            ),
-            _vm._v(" "),
-            _c(
-              "button",
-              {
-                attrs: { id: "cancelEditInvoice" },
-                on: { click: _vm.cancelEditInvoice }
-              },
-              [_vm._v("Cancel")]
             )
-          ])
-        : _c("div", [
-            _c("pre", [_vm._v(_vm._s(_vm.invoice))]),
-            _vm._v(" "),
-            _vm.isEditable
-              ? _c(
-                  "button",
-                  {
-                    attrs: { id: "editInvoice" },
-                    on: { click: _vm.editInvoice }
-                  },
-                  [_vm._v("Edit")]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _vm.isDestroyable
-              ? _c(
-                  "button",
-                  {
-                    attrs: { id: "destroyInvoice" },
-                    on: { click: _vm.destroyInvoice }
-                  },
-                  [_vm._v("Delete")]
-                )
-              : _vm._e(),
-            _vm._v(" "),
-            _c("br"),
-            _c("br"),
-            _c("br")
-          ]),
-      _vm._v(" "),
-      _vm.invoiceIsReady
-        ? _c("upload", {
-            attrs: {
-              "resource-type": "invoice",
-              "resource-id": _vm.invoice.id,
-              allowUploads: _vm.isEditable,
-              allowDeletes: _vm.isDestroyable
-            }
-          })
-        : _vm._e(),
-      _vm._v(" "),
-      _vm.invoiceIsReady
-        ? [
-            _vm.paymentsAreReady
-              ? _c("payment-index", {
-                  attrs: {
-                    shouldHandleOwnLoading: false,
-                    invoice: _vm.invoice,
-                    filteredPayments: _vm.payments,
-                    hiddenFields: ["invoice_number", "created"]
-                  }
-                })
-              : _vm._e()
           ]
-        : _vm._e()
+        : [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }),
+            _vm._v(" "),
+            _vm._l(6, function(item) {
+              return _c("div", { key: item, staticClass: "mb-6 w-1/2 px-2" }, [
+                _c("label", { staticClass: "label-default bg-gray-200 w-16" }, [
+                  _vm._v(" ")
+                ]),
+                _vm._v(" "),
+                _c("input", {
+                  staticClass: "input-default",
+                  attrs: { readonly: "true" }
+                })
+              ])
+            }),
+            _vm._v(" "),
+            _vm._m(1)
+          ]
     ],
     2
   )
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+      _c("label", { staticClass: "label-default bg-gray-200 w-16" }, [
+        _vm._v(" ")
+      ]),
+      _vm._v(" "),
+      _c("input", { staticClass: "input-default", attrs: { readonly: "true" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "mb-6 w-full px-2" }, [
+      _c("label", { staticClass: "label-default bg-gray-200 w-16" }, [
+        _vm._v(" ")
+      ]),
+      _vm._v(" "),
+      _c("input", { staticClass: "input-default", attrs: { readonly: "true" } })
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -21068,7 +21274,7 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "flex mt-10" }, [
+    _c("div", { staticClass: "flex mt-10 flex-wrap" }, [
       _c(
         "div",
         { staticClass: "w-1/2" },
@@ -21631,7 +21837,7 @@ var render = function() {
     "div",
     {
       staticClass:
-        "modal absolute w-full h-full top-0 left-0 flex items-center justify-center",
+        "modal z-50 fixed w-full h-full top-0 left-0 flex items-center justify-center",
       class: _vm.getClass
     },
     [
@@ -37422,10 +37628,10 @@ class Customer {
 
   static create() {
     return {
-      full_name: null,
-      email: null,
-      phone: null,
-      vat_code: null
+      full_name: '',
+      email: '',
+      phone: '',
+      vat_code: ''
     };
   }
 
@@ -37480,16 +37686,16 @@ class Invoice {
     return axios.get(BASE_URI);
   }
 
-  static create(customerId = null) {
+  static create(customerId = '') {
     return {
       customer_id: customerId,
-      number: null,
-      net_amount: null,
-      tax: null,
-      description: null,
-      date: null,
-      sent_date: null,
-      registered_date: null
+      number: '',
+      net_amount: '',
+      tax: '',
+      description: '',
+      date: '',
+      sent_date: '',
+      registered_date: ''
     };
   }
 
@@ -38160,6 +38366,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceShow_vue_vue_type_template_id_c354fc66___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceShow_vue_vue_type_template_id_c354fc66___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/invoice/shared/InvoiceForm.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/invoice/shared/InvoiceForm.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _InvoiceForm_vue_vue_type_template_id_277b22f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./InvoiceForm.vue?vue&type=template&id=277b22f4& */ "./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=template&id=277b22f4&");
+/* harmony import */ var _InvoiceForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./InvoiceForm.vue?vue&type=script&lang=js& */ "./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _InvoiceForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _InvoiceForm_vue_vue_type_template_id_277b22f4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _InvoiceForm_vue_vue_type_template_id_277b22f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/invoice/shared/InvoiceForm.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./InvoiceForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=template&id=277b22f4&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=template&id=277b22f4& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceForm_vue_vue_type_template_id_277b22f4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./InvoiceForm.vue?vue&type=template&id=277b22f4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/invoice/shared/InvoiceForm.vue?vue&type=template&id=277b22f4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceForm_vue_vue_type_template_id_277b22f4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_InvoiceForm_vue_vue_type_template_id_277b22f4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

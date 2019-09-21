@@ -24,7 +24,7 @@
         </div>
 
 
-        <div class="flex mt-10">
+        <div class="flex mt-10 flex-wrap">
 
             <!-- payment -->
             <div class="w-1/2">
