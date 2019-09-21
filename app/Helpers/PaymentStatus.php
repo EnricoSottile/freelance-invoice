@@ -12,12 +12,19 @@ final class PaymentStatus {
     protected $isPayed;
 
 
+    /**
+     * @var Bool
+     */
+    protected $isTrashed;
+
+
     public function __construct(Payment $payment) 
     {
         // always load existing payment from database
         $payment = Payment::withTrashed()->find($payment->id);
 
         $this->isPayed = $payment->isPayed();
+        $this->isTrashed = $payment->trashed();
     }
 
     
@@ -48,6 +55,17 @@ final class PaymentStatus {
     public function getIsPayed() : bool
     {
         return $this->isPayed;
+    }
+
+
+    /**
+     * Get the value of isTrashed
+     *
+     * @return  Bool
+     */ 
+    public function getIsTrashed() : bool
+    {
+        return $this->isTrashed;
     }
 
 }

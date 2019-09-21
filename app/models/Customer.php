@@ -66,5 +66,10 @@ class Customer extends Model
         return $this->morphMany(Upload::class, 'uploadable');
     }
 
+    public function deleteUploads(){
+        $this->uploads()->each(function($upload){
+            $upload->delete();
+        });
+    }
     
 }

@@ -6,6 +6,9 @@ class Upload {
         this.url = `app/${resourceType}/${resourceId}/upload`;
     }
 
+    getUploadUrl(){
+        return this.url;
+    }
 
     index(){
         return axios.get(this.url);  

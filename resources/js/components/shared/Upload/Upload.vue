@@ -71,7 +71,7 @@
 
         computed: {
             getUploadUrl(){
-                return `app/${this.resourceType}/${this.resourceId}/upload`;
+                return this.uploadClass.getUploadUrl();
             }
         },
 

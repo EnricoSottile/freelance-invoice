@@ -4221,7 +4221,7 @@ const MODELS = ['invoice', 'customer', 'payment'];
 
   computed: {
     getUploadUrl() {
-      return `app/${this.resourceType}/${this.resourceId}/upload`;
+      return this.uploadClass.getUploadUrl();
     }
 
   },
@@ -37602,6 +37602,10 @@ __webpack_require__.r(__webpack_exports__);
 class Upload {
   constructor(resourceType, resourceId) {
     this.url = `app/${resourceType}/${resourceId}/upload`;
+  }
+
+  getUploadUrl() {
+    return this.url;
   }
 
   index() {

@@ -20,6 +20,8 @@ class CustomerObserver
         $status = new CustomerStatus($customer);
                 
         if ( $status->canBeDeleted() ) {
+            // if is trashed, this 'deleting' is permanent, so remove all uploads
+            $status->getIsTrashed() && $customer->deleteUploads();
             $status->getHasUnregisteredInvoices() && $customer->deleteUnregisteredInvoices();
         } else {
             abort(403, 'Customer cannot be deleted' );

@@ -22,6 +22,11 @@ final class CustomerStatus {
      */
     protected $hasPayedPayments;
 
+    /**
+     * @var Bool
+     */
+    protected $isTrashed;
+
 
     public function __construct(Customer $customer) 
     {
@@ -31,6 +36,7 @@ final class CustomerStatus {
         $this->hasRegisteredInvoices = $customer->registered_invoices()->count() > 0;
         $this->hasUnregisteredInvoices = $customer->unregistered_invoices()->count() > 0;
         $this->hasPayedPayments = $customer->payed_payments()->count() > 0;
+        $this->isTrashed = $customer->trashed();
     }
 
     
@@ -78,5 +84,16 @@ final class CustomerStatus {
     public function getHasPayedPayments()
     {
         return $this->hasPayedPayments;
+    }
+
+
+    /**
+     * Get the value of isTrashed
+     *
+     * @return  Bool
+     */ 
+    public function getIsTrashed() : bool
+    {
+        return $this->isTrashed;
     }
 }

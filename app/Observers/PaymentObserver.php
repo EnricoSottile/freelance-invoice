@@ -32,9 +32,16 @@ class PaymentObserver
     public function deleting(Payment $payment)
     {        
         $status = new PaymentStatus($payment);
-        
-        if ( ! $status->canBeDeleted() ) {
+
+
+        if ( $status->canBeDeleted() ) {
+            
+            // if is trashed, this 'deleting' is permanent, so remove all uploads
+            $status->getIsTrashed() && $payment->deleteUploads();
+
+        } else {
             abort(403, 'Payment cannot be deleted' );
         }
+        
     }
 }
