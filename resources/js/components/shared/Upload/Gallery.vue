@@ -11,7 +11,14 @@
    
                     <card-item>
                         <template v-slot:image>
-                            <img class="w-full" :src="getUploadSource(upload)">
+                            <div class="w-full h-full relative">
+                                <img class="w-full" :src="getUploadSource(upload)">
+                                <div class="image-overlay">
+                                    <a v-html="getIcon('eye')" target="_blank" :href="getShowUrl(upload)"></a>
+                                    <a v-html="getIcon('download')" :href="getDownloadUrl(upload)"></a>
+                                </div>
+                            </div>
+                            
                         </template>
 
                         <template v-slot:body>
@@ -41,6 +48,7 @@
 </template>
 
 <script>
+    import _getIcon from '@helpers/getIcon'
     import _formatDate from '@helpers/formatDate'
     import CardItem from '@components/shared/CardItem'
     import Modal from '@components/shared/Modal'
@@ -48,6 +56,10 @@
     export default {
 
         props: {
+            uploadClass: {
+                required: true,
+                type: [Object, Function]
+            },
             files: {
                 required: true,
                 type: Array,
@@ -85,8 +97,18 @@
             destroyUpload(fileId){
                 this.$emit('destroy', fileId);
             },
+            getShowUrl(upload){
+                return this.uploadClass.getShowUrl(upload.id);
+            },
+            getDownloadUrl(upload){
+                return this.uploadClass.getDownloadUrl(upload.id);
+            },
+
             formatDate(options, value) {
                 return _formatDate(options, value)
+            },
+            getIcon(icon) {
+                return _getIcon(icon);
             },
         }
 
@@ -95,5 +117,23 @@
 </script>
 
 <style>
+
+    .image-overlay {
+        transition: all .2s ease-in-out;
+        @apply w-full h-full top-0 bg-black opacity-0 absolute flex justify-center items-center;
+    }
+
+    .image-overlay a {
+        transition: all .1s ease-in-out;
+        @apply text-white opacity-50 mx-2;
+    }
+
+    .image-overlay a:hover {
+        @apply opacity-100;
+    }
+
+    .image-overlay:hover {
+        @apply opacity-75;
+    }
 
 </style>

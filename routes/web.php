@@ -84,6 +84,14 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
                         ->name('payment.upload.destroy');
 
 
+        //  UPLOAD
+        Route::get('uploads/{upload}', 'UploadController@show')
+                ->name('upload.show');
+
+        Route::get('uploads/{upload}/download', 'UploadController@download')
+                ->name('upload.download');
+
+
         // TRASH
         Route::get('trash/restore/{resource}/{id}', 'TrashController@restore')
                 ->name('trash.restore');

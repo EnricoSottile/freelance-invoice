@@ -6,8 +6,17 @@ class Upload {
         this.url = `app/${resourceType}/${resourceId}/upload`;
     }
 
+        
     getUploadUrl(){
         return this.url;
+    }
+
+    getDownloadUrl(uploadId){
+        return `app/uploads/${uploadId}/download`;
+    }
+
+    getShowUrl(uploadId){
+        return `app/uploads/${uploadId}`;
     }
 
     index(){

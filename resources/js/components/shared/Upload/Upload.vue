@@ -6,7 +6,7 @@
                 <dropzone-wrapper @upload-success="handleUpload($event)" :url="getUploadUrl"/>
             </div>
 
-            <gallery :loading="!galleryIsReady" @destroy="destroyUpload($event)" :allowDeletes="allowDeletes" :files="existingUploads"></gallery>
+            <gallery :uploadClass="uploadClass" :loading="!galleryIsReady" @destroy="destroyUpload($event)" :allowDeletes="allowDeletes" :files="existingUploads"></gallery>
 
     </div>
 </template>

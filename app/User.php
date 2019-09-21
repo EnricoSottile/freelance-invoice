@@ -5,6 +5,7 @@ namespace App;
 use App\models\Customer;
 use App\models\Invoice;
 use App\models\Payment;
+use App\models\Upload;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -50,5 +51,9 @@ class User extends Authenticatable
 
     public function payments(){
         return $this->hasMany(Payment::class);
+    }
+
+    public function uploads(){
+        return $this->hasMany(Upload::class);
     }
 }
