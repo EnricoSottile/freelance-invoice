@@ -1,36 +1,65 @@
 <template>
     <div>
-        <div>Customer show</div>
 
-        <div v-if="customerBeingEdited">
-            <input v-model="customerBeingEdited.full_name" name="full_name" placeholder="Full name" type="text"/><br/>
-            <input v-model="customerBeingEdited.email" name="email" placeholder="Email" type="email"/><br/>
-            <input v-model="customerBeingEdited.phone" name="phone" placeholder="Phone" type="text"/><br/>
-            <input v-model="customerBeingEdited.vat_code" name="vat_code" placeholder="Vat code" type="number"/><br/>
-            <button id="updateCustomer" @click="updateCustomer">Update</button>
-            <button id="cancelEditCustomer" @click="cancelEditCustomer">Cancel</button>
-            <br/><br/><br/>
+        <div class="card-title">
+            <h1>
+                Customer {{ customer.id }}, created at {{ formatDate({}, customer.created_at) }}
+
+                <button 
+                    v-if="isDestroyable"
+                    id="destroyCustomer"
+                    @click="destroyCustomer"
+                    class="btn btn-xs btn-danger btn-circle text-xl inline-block">
+                    <span v-html="getIcon('trash')" class="flex justify-center align-middle"></span>
+                </button>
+
+                <label v-if="!isDestroyable" class="inline-block">
+                    <span v-html="getIcon('lock')" class="flex justify-center align-middle text-gray-500"></span>
+                </label>
+
+                
+            </h1>
+            <small>Last update: {{ formatDate({}, customer.updated_at) }}</small>
+
         </div>
-        <div v-else>
-            <pre>{{ customer }}</pre>
 
-            <button id="editCustomer" @click="editCustomer">Edit</button>
-            <button v-if="isDestroyable" id="destroyCustomer" @click="destroyCustomer">Delete</button>
-            <br/><br/><br/>
-        </div>
 
-        <div v-if="customerIsReady" style="display:flex">
+        <div class="flex mt-10 flex-wrap">
 
-            <div>
+            <!-- customer -->
+            <div class="w-1/2">
+                <customer-form
+                    :isReady="customerIsReady"
+                    :customerClass="customerClass"
+                    :model="getCustomerModel"
+                    :isEdit="customerBeingEdited !== null">
+
+                    <template v-slot:buttons>
+                        <template  v-if="customerBeingEdited">
+                            <button class="btn btn-default" id="cancelEditCustomer" @click="cancelEditCustomer">Cancel</button>
+                            <button class="btn btn-success" id="updateCustomer" @click="updateCustomer">Update</button>
+                        </template>
+                        <template v-else>
+                            <button v-if="isEditable" class="btn btn-default"  id="editCustomer" @click="editCustomer">Edit</button>
+                        </template>  
+                    </template>
+
+                </customer-form>                    
+            </div>
+
+            <!-- upload -->
+            <div class="w-1/2">
                 <upload 
                     resource-type="customer" 
                     :resource-id="customer.id" 
-                    :allowUploads="true"
-                    :allowDeletes="isDestroyable">
+                    :allowUploads="isEditable"
+                    :allowDeletes="isDestroyable"
+                    v-if="customerIsReady">
                 </upload>
             </div>
 
-            <div>
+            
+            <div class="w-full mb-32">
                 <invoice-index 
                     v-if="invoicesAreReady" 
                     :shouldHandleOwnLoading="false" 
@@ -40,7 +69,7 @@
                 </invoice-index>
             </div>
 
-            <div v-if="paymentsAreReady">
+            <div class="w-full mb-10">
                 <payment-index 
                     v-if="paymentsAreReady" 
                     :shouldHandleOwnLoading="false" 
@@ -49,16 +78,19 @@
                 </payment-index>
             </div>
 
+
         </div>
 
 
-
-        
     </div>
 </template>
 
 <script>
+    import _getIcon from '@helpers/getIcon'
+    import _formatDate from '@helpers/formatDate'
+
     import Customer from '@classes/Customer'
+    import CustomerForm from '@components/customer/shared/CustomerForm'
     import InvoiceIndex from '@components/invoice/Index/InvoiceIndex'
     import PaymentIndex from '@components/payment/Index/PaymentIndex'
     import Upload from '@components/shared/Upload/Upload'
@@ -74,6 +106,7 @@
         },
 
         components: {
+            'customer-form': CustomerForm,
             'invoice-index': InvoiceIndex,
             'payment-index': PaymentIndex,
             'upload': Upload
@@ -109,6 +142,9 @@
         },
 
         computed: {
+            getCustomerModel(){
+                return this.customerBeingEdited ? this.customerBeingEdited : this.customer;
+            },
             hasPayedPayments(){
                 return this.payments 
                 && this.payments.filter(p => p.payed_date).length;
@@ -116,6 +152,10 @@
             hasRegisteredInvoices(){
                 return this.invoices 
                 && this.invoices.filter(i => i.registered_date).length;
+            },
+            isEditable() {
+                return this.hasPayedPayments === 0 
+                && this.hasRegisteredInvoices === 0
             },
             isDestroyable() {
                 return this.hasPayedPayments === 0 
@@ -156,6 +196,13 @@
             },
             cancelEditCustomer(event, customerId) {
                 this.customerBeingEdited = null;
+            },
+
+            formatDate(options, value) {
+                return _formatDate(options, value)
+            },
+            getIcon(icon) {
+                return _getIcon(icon);
             }
         },
 

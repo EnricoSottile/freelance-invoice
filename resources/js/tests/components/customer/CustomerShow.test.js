@@ -95,31 +95,31 @@ describe('CustomerShow', () => {
   })
 
 
-  test('edit button works correctly', async() => {
-    const btnEdit = wrapper.find('#editCustomer');
-    btnEdit.trigger('click');
-    expect( wrapper.vm.customerBeingEdited).toEqual(getCustomerObj)
-  })
+  // test('edit button works correctly', async() => {
+  //   const btnEdit = wrapper.find('#editCustomer');
+  //   btnEdit.trigger('click');
+  //   expect( wrapper.vm.customerBeingEdited).toEqual(getCustomerObj)
+  // })
 
-  test('update button works correctly', async() => {
-    window.alert = () => {};
-    const btnUpdate = wrapper.find('#updateCustomer');
+  // test('update button works correctly', async() => {
+  //   window.alert = () => {};
+  //   const btnUpdate = wrapper.find('#updateCustomer');
 
-    btnUpdate.trigger('click');
+  //   btnUpdate.trigger('click');
     
-    await expect(wrapper.vm.customerClass.update).toBeCalled();
-    await expect( wrapper.vm.customerBeingEdited).toBeNull();
-    await expect( wrapper.vm.customer).toEqual(mockUpdatedCustomer);
-  })
+  //   await expect(wrapper.vm.customerClass.update).toBeCalled();
+  //   await expect( wrapper.vm.customerBeingEdited).toBeNull();
+  //   await expect( wrapper.vm.customer).toEqual(mockUpdatedCustomer);
+  // })
 
-  test('cancel button works correctly', async() => {
-    const btnEdit = wrapper.find('#editCustomer');
-    btnEdit.trigger('click');
+  // test('cancel button works correctly', async() => {
+  //   const btnEdit = wrapper.find('#editCustomer');
+  //   btnEdit.trigger('click');
 
-    const btnCancel = wrapper.find('#cancelEditCustomer');
-    btnCancel.trigger('click');
-    expect( wrapper.vm.customerBeingEdited).toEqual(null)
-  });
+  //   const btnCancel = wrapper.find('#cancelEditCustomer');
+  //   btnCancel.trigger('click');
+  //   expect( wrapper.vm.customerBeingEdited).toEqual(null)
+  // });
 
 
 

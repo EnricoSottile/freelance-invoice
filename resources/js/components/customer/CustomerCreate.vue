@@ -1,14 +1,25 @@
 <template>
     <div>
+        
+        <div class="card-title">
+            <h1>
+                Create new customer                
+            </h1>
+        </div>
 
-        <div>Customer create</div>
+        <div class="flex mt-10">
+            <div class="w-1/2">
+                <customer-form
+                    :customerClass="customerClass"
+                    :model="customer"
+                    :isEdit="true">
 
-        <div>
-            <input v-model="customer.full_name" name="full_name" placeholder="Full name" type="text"/><br/>
-            <input v-model="customer.email" name="email" placeholder="Email" type="email"/><br/>
-            <input v-model="customer.phone" name="phone" placeholder="Phone" type="text"/><br/>
-            <input v-model="customer.vat_code" name="vat_code" placeholder="Vat code" type="number"/><br/>
-            <button id="saveNewCustomer" @click="saveNewCustomer">Save</button>
+                    <template v-slot:buttons>
+                        <button class="btn btn-success" id="saveNewCustomer" @click="saveNewCustomer">Save</button>
+                    </template>
+
+                </customer-form>  
+            </div>
         </div>
 
     </div>
@@ -16,10 +27,14 @@
 
 <script>    
     import Customer from '@classes/Customer'
+    import CustomerForm from '@components/customer/shared/CustomerForm'
 
 
     export default {
 
+        components: {
+            'customer-form': CustomerForm
+        },
 
         created(){
             this.customer = this.customerClass.create();

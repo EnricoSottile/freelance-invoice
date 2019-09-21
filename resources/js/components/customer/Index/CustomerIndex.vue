@@ -3,7 +3,7 @@
 
 
         <div class="flex mt-10 justify-between">
-            <h1 class="font-light text-2xl text-gray-500">Customers</h1>
+            <h1 class="font-light text-2xl">Customers</h1>
 
             <router-link :to="{ name: 'customer.create'}" class="btn btn-default">
                 Add new Customer

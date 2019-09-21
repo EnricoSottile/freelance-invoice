@@ -59,7 +59,7 @@
                 </upload>
             </div>
 
-            <div class="w-full" v-if="invoiceIsReady">
+            <div class="w-full mb-10" v-if="invoiceIsReady">
                 <payment-index 
                     v-if="paymentsAreReady" 
                     :shouldHandleOwnLoading="false" 

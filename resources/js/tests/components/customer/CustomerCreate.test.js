@@ -59,17 +59,17 @@ describe('CustomerCreate', () => {
 
 
 
-  test('save button works correctly', async() => {
-    window.alert = () => {};
-    window.router = {
-      push: () => {},
-    };
+  // test('save button works correctly', async() => {
+  //   window.alert = () => {};
+  //   window.router = {
+  //     push: () => {},
+  //   };
 
     
-    const btnSave = wrapper.find('#saveNewCustomer');
-    btnSave.trigger('click');
-    await expect(wrapper.vm.customerClass.store).toBeCalled();
-  })  
+  //   const btnSave = wrapper.find('#saveNewCustomer');
+  //   btnSave.trigger('click');
+  //   await expect(wrapper.vm.customerClass.store).toBeCalled();
+  // })  
 
 
 

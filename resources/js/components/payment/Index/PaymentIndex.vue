@@ -3,7 +3,7 @@
         
 
         <div class="flex mt-10 justify-between">
-                <h1 class="font-light text-2xl text-gray-500">Payments</h1>
+                <h1 class="font-light text-2xl">Payments</h1>
 
 
                 <!-- ADD NEW PAYMENT -->
