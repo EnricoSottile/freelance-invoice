@@ -15,18 +15,18 @@ class Upload {
     }
 
 
-    store(file){
-        const url = this.url;
-        let data = new FormData();
-        data.append('upload', file); 
+    // store(file){
+    //     const url = this.url;
+    //     let data = new FormData();
+    //     data.append('upload', file); 
 
-        return axios({
-            method: 'post',
-            url,
-            data,
-            config: { headers: {'Content-Type': 'multipart/form-data' }}
-        })
-    }
+    //     return axios({
+    //         method: 'post',
+    //         url,
+    //         data,
+    //         config: { headers: {'Content-Type': 'multipart/form-data' }}
+    //     })
+    // }
 
    
     destroy(uploadId){

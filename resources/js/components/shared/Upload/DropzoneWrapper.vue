@@ -107,7 +107,7 @@
                 
             },
             handleError(file, errorMessage, xhr){
-                const msg = errorMessage.message ? errorMessage.message : errorMessage;
+                const msg = errorMessage?.message || errorMessage;
                 const retryBtn = file.previewElement.querySelector('.dropzone-retry');
                 
                 file.previewElement.className += ' dz-error';
@@ -124,16 +124,20 @@
                 }, {once : true}); 
             },
             handleSuccess(file, response){
+                const src = `data:image/jpeg;base64,${response.upload.encoded_image}`;
+
                 file.previewElement.className += ' dz-success';
+                file.previewElement.querySelector('img').setAttribute("src", src); 
                 this.$emit('upload-success', response.upload);
             },
             handleComplete(file){
                 const bar = file.previewElement.querySelector('.progress-bar');
+                const hideBtn = file.previewElement.querySelector('.dropzone-hide');
 
                 file.previewElement.className += ' dz-complete';
                 document.querySelector('.dropzone-placeholder').innerHTML = '';
 
-                file.previewElement.querySelector('.dropzone-hide').addEventListener("click", function(){
+                hideBtn.addEventListener("click", function(){
                     file.previewElement.parentNode.removeChild(file.previewElement);
                 }, {once : true}); 
 
