@@ -27,9 +27,9 @@ class CreateInvoicesTable extends Migration
             $table->decimal('tax', 5,2)->default(0.00);
             $table->longText('description')->nullable();
 
-            $table->dateTime('date')->nullable();
-            $table->dateTime('sent_date')->nullable();
-            $table->dateTime('registered_date')->nullable();
+            $table->date('date')->nullable();
+            $table->date('sent_date')->nullable();
+            $table->date('registered_date')->nullable();
 
             $table->timestamps();
             $table->softDeletes();
