@@ -4384,6 +4384,7 @@ __webpack_require__.r(__webpack_exports__);
     },
 
     handleError(file, errorMessage, xhr) {
+      const vm = this;
       const msg = (errorMessage === null || errorMessage === void 0 ? void 0 : errorMessage.message) || errorMessage;
       const retryBtn = file.previewElement.querySelector('.dropzone-retry');
       file.previewElement.className += ' dz-error';
@@ -4405,6 +4406,8 @@ __webpack_require__.r(__webpack_exports__);
     handleSuccess(file, response) {
       const src = `data:image/jpeg;base64,${response.upload.encoded_image}`;
       file.previewElement.className += ' dz-success';
+      file.previewElement.classList.remove("dz-error");
+      file.previewElement.querySelector('.dz-error-message').innerHTML = '';
       file.previewElement.querySelector('img').setAttribute("src", src);
       this.$emit('upload-success', response.upload);
     },
@@ -20222,9 +20225,7 @@ var render = function() {
       _c("h1", [
         _vm._v(
           "\n            Customer " +
-            _vm._s(_vm.customer.id) +
-            ", created at " +
-            _vm._s(_vm.formatDate({}, _vm.customer.created_at)) +
+            _vm._s(_vm.customer.full_name) +
             "\n\n            "
         ),
         _vm.isDestroyable
@@ -20333,7 +20334,7 @@ var render = function() {
                 attrs: {
                   "resource-type": "customer",
                   "resource-id": _vm.customer.id,
-                  allowUploads: _vm.isEditable,
+                  allowUploads: true,
                   allowDeletes: _vm.isDestroyable
                 }
               })
@@ -20914,7 +20915,7 @@ var render = function() {
                 attrs: {
                   "resource-type": "invoice",
                   "resource-id": _vm.invoice.id,
-                  allowUploads: _vm.isEditable,
+                  allowUploads: true,
                   allowDeletes: _vm.isDestroyable
                 }
               })
@@ -21602,7 +21603,7 @@ var render = function() {
                 attrs: {
                   "resource-type": "payment",
                   "resource-id": _vm.payment.id,
-                  allowUploads: _vm.isEditable,
+                  allowUploads: true,
                   allowDeletes: _vm.isDestroyable
                 }
               })

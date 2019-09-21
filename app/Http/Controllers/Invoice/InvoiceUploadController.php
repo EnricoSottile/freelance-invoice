@@ -45,9 +45,9 @@ class InvoiceUploadController extends Controller
         $invoice = Auth::user()->invoices()->findOrFail($id);
         $status = new InvoiceStatus($invoice);
 
-        if ( ! $status->canBeUpdated() ) {
-            abort(403, 'Invoice uploads cannot be edited');
-        }
+        // if ( ! $status->canBeUpdated() ) {
+        //     abort(403, 'Invoice uploads cannot be edited');
+        // }
 
         return $this->traitUpload($request, $invoice);
     }

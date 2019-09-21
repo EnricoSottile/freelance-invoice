@@ -107,6 +107,7 @@
                 
             },
             handleError(file, errorMessage, xhr){
+                const vm = this;
                 const msg = errorMessage?.message || errorMessage;
                 const retryBtn = file.previewElement.querySelector('.dropzone-retry');
                 
@@ -127,6 +128,8 @@
                 const src = `data:image/jpeg;base64,${response.upload.encoded_image}`;
 
                 file.previewElement.className += ' dz-success';
+                file.previewElement.classList.remove("dz-error");
+                file.previewElement.querySelector('.dz-error-message').innerHTML = '';
                 file.previewElement.querySelector('img').setAttribute("src", src); 
                 this.$emit('upload-success', response.upload);
             },

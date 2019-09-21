@@ -52,7 +52,7 @@
                 <upload 
                     resource-type="payment" 
                     :resource-id="payment.id" 
-                    :allowUploads="isEditable"
+                    :allowUploads="true"
                     :allowDeletes="isDestroyable"
                     v-if="paymentIsReady">
                 </upload>

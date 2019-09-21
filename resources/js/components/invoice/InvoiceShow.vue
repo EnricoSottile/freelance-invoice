@@ -53,7 +53,7 @@
                 <upload 
                     resource-type="invoice" 
                     :resource-id="invoice.id" 
-                    :allowUploads="isEditable"
+                    :allowUploads="true"
                     :allowDeletes="isDestroyable"
                     v-if="invoiceIsReady">
                 </upload>

@@ -3,7 +3,7 @@
 
         <div class="card-title">
             <h1>
-                Customer {{ customer.id }}, created at {{ formatDate({}, customer.created_at) }}
+                Customer {{ customer.full_name }}
 
                 <button 
                     v-if="isDestroyable"
@@ -52,7 +52,7 @@
                 <upload 
                     resource-type="customer" 
                     :resource-id="customer.id" 
-                    :allowUploads="isEditable"
+                    :allowUploads="true"
                     :allowDeletes="isDestroyable"
                     v-if="customerIsReady">
                 </upload>

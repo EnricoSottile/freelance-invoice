@@ -45,9 +45,9 @@ class PaymentUploadController extends Controller
         $payment = Auth::user()->payments()->findOrFail($id);
         $status = new PaymentStatus($payment);
 
-        if ( ! $status->canBeUpdated() ) {
-            abort(403, 'Payment uploads cannot be edited');
-        }
+        // if ( ! $status->canBeUpdated() ) {
+        //     abort(403, 'Payment uploads cannot be edited');
+        // }
 
         return $this->traitUpload($request, $payment);
     }
