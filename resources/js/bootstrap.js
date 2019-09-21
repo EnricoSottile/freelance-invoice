@@ -4,6 +4,7 @@
  * CSRF token as a header based on the value of the "XSRF" token cookie.
  */
 
+import SweetAlert from '@classes/SweetAlert'
 
 
 window.axios = require('axios');
@@ -23,28 +24,28 @@ window.axios.interceptors.response.use( response => response,  error => {
         if (error.response.status === 404) {
             // missing resource
             if (error.response && error.response.data && error.response.data.message) {
-                alert(error.response.data.message);
+                SweetAlert.fire('Are you lost?', error.response.data.message, 'error');
+                // alert(error.response.data.message);
             }
             router.push('/home')
-        }
-
-
-        if (error.response.status === 403) {
+        } else if (error.response.status === 403) {
             // error in deleting/editing
             if (error.response && error.response.data && error.response.data.message) {
-                alert(error.response.data.message);
+                SweetAlert.fire('You can\'t do that!', error.response.data.message, 'error');
             }
-        }
-
-
-        if (error.response.status === 422) {
+        } else if (error.response.status === 422) {
             // validation error            
             if (error.response && error.response.data && error.response.data.errors) {
                 const errors = error.response.data.errors;
                 const values = Object.values(errors);
-                alert(values.join("\n"));
+
+                SweetAlert.fire('Thou shall not pass', values.join("\n"), 'error');
             }
+        } else {
+            alert("Unknown error");
         }
+
+
 
     }
 

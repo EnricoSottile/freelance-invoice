@@ -86,6 +86,8 @@
 </template>
 
 <script>
+    import SweetAlert from '@classes/SweetAlert'
+
     import _getIcon from '@helpers/getIcon'
     import _formatDate from '@helpers/formatDate'
 
@@ -180,8 +182,11 @@
                 this.paymentsAreReady = true;
             },
             async destroyCustomer(){
+                const canDelete = await SweetAlert.confirmDelete('custome');
+                if (canDelete === false) return;
+
                 const response = await this.customerClass.destroy(this.customerId);
-                window.alert("customer was deleted");
+                SweetAlert.fire('Deleted!', `The customer has been deleted.`, 'success');
                 router.go(-1)
             },
             editCustomer(){
@@ -192,7 +197,7 @@
                 const {data: {customer}} = await this.customerClass.update(this.customer.id, this.customerBeingEdited);
                 this.customerBeingEdited = null;
                 this.customer = {...customer};
-                alert('customer was updated');
+                SweetAlert.fire('Done!', `The customer has been updated.`, 'success');
             },
             cancelEditCustomer(event, customerId) {
                 this.customerBeingEdited = null;

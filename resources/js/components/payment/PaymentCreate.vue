@@ -27,6 +27,8 @@
 </template>
 
 <script>    
+    import SweetAlert from '@classes/SweetAlert'
+
     import Payment from '@classes/Payment'
     import PaymentForm from '@components/payment/shared/PaymentForm'
 
@@ -69,7 +71,7 @@
         methods: {
             async saveNewPayment(){
                 const {data: {payment}} = await this.paymentClass.store(this.payment);
-                alert('payment was added');
+                SweetAlert.fire('Done!', `The payment has been created.`, 'success');
                 router.push({ name: 'payment.show', params: { paymentId: payment.id } })
             },
             setInvoice(invoiceId){

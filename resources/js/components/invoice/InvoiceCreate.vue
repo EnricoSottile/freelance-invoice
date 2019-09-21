@@ -26,6 +26,8 @@
 </template>
 
 <script>    
+    import SweetAlert from '@classes/SweetAlert'
+
     import Invoice from '@classes/Invoice'
     import InvoiceForm from '@components/invoice/shared/InvoiceForm'
 
@@ -68,7 +70,7 @@
         methods: {
             async saveNewInvoice(){
                 const {data: {invoice}} = await this.invoiceClass.store(this.invoice);
-                alert('invoice was added');
+                SweetAlert.fire('Done!', `The invoice has been created.`, 'success');
                 router.push({ name: 'invoice.show', params: { invoiceId: invoice.id } })
             },
             setCustomer(customerId){

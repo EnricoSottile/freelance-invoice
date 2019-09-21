@@ -23,9 +23,9 @@
 
 
         <data-table 
-        :collection="payments" 
-        :fields="fields" 
-        :dataIsReady="paymentsAreReady">
+            :collection="payments" 
+            :fields="fields" 
+            :dataIsReady="paymentsAreReady">
         </data-table>
 
 
@@ -114,15 +114,6 @@
 
                 this.paymentsAreReady = true;
             },
-            handlePaymentWasDeleted(event, paymentId) {
-                alert("payment was deleted");
-                this.payments = this.payments.filter(payment => payment.id !== paymentId);
-            },
-            handlePaymentWasUpdated(event) {
-                const payment = event.data.payment;
-                const index = this.payments.findIndex(p => p.id === payment.id);
-                Vue.set(this.payments, index, payment);
-            }
         },
     }
 </script>

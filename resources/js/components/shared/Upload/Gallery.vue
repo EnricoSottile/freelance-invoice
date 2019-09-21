@@ -86,6 +86,12 @@
             }
         },
 
+        watch: {
+            files(a,b) {
+                if (a.length === 0) this.showExistingUploads = false;
+            }
+        },
+
         methods: {
             getUploadSource(upload){
                 const src = `data:image/jpeg;base64,${upload.encoded_image}`;

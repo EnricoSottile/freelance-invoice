@@ -68,9 +68,11 @@
     import _getIcon from '@helpers/getIcon'
     import _formatDate from '@helpers/formatDate'
 
+    import SweetAlert from '@classes/SweetAlert'
     import Payment from '@classes/Payment'
     import PaymentForm from '@components/payment/shared/PaymentForm'
     import Upload from '@components/shared/Upload/Upload'
+    
     
 
     export default {
@@ -126,8 +128,12 @@
                 this.paymentIsReady = true;
             },
             async destroyPayment(){
+                const canDelete = await SweetAlert.confirmDelete('payment');
+                if (canDelete === false) return;
+                    
                 const response = await this.paymentClass.destroy(this.paymentId);
-                alert("payment was deleted");
+                SweetAlert.fire('Deleted!', `The payment has been deleted.`, 'success');
+
                 router.go(-1)
             },
             editPayment(){
@@ -138,7 +144,7 @@
                 const {data: {payment}} = await this.paymentClass.update(this.payment.id, this.paymentBeingEdited);
                 this.paymentBeingEdited = null;
                 this.payment = {...payment};
-                alert('payment was updated');
+                SweetAlert.fire('Updated!', `The payment has been updated.`, 'success');
             },
             cancelEditPayment(event, paymentId) {
                 this.paymentBeingEdited = null;

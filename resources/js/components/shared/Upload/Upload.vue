@@ -14,7 +14,7 @@
 <script>
     const MODELS = ['invoice', 'customer', 'payment'];
 
-    
+    import SweetAlert from '@classes/SweetAlert'    
     import DropzoneWrapper from './DropzoneWrapper'
     
 
@@ -83,8 +83,11 @@
                 this.galleryIsReady = true;
             },
             async destroyUpload(uploadId){
+                const canDelete = await SweetAlert.confirmDelete('file');
+                if (canDelete === false) return;
+                
                 const response = await this.uploadClass.destroy(uploadId);
-                alert("upload was deleted");
+                SweetAlert.fire('Deleted!', `The payment has been deleted.`, 'success');
                 this.existingUploads = this.existingUploads.filter(u => u.id !== uploadId);
             },
             handleUpload(upload) {

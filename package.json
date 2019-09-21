@@ -37,6 +37,7 @@
         "feather-icons": "^4.24.1",
         "fuse.js": "^3.4.5",
         "jsonschema": "^1.2.4",
+        "sweetalert2": "^8.17.6",
         "tailwindcss": "^1.1.2",
         "vue-router": "^3.1.2"
     }

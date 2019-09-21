@@ -26,6 +26,8 @@
 </template>
 
 <script>    
+    import SweetAlert from '@classes/SweetAlert'
+
     import Customer from '@classes/Customer'
     import CustomerForm from '@components/customer/shared/CustomerForm'
 
@@ -57,7 +59,7 @@
         methods: {
             async saveNewCustomer(){
                 const {data: {customer}} = await this.customerClass.store(this.customer);
-                alert('customer was added');
+                SweetAlert.fire('Done!', `The customer has been created.`, 'success');
                 router.push({ name: 'customer.show', params: { customerId: customer.id } })
             },
         },

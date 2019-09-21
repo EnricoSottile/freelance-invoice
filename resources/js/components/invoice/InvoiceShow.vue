@@ -78,6 +78,8 @@
 </template>
 
 <script>
+    import SweetAlert from '@classes/SweetAlert'
+
     import _getIcon from '@helpers/getIcon'
     import _formatDate from '@helpers/formatDate'
 
@@ -157,8 +159,11 @@
                 this.paymentsAreReady = true;
             },
             async destroyInvoice(){
+                const canDelete = await SweetAlert.confirmDelete('invoice');
+                if (canDelete === false) return;
+
                 const response = await this.invoiceClass.destroy(this.invoiceId);
-                alert("invoice was deleted");
+                SweetAlert.fire('Deleted!', `The invoice has been deleted.`, 'success');
                 router.go(-1)
             },
             editInvoice(){
