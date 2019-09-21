@@ -31,7 +31,11 @@
         </modal>
         
         <button v-if="loading" disabled class="btn btn-default">Loading</button>
-        <button v-if="!loading && files.length" class="btn btn-default" @click.prevent="toggleModal">Show files</button>
+        <template v-if="!loading">
+            <button v-if="files.length" class="btn btn-default" @click.prevent="toggleModal">Show files</button>
+            <button disabled v-else class="btn btn-default">No files to show</button>
+        </template>
+        
 
     </div>
 </template>
