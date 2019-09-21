@@ -1,5 +1,5 @@
 <template>
-    <div class="card">
+    <div>
         
 
         <div class="flex mt-10 justify-between">

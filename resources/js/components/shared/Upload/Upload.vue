@@ -1,8 +1,10 @@
 <template>
     <div>
-        <div>Upload</div>
 
             <div v-if="allowUploads">
+
+                <h2 class="font-light text-gray-600">File upload</h2>
+
                 <div v-if="!filesSrc.length">
                     <h2>Select a file/s</h2>
                     <input type="file" multiple @change="onFileChange">

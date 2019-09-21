@@ -10,14 +10,14 @@ class Payment {
         return axios.get(BASE_URI);  
     }
 
-    static create(invoiceId){
+    static create(invoiceId = ''){
         return {
-            id: null,
-            user_id: null,
+            id: '',
+            user_id: '',
             invoice_id: invoiceId,
-            net_amount: null,
-            due_date: null,
-            payed_date: null
+            net_amount: '',
+            due_date: '',
+            payed_date: ''
         }
     }
 

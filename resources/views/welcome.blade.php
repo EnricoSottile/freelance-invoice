@@ -31,9 +31,12 @@
             <div id="app">   
 
                 <nav-bar></nav-bar>
+
+                <div class="card">
+                        <router-view>
+                        </router-view>
+                </div>
                 
-                <router-view>
-                </router-view>
             </div> 
 
 

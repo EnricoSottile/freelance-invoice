@@ -25,10 +25,14 @@
         <span class="flex">
             <button class="btn btn-xs btn-default btn-circle text-xl" 
                 :disabled="!hasPrevPage" 
-                @click.prevent="setPage('prev')">&lsaquo;</button>
+                @click.prevent="setPage('prev')"
+                v-html="getIcon('chevron-left')"
+                ></button>
             <button class="btn btn-xs btn-default btn-circle text-xl" 
                 :disabled="!hasNextPage" 
-                @click.prevent="setPage('next')">&rsaquo;</button>
+                @click.prevent="setPage('next')"
+                v-html="getIcon('chevron-right')"
+                ></button>
         </span>
 
     </div>
@@ -36,6 +40,7 @@
 
 <script>
 import Select from '@components/shared/Select'
+import _getIcon from '@helpers/getIcon'
 
 export default {
     
@@ -85,6 +90,9 @@ export default {
     },
 
     methods: {
+        getIcon(icon) {
+            return _getIcon(icon);
+        },
         handleInput(event){
             this.$emit('input', event); // this enables v-model on parent
             this.setPage('first');

@@ -1,28 +1,26 @@
 <template>
     <div>
 
-        <div>Payment create</div>
-
-            <div v-if="invoicesAreReady">
-            <select :disabled="invoiceId !== null" v-model="payment.invoice_id">
-                <option default selected value="">Choose an invoice</option>
-                <option 
-                    v-bind:key="invoice.id" 
-                    v-for="invoice in invoices" 
-                    :value="invoice.id">
-                    {{ invoice.number }}
-                    </option>
-            </select>
-            {{ payment.invoice_id }}
-            <br/>
-            <input v-model="payment.net_amount" name="net_amount" placeholder="Net amount" type="number"/><br/>
-            <input v-model="payment.due_date" name="due_date" placeholder="Due date" type="date"/><br/>
-            <input v-model="payment.payed_date" name="payed_date" placeholder="Payed date" type="date"/><br/>
-            <button id="saveNewPayment" @click="saveNewPayment">Save</button>
+        <div class="card-title">
+            <h1>
+                Create new payment                
+            </h1>
         </div>
-        <p v-else>
-            loading
-        </p>
+
+        <div class="flex mt-10">
+            <div class="w-1/2">
+                <payment-form
+                    :paymentClass="paymentClass"
+                    :model="payment"
+                    :isEdit="true">
+
+                    <template v-slot:buttons>
+                        <button class="btn btn-success" id="saveNewPayment" @click="saveNewPayment">Save</button>
+                    </template>
+
+                </payment-form>  
+            </div>
+        </div>
 
 
     </div>
@@ -30,6 +28,7 @@
 
 <script>    
     import Payment from '@classes/Payment'
+    import PaymentForm from '@components/payment/shared/PaymentForm'
 
 
     export default {
@@ -42,18 +41,19 @@
             },
         },
 
+        components: {
+            'payment-form': PaymentForm
+        },
 
         created(){
             this.payment = this.paymentClass.create();
             this.setInvoice(this.invoiceId);
-            this.getInvoices();
         },
 
         beforeRouteUpdate (to, from, next) {            
             const invoiceId = to.params.invoiceId;
             this.payment = this.paymentClass.create();
             this.setInvoice(invoiceId);
-            this.getInvoices();
             next();
         },
 
@@ -61,8 +61,6 @@
             return {
                 paymentClass: Payment,
                 payment: {},
-                invoices: [],
-                invoicesAreReady: false
             }
         },
 
@@ -73,11 +71,6 @@
                 const {data: {payment}} = await this.paymentClass.store(this.payment);
                 alert('payment was added');
                 router.push({ name: 'payment.show', params: { paymentId: payment.id } })
-            },
-            async getInvoices(){
-                const { data } = await this.paymentClass.invoices();
-                this.invoices = data;
-                this.invoicesAreReady = true;
             },
             setInvoice(invoiceId){
                 if (invoiceId === null) return;

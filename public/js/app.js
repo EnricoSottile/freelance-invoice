@@ -2775,6 +2775,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_Payment__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/Payment */ "./resources/js/classes/Payment.js");
+/* harmony import */ var _components_payment_shared_PaymentForm__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/payment/shared/PaymentForm */ "./resources/js/components/payment/shared/PaymentForm.vue");
 //
 //
 //
@@ -2803,8 +2804,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2814,27 +2814,26 @@ __webpack_require__.r(__webpack_exports__);
       type: [String, Number]
     }
   },
+  components: {
+    'payment-form': _components_payment_shared_PaymentForm__WEBPACK_IMPORTED_MODULE_1__["default"]
+  },
 
   created() {
     this.payment = this.paymentClass.create();
     this.setInvoice(this.invoiceId);
-    this.getInvoices();
   },
 
   beforeRouteUpdate(to, from, next) {
     const invoiceId = to.params.invoiceId;
     this.payment = this.paymentClass.create();
     this.setInvoice(invoiceId);
-    this.getInvoices();
     next();
   },
 
   data() {
     return {
       paymentClass: _classes_Payment__WEBPACK_IMPORTED_MODULE_0__["default"],
-      payment: {},
-      invoices: [],
-      invoicesAreReady: false
+      payment: {}
     };
   },
 
@@ -2852,14 +2851,6 @@ __webpack_require__.r(__webpack_exports__);
           paymentId: payment.id
         }
       });
-    },
-
-    async getInvoices() {
-      const {
-        data
-      } = await this.paymentClass.invoices();
-      this.invoices = data;
-      this.invoicesAreReady = true;
     },
 
     setInvoice(invoiceId) {
@@ -2882,78 +2873,16 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
-/* harmony import */ var _components_shared_Select__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/shared/Select */ "./resources/js/components/shared/Select.vue");
+/* harmony import */ var _helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @helpers/formatDate */ "./resources/js/helpers/formatDate.js");
 /* harmony import */ var _classes_Payment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @classes/Payment */ "./resources/js/classes/Payment.js");
-/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
-/* harmony import */ var _helpers_formatDate__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @helpers/formatDate */ "./resources/js/helpers/formatDate.js");
+/* harmony import */ var _components_payment_shared_PaymentForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/payment/shared/PaymentForm */ "./resources/js/components/payment/shared/PaymentForm.vue");
+/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -3033,19 +2962,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   components: {
-    'custom-select': _components_shared_Select__WEBPACK_IMPORTED_MODULE_1__["default"],
-    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_3__["default"]
+    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'payment-form': _components_payment_shared_PaymentForm__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
 
   created() {
     this.getPayment(this.paymentId);
-    this.getInvoices();
   },
 
   beforeRouteUpdate(to, from, next) {
     const paymentId = to.params.paymentId;
     this.getPayment(paymentId);
-    this.getInvoices();
     next();
   },
 
@@ -3053,9 +2980,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     return {
       paymentClass: _classes_Payment__WEBPACK_IMPORTED_MODULE_2__["default"],
       payment: {},
-      invoice: [],
       paymentIsReady: false,
-      invoicesAreReady: false,
       paymentBeingEdited: null
     };
   },
@@ -3081,14 +3006,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } = await this.paymentClass.show(paymentId);
       this.payment = data;
       this.paymentIsReady = true;
-    },
-
-    async getInvoices() {
-      const {
-        data
-      } = await this.paymentClass.invoices();
-      this.invoices = data;
-      this.invoicesAreReady = true;
     },
 
     async destroyPayment() {
@@ -3119,11 +3036,149 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
 
     formatDate(options, value) {
-      return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_4__["default"])(options, value);
+      return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__["default"])(options, value);
     },
 
     getIcon(icon) {
       return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__["default"])(icon);
+    }
+
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/shared/PaymentForm.vue?vue&type=script&lang=js&":
+/*!*************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/payment/shared/PaymentForm.vue?vue&type=script&lang=js& ***!
+  \*************************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _components_shared_Select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @components/shared/Select */ "./resources/js/components/shared/Select.vue");
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  props: {
+    paymentClass: {
+      type: Function,
+      required: true
+    },
+    isReady: {
+      type: Boolean,
+      required: false,
+      default: true
+    },
+    // the payment model
+    // it can be edited whitouth "emit"
+    // because on the parent it's cloned from the main data object
+    // and returned as computed
+    model: {
+      type: Object,
+      required: true
+    },
+    isEdit: {
+      type: Boolean,
+      required: true
+    }
+  },
+  components: {
+    'custom-select': _components_shared_Select__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+
+  created() {
+    this.getInvoices();
+  },
+
+  data() {
+    return {
+      invoices: [],
+      invoicesAreReady: false
+    };
+  },
+
+  methods: {
+    async getInvoices() {
+      const {
+        data
+      } = await this.paymentClass.invoices();
+      this.invoices = data;
+      this.invoicesAreReady = true;
     }
 
   }
@@ -3577,6 +3632,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_shared_Select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @components/shared/Select */ "./resources/js/components/shared/Select.vue");
+/* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
 //
 //
 //
@@ -3613,6 +3669,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -3658,6 +3719,10 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
+    getIcon(icon) {
+      return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_1__["default"])(icon);
+    },
+
     handleInput(event) {
       this.$emit('input', event); // this enables v-model on parent
 
@@ -3921,6 +3986,8 @@ __webpack_require__.r(__webpack_exports__);
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Gallery__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Gallery */ "./resources/js/components/shared/Upload/Gallery.vue");
 /* harmony import */ var _classes_Upload__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @classes/Upload */ "./resources/js/classes/Upload.js");
+//
+//
 //
 //
 //
@@ -16327,7 +16394,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card" },
     [
       _c(
         "div",
@@ -16384,7 +16450,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card" },
     [
       _c(
         "div",
@@ -17085,7 +17150,6 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c(
     "div",
-    { staticClass: "card" },
     [
       _c(
         "div",
@@ -17167,153 +17231,57 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("div", [_vm._v("Payment create")]),
+    _vm._m(0),
     _vm._v(" "),
-    _vm.invoicesAreReady
-      ? _c("div", [
-          _c(
-            "select",
-            {
-              directives: [
-                {
-                  name: "model",
-                  rawName: "v-model",
-                  value: _vm.payment.invoice_id,
-                  expression: "payment.invoice_id"
-                }
-              ],
-              attrs: { disabled: _vm.invoiceId !== null },
-              on: {
-                change: function($event) {
-                  var $$selectedVal = Array.prototype.filter
-                    .call($event.target.options, function(o) {
-                      return o.selected
-                    })
-                    .map(function(o) {
-                      var val = "_value" in o ? o._value : o.value
-                      return val
-                    })
-                  _vm.$set(
-                    _vm.payment,
-                    "invoice_id",
-                    $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-                  )
-                }
-              }
+    _c("div", { staticClass: "flex mt-10" }, [
+      _c(
+        "div",
+        { staticClass: "w-1/2" },
+        [
+          _c("payment-form", {
+            attrs: {
+              paymentClass: _vm.paymentClass,
+              model: _vm.payment,
+              isEdit: true
             },
-            [
-              _c(
-                "option",
-                { attrs: { default: "", selected: "", value: "" } },
-                [_vm._v("Choose an invoice")]
-              ),
-              _vm._v(" "),
-              _vm._l(_vm.invoices, function(invoice) {
-                return _c(
-                  "option",
-                  { key: invoice.id, domProps: { value: invoice.id } },
-                  [
-                    _vm._v(
-                      "\n                " +
-                        _vm._s(invoice.number) +
-                        "\n                "
+            scopedSlots: _vm._u([
+              {
+                key: "buttons",
+                fn: function() {
+                  return [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-success",
+                        attrs: { id: "saveNewPayment" },
+                        on: { click: _vm.saveNewPayment }
+                      },
+                      [_vm._v("Save")]
                     )
                   ]
-                )
-              })
-            ],
-            2
-          ),
-          _vm._v("\n        " + _vm._s(_vm.payment.invoice_id) + "\n        "),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.payment.net_amount,
-                expression: "payment.net_amount"
+                },
+                proxy: true
               }
-            ],
-            attrs: {
-              name: "net_amount",
-              placeholder: "Net amount",
-              type: "number"
-            },
-            domProps: { value: _vm.payment.net_amount },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.payment, "net_amount", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.payment.due_date,
-                expression: "payment.due_date"
-              }
-            ],
-            attrs: { name: "due_date", placeholder: "Due date", type: "date" },
-            domProps: { value: _vm.payment.due_date },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.payment, "due_date", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c("input", {
-            directives: [
-              {
-                name: "model",
-                rawName: "v-model",
-                value: _vm.payment.payed_date,
-                expression: "payment.payed_date"
-              }
-            ],
-            attrs: {
-              name: "payed_date",
-              placeholder: "Payed date",
-              type: "date"
-            },
-            domProps: { value: _vm.payment.payed_date },
-            on: {
-              input: function($event) {
-                if ($event.target.composing) {
-                  return
-                }
-                _vm.$set(_vm.payment, "payed_date", $event.target.value)
-              }
-            }
-          }),
-          _c("br"),
-          _vm._v(" "),
-          _c(
-            "button",
-            {
-              attrs: { id: "saveNewPayment" },
-              on: { click: _vm.saveNewPayment }
-            },
-            [_vm._v("Save")]
-          )
-        ])
-      : _c("p", [_vm._v("\n        loading\n    ")])
+            ])
+          })
+        ],
+        1
+      )
+    ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-title" }, [
+      _c("h1", [
+        _vm._v("\n            Create new payment                \n        ")
+      ])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -17335,7 +17303,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
+  return _c("div", [
     _c("div", { staticClass: "card-title" }, [
       _c("h1", [
         _vm._v(
@@ -17343,7 +17311,7 @@ var render = function() {
             _vm._s(_vm.payment.id) +
             " of " +
             _vm._s(_vm.formatDate({}, _vm.payment.created_at)) +
-            "\n\n\n            "
+            "\n\n            "
         ),
         _vm.isDestroyable
           ? _c(
@@ -17381,220 +17349,66 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "flex mt-10" }, [
-      _vm.paymentIsReady && _vm.invoicesAreReady
-        ? _c("div", { staticClass: "w-1/2" }, [
-            _c("div", { staticClass: "pr-6 flex flex-wrap" }, [
-              _c(
-                "div",
-                { staticClass: "mb-6 w-1/2 px-2" },
-                [
-                  _c("label", { staticClass: "label-default" }, [
-                    _vm._v(
-                      "\n                        Invoice\n                    "
-                    )
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "custom-select",
-                    {
-                      attrs: { disabled: !_vm.paymentBeingEdited },
-                      model: {
-                        value: _vm.getPaymentModel.invoice_id,
-                        callback: function($$v) {
-                          _vm.$set(_vm.getPaymentModel, "invoice_id", $$v)
-                        },
-                        expression: "getPaymentModel.invoice_id"
-                      }
-                    },
-                    [
-                      _c(
-                        "option",
-                        { attrs: { default: "", selected: "", value: "" } },
-                        [_vm._v("Choose an invoice")]
-                      ),
-                      _vm._v(" "),
-                      _vm._l(_vm.invoices, function(invoice) {
-                        return _c(
-                          "option",
-                          { key: invoice.id, domProps: { value: invoice.id } },
-                          [
-                            _vm._v(
-                              "\n                                " +
-                                _vm._s(invoice.number) +
-                                "\n                            "
-                            )
-                          ]
-                        )
-                      })
-                    ],
-                    2
-                  )
-                ],
-                1
-              ),
-              _vm._v(" "),
-              _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
-                _c("label", { staticClass: "label-default" }, [
-                  _vm._v(
-                    "\n                        Net amount\n                    "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.getPaymentModel.net_amount,
-                      expression: "getPaymentModel.net_amount"
-                    }
-                  ],
-                  staticClass: "input-default",
-                  attrs: {
-                    readonly: !_vm.paymentBeingEdited,
-                    name: "net_amount",
-                    placeholder: "Net amount",
-                    type: "number"
-                  },
-                  domProps: { value: _vm.getPaymentModel.net_amount },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.getPaymentModel,
-                        "net_amount",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
-                _c("label", { staticClass: "label-default" }, [
-                  _vm._v(
-                    "\n                        Due date\n                    "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.getPaymentModel.due_date,
-                      expression: "getPaymentModel.due_date"
-                    }
-                  ],
-                  staticClass: "input-default",
-                  attrs: {
-                    readonly: !_vm.paymentBeingEdited,
-                    name: "due_date",
-                    placeholder: "Due date",
-                    type: "date"
-                  },
-                  domProps: { value: _vm.getPaymentModel.due_date },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.getPaymentModel,
-                        "due_date",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
-                _c("label", { staticClass: "label-default" }, [
-                  _vm._v(
-                    "\n                        Payed date\n                    "
-                  )
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.getPaymentModel.payed_date,
-                      expression: "getPaymentModel.payed_date"
-                    }
-                  ],
-                  staticClass: "input-default",
-                  attrs: {
-                    readonly: !_vm.paymentBeingEdited,
-                    name: "payed_date",
-                    placeholder: "Payed date",
-                    type: "date"
-                  },
-                  domProps: { value: _vm.getPaymentModel.payed_date },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.getPaymentModel,
-                        "payed_date",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c(
-                "div",
-                { staticClass: "mb-6 w-1/2 px-2" },
-                [
-                  _vm.paymentBeingEdited
-                    ? [
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-default",
-                            attrs: { id: "cancelEditPayment" },
-                            on: { click: _vm.cancelEditPayment }
-                          },
-                          [_vm._v("Cancel")]
-                        ),
-                        _vm._v(" "),
-                        _c(
-                          "button",
-                          {
-                            staticClass: "btn btn-success",
-                            attrs: { id: "updatePayment" },
-                            on: { click: _vm.updatePayment }
-                          },
-                          [_vm._v("Update")]
-                        )
-                      ]
-                    : [
-                        _vm.isEditable
-                          ? _c(
-                              "button",
-                              {
-                                staticClass: "btn btn-default",
-                                attrs: { id: "editPayment" },
-                                on: { click: _vm.editPayment }
-                              },
-                              [_vm._v("Edit")]
-                            )
-                          : _vm._e()
-                      ]
-                ],
-                2
-              )
+      _c(
+        "div",
+        { staticClass: "w-1/2" },
+        [
+          _c("payment-form", {
+            attrs: {
+              isReady: _vm.paymentIsReady,
+              paymentClass: _vm.paymentClass,
+              model: _vm.getPaymentModel,
+              isEdit: _vm.paymentBeingEdited !== null
+            },
+            scopedSlots: _vm._u([
+              {
+                key: "buttons",
+                fn: function() {
+                  return [
+                    _vm.paymentBeingEdited
+                      ? [
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-default",
+                              attrs: { id: "cancelEditPayment" },
+                              on: { click: _vm.cancelEditPayment }
+                            },
+                            [_vm._v("Cancel")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "button",
+                            {
+                              staticClass: "btn btn-success",
+                              attrs: { id: "updatePayment" },
+                              on: { click: _vm.updatePayment }
+                            },
+                            [_vm._v("Update")]
+                          )
+                        ]
+                      : [
+                          _vm.isEditable
+                            ? _c(
+                                "button",
+                                {
+                                  staticClass: "btn btn-default",
+                                  attrs: { id: "editPayment" },
+                                  on: { click: _vm.editPayment }
+                                },
+                                [_vm._v("Edit")]
+                              )
+                            : _vm._e()
+                        ]
+                  ]
+                },
+                proxy: true
+              }
             ])
-          ])
-        : _vm._e(),
+          })
+        ],
+        1
+      ),
       _vm._v(" "),
       _c(
         "div",
@@ -17615,6 +17429,203 @@ var render = function() {
       )
     ])
   ])
+}
+var staticRenderFns = []
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/shared/PaymentForm.vue?vue&type=template&id=723595d4&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/payment/shared/PaymentForm.vue?vue&type=template&id=723595d4& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c(
+    "div",
+    { staticClass: "pr-6 flex flex-wrap" },
+    [
+      _vm.invoicesAreReady && _vm.isReady
+        ? [
+            _c(
+              "div",
+              { staticClass: "mb-6 w-1/2 px-2" },
+              [
+                _c("label", { staticClass: "label-default" }, [
+                  _vm._v("\n                Invoice\n            ")
+                ]),
+                _vm._v(" "),
+                _c(
+                  "custom-select",
+                  {
+                    attrs: { disabled: !_vm.isEdit },
+                    model: {
+                      value: _vm.model.invoice_id,
+                      callback: function($$v) {
+                        _vm.$set(_vm.model, "invoice_id", $$v)
+                      },
+                      expression: "model.invoice_id"
+                    }
+                  },
+                  [
+                    _c(
+                      "option",
+                      { attrs: { default: "", selected: "", value: "" } },
+                      [_vm._v("Choose an invoice")]
+                    ),
+                    _vm._v(" "),
+                    _vm._l(_vm.invoices, function(invoice) {
+                      return _c(
+                        "option",
+                        { key: invoice.id, domProps: { value: invoice.id } },
+                        [
+                          _vm._v(
+                            "\n                        " +
+                              _vm._s(invoice.number) +
+                              "\n                    "
+                          )
+                        ]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ],
+              1
+            ),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Net amount\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model.net_amount,
+                    expression: "model.net_amount"
+                  }
+                ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "net_amount",
+                  placeholder: "Net amount",
+                  type: "number"
+                },
+                domProps: { value: _vm.model.net_amount },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "net_amount", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Due date\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model.due_date,
+                    expression: "model.due_date"
+                  }
+                ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "due_date",
+                  placeholder: "Due date",
+                  type: "date"
+                },
+                domProps: { value: _vm.model.due_date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "due_date", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default" }, [
+                _vm._v("\n                Payed date\n            ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                directives: [
+                  {
+                    name: "model",
+                    rawName: "v-model",
+                    value: _vm.model.payed_date,
+                    expression: "model.payed_date"
+                  }
+                ],
+                staticClass: "input-default",
+                attrs: {
+                  readonly: !_vm.isEdit,
+                  name: "payed_date",
+                  placeholder: "Payed date",
+                  type: "date"
+                },
+                domProps: { value: _vm.model.payed_date },
+                on: {
+                  input: function($event) {
+                    if ($event.target.composing) {
+                      return
+                    }
+                    _vm.$set(_vm.model, "payed_date", $event.target.value)
+                  }
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c(
+              "div",
+              { staticClass: "mb-6 w-1/2 px-2" },
+              [_vm._t("buttons")],
+              2
+            )
+          ]
+        : _vm._l(4, function(item) {
+            return _c("div", { key: item, staticClass: "mb-6 w-1/2 px-2" }, [
+              _c("label", { staticClass: "label-default bg-gray-200 w-16" }, [
+                _vm._v(" ")
+              ]),
+              _vm._v(" "),
+              _c("input", {
+                staticClass: "input-default",
+                attrs: { readonly: "true" }
+              })
+            ])
+          })
+    ],
+    2
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -18070,35 +18081,29 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("span", { staticClass: "flex" }, [
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-xs btn-default btn-circle text-xl",
-          attrs: { disabled: !_vm.hasPrevPage },
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.setPage("prev")
-            }
+      _c("button", {
+        staticClass: "btn btn-xs btn-default btn-circle text-xl",
+        attrs: { disabled: !_vm.hasPrevPage },
+        domProps: { innerHTML: _vm._s(_vm.getIcon("chevron-left")) },
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            return _vm.setPage("prev")
           }
-        },
-        [_vm._v("‹")]
-      ),
+        }
+      }),
       _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "btn btn-xs btn-default btn-circle text-xl",
-          attrs: { disabled: !_vm.hasNextPage },
-          on: {
-            click: function($event) {
-              $event.preventDefault()
-              return _vm.setPage("next")
-            }
+      _c("button", {
+        staticClass: "btn btn-xs btn-default btn-circle text-xl",
+        attrs: { disabled: !_vm.hasNextPage },
+        domProps: { innerHTML: _vm._s(_vm.getIcon("chevron-right")) },
+        on: {
+          click: function($event) {
+            $event.preventDefault()
+            return _vm.setPage("next")
           }
-        },
-        [_vm._v("›")]
-      )
+        }
+      })
     ])
   ])
 }
@@ -18376,10 +18381,12 @@ var render = function() {
   return _c(
     "div",
     [
-      _c("div", [_vm._v("Upload")]),
-      _vm._v(" "),
       _vm.allowUploads
         ? _c("div", [
+            _c("h2", { staticClass: "font-light text-gray-600" }, [
+              _vm._v("File upload")
+            ]),
+            _vm._v(" "),
             !_vm.filesSrc.length
               ? _c("div", [
                   _c("h2", [_vm._v("Select a file/s")]),
@@ -33677,14 +33684,14 @@ class Payment {
     return axios.get(BASE_URI);
   }
 
-  static create(invoiceId) {
+  static create(invoiceId = '') {
     return {
-      id: null,
-      user_id: null,
+      id: '',
+      user_id: '',
       invoice_id: invoiceId,
-      net_amount: null,
-      due_date: null,
-      payed_date: null
+      net_amount: '',
+      due_date: '',
+      payed_date: ''
     };
   }
 
@@ -34553,6 +34560,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentShow_vue_vue_type_template_id_9d12b702___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentShow_vue_vue_type_template_id_9d12b702___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/js/components/payment/shared/PaymentForm.vue":
+/*!****************************************************************!*\
+  !*** ./resources/js/components/payment/shared/PaymentForm.vue ***!
+  \****************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _PaymentForm_vue_vue_type_template_id_723595d4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./PaymentForm.vue?vue&type=template&id=723595d4& */ "./resources/js/components/payment/shared/PaymentForm.vue?vue&type=template&id=723595d4&");
+/* harmony import */ var _PaymentForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./PaymentForm.vue?vue&type=script&lang=js& */ "./resources/js/components/payment/shared/PaymentForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _PaymentForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _PaymentForm_vue_vue_type_template_id_723595d4___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _PaymentForm_vue_vue_type_template_id_723595d4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/components/payment/shared/PaymentForm.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/components/payment/shared/PaymentForm.vue?vue&type=script&lang=js&":
+/*!*****************************************************************************************!*\
+  !*** ./resources/js/components/payment/shared/PaymentForm.vue?vue&type=script&lang=js& ***!
+  \*****************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/babel-loader/lib??ref--4-0!../../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentForm.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/shared/PaymentForm.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentForm_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/js/components/payment/shared/PaymentForm.vue?vue&type=template&id=723595d4&":
+/*!***********************************************************************************************!*\
+  !*** ./resources/js/components/payment/shared/PaymentForm.vue?vue&type=template&id=723595d4& ***!
+  \***********************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentForm_vue_vue_type_template_id_723595d4___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../../../node_modules/vue-loader/lib??vue-loader-options!./PaymentForm.vue?vue&type=template&id=723595d4& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/payment/shared/PaymentForm.vue?vue&type=template&id=723595d4&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentForm_vue_vue_type_template_id_723595d4___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_PaymentForm_vue_vue_type_template_id_723595d4___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
