@@ -38,24 +38,27 @@
                 <label class="label-default">
                     Net amount
                 </label>
-                <input class="input-default" 
+                <money
+                    class="input-default"
                     :readonly="!isEdit"
                     v-model="model.net_amount" 
                     name="net_amount" 
                     placeholder="Net amount" 
-                    type="number"/>
+                ></money>
             </div>
 
             <div class="mb-6 w-1/2 px-2">
                 <label class="label-default">
                     Tax
                 </label>
-                <input class="input-default" 
+                <money
+                    class="input-default"
                     :readonly="!isEdit"
                     v-model="model.tax" 
                     name="tax" 
                     placeholder="Tax" 
-                    type="number"/>
+                    v-bind="percent"
+                ></money>
             </div>
 
             <div class="mb-6 w-1/2 px-2">
@@ -140,6 +143,7 @@
 
 <script>
     import Select from '@components/shared/Select'
+    import { Money } from 'v-money'
 
     export default {
 
@@ -167,10 +171,11 @@
             }
         },
 
-
         components: {
+            'money' : Money,
             'custom-select': Select,
         },
+
 
         created(){
             this.getCustomers();
@@ -180,6 +185,10 @@
             return {
                 customers: [],
                 customersAreReady: false,
+                percent: {
+                    suffix: ' %',
+                    precision: 2,
+                }
             }
         },
 
