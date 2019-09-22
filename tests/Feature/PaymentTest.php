@@ -173,4 +173,31 @@ class PaymentTest extends TestCase
         $response->assertStatus(403);
     }
 
+
+
+    /**
+     * A basic test example.
+     *
+     * @return void
+     */
+    public function testRestoringPaymentRestoresOwnParent()
+    {
+        \DB::statement('SET FOREIGN_KEY_CHECKS=0');
+        $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
+        $invoice = factory( Invoice::class )
+                    ->create(['customer_id' => $customer->id, 'user_id' => $user->id, 'registered_date' => null]);
+        $payments = factory( Payment::class)
+            ->create([
+                'user_id' => $user->id,
+                'invoice_id' => $invoice->id, 
+                'payed_date' => null]);
+
+        $payments->delete();
+        $invoice->delete();
+        $payments->restore();
+
+        $this->assertDatabaseHas('invoices', ['id' => $invoice->id, 'deleted_at' => null]);
+    }
+
 }

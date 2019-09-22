@@ -242,28 +242,25 @@ class InvoiceTest extends TestCase
     }
 
 
-        /**
+    /**
      * A basic test example.
      *
      * @return void
      */
-    public function testRestoringInvoiceRestoresOwnUnpayedPayments()
+    public function testRestoringInvoiceRestoresOwnParent()
     {
         \DB::statement('SET FOREIGN_KEY_CHECKS=0');
         $user = factory(User::class)->create();
+        $customer = factory( Customer::class )->create(['user_id' => $user->id]);
         $invoice = factory( Invoice::class )
-                    ->create(['customer_id' => 1, 'user_id' => $user->id, 'registered_date' => null]);
-        $payments = factory( Payment::class, 3)
-        ->create([
-            'user_id' => $user->id,
-            'invoice_id' => $invoice->id, 
-            'payed_date' => null]);
+                    ->create(['customer_id' => $customer->id, 'user_id' => $user->id, 'registered_date' => null]);
+
 
         $invoice->delete();
+        $customer->delete();
         $invoice->restore();
-        foreach($payments as $p) {
-            $this->assertDatabaseHas('payments', ['id' => $p->id, 'deleted_at' => null]);
-        }
+
+        $this->assertDatabaseHas('customers', ['id' => $customer->id, 'deleted_at' => null]);
     }
 
 
