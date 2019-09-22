@@ -20,6 +20,7 @@
 <script>
 import _formatDate from '@helpers/formatDate'
 import _moneyFormat from '@helpers/moneyFormat'
+import { isFunction } from 'util'
 
 export default {
     
@@ -62,8 +63,15 @@ export default {
         },
 
         getContent(data, field) {
-            let key = field.name;
-            let content = data[key];
+            let content;
+            if (isFunction(field.display)) {
+                content = field.display(data);
+            } else {
+                const key = field.name;
+                content = data[key];
+            }
+
+
             if (!content) return content;
 
             if (content.length > 25) {

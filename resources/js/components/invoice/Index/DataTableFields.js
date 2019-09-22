@@ -9,6 +9,9 @@ export default [
     {
         name: 'number', 
         label: 'Number',
+        // display: (data) => {
+        //     return data.id + 'foo';
+        // },
         link: {
             view: 'invoice.show',
             params: {name: 'invoiceId', property: 'id'}

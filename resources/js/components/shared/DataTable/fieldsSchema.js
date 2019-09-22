@@ -11,6 +11,8 @@ export default {
     "properties": {
         "name": {"type": "string", "required": true},
         "label": {"type": "string", "required": true},
+        // can't validate it, but accepts a function
+        "display": {"required": false}, 
         "percent": {"type": "boolean", "required":false},
         "money": {
             "type": "object", 
