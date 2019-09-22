@@ -32,8 +32,8 @@ class InvoiceObserver
      * @return void
      */
     public function restoring(Invoice $invoice){        
-        if( $invoice->trashed_payments()->count() ) {
-            $invoice->restoreTrashedPayments();
+        if ( $invoice->customer()->onlyTrashed()->count() ) {
+            $invoice->customer()->onlyTrashed()->first()->restore();
         }
     }
 

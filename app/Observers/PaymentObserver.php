@@ -22,6 +22,20 @@ class PaymentObserver
         }
     }
 
+
+    /**
+     * Handle the payment "restoring" event.
+     * 
+     *
+     * @param  \App\Models\Payment  $payment
+     * @return void
+     */
+    public function restoring(Payment $payment){    
+        if ( $payment->invoice()->onlyTrashed()->count() ) {
+            $payment->invoice()->onlyTrashed()->first()->restore();
+        }        
+    }
+
    
     /**
      * Handle the payment "deleting" event.

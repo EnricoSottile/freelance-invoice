@@ -26,6 +26,17 @@ class TrashController extends Controller
     }
 
 
+    public function index(){
+        $user = Auth::user();
+        $customers = $user->customers()->onlyTrashed()->get();
+        $invoices = $user->invoices()->onlyTrashed()->get();
+        $payments = $user->payments()->onlyTrashed()->get();
+
+        $combined = $customers->concat($invoices)->concat($payments)->sortByDesc('deleted_at');
+        return $combined->sortByDesc('deleted_at')->toJson();
+    }
+
+
     /**
      * Restores the specified resource from trash.
      *

@@ -93,6 +93,9 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
 
 
         // TRASH
+        Route::get('trash/index', 'TrashController@index')
+                ->name('trash.index');
+
         Route::get('trash/restore/{resource}/{id}', 'TrashController@restore')
                 ->name('trash.restore');
 

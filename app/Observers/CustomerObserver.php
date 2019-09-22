@@ -29,17 +29,5 @@ class CustomerObserver
 
     }
 
-    /**
-     * Handle the customer "restoring" event.
-     *
-     * @param  \App\Models\Customer  $customer
-     * @return void
-     */
-    public function restoring(Customer $customer)
-    {
-        if( $customer->trashed_invoices()->count() ) {
-            $customer->restoreTrashedInvoices();
-        }
-    }
 
 }
