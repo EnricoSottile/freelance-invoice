@@ -96,6 +96,9 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
         Route::get('trash/index', 'TrashController@index')
                 ->name('trash.index');
 
+        Route::get('trash/{resource}/{id}', 'TrashController@show')
+                ->name('trash.show');
+
         Route::get('trash/restore/{resource}/{id}', 'TrashController@restore')
                 ->name('trash.restore');
 

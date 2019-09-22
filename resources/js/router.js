@@ -13,6 +13,9 @@ import PaymentIndex from './components/payment/Index/PaymentIndex'
 import PaymentShow from './components/payment/PaymentShow'
 import PaymentCreate from './components/payment/PaymentCreate'
 
+import TrashIndex from './components/trash/Index/TrashIndex'
+import TrashShow from './components/trash/TrashShow'
+
 const routes = [
 
 
@@ -80,6 +83,21 @@ const routes = [
         component: PaymentShow, 
         props: true
     },
+
+
+    // PAYMENT
+    { 
+        path: '/trash', 
+        name: 'trash.index', 
+        component: TrashIndex,
+    },
+    { 
+        path: '/trash/:resource/:trashedId', 
+        name: 'trash.show', 
+        component: TrashShow, 
+        props: true
+    },
+
 
 ]
 
