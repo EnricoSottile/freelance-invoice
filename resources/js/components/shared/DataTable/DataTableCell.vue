@@ -20,7 +20,7 @@
 <script>
 import _formatDate from '@helpers/formatDate'
 import _moneyFormat from '@helpers/moneyFormat'
-import { isFunction } from 'util'
+import { isFunction, isObject, isArray } from 'util'
 
 export default {
     
@@ -42,6 +42,22 @@ export default {
     },
 
     methods: {
+
+        /**
+         * construct the param Object needed for the router-link .to.params
+         * ie: params: {customerId: customer.id}} or callback
+         * 
+         * @param {Object} link 
+         * @param {Object} data
+         */ 
+        buildLinkParamsObject(link, data){
+            if (!isFunction(link.params)) {
+                return {[link.params.name] : data[link.params.property]};
+            }
+
+            return link.params(data);
+        },
+
         /**
          * construct the object needed for the router-link .to
          * ie: {name: 'customer.show', params: {customerId: customer.id}}
@@ -50,11 +66,10 @@ export default {
          * @param {Object} data
          */ 
         getLinkOptions(link, data){
+            
             return {
                 name: link.view,
-                params: {
-                    [link.params.name]: data[link.params.property]
-                }
+                params: this.buildLinkParamsObject(link, data),
             }
         },
 
