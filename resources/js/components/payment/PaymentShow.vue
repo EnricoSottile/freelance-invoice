@@ -29,6 +29,7 @@
             <!-- payment -->
             <div class="w-1/2">
                 <payment-form
+                    @submit="updatePayment"    
                     :isReady="paymentIsReady"
                     :paymentClass="paymentClass"
                     :model="getPaymentModel"
@@ -36,11 +37,11 @@
 
                     <template v-slot:buttons>
                         <template  v-if="paymentBeingEdited">
-                            <button class="btn btn-default" id="cancelEditPayment" @click="cancelEditPayment">Cancel</button>
-                            <button class="btn btn-success" id="updatePayment" @click="updatePayment">Update</button>
+                            <button type="button" class="btn btn-default" id="cancelEditPayment" @click="cancelEditPayment">Cancel</button>
+                            <button type="submit" class="btn btn-success">Update</button>
                         </template>
                         <template v-else>
-                            <button v-if="isEditable" class="btn btn-default"  id="editPayment" @click="editPayment">Edit</button>
+                            <button type="button" v-if="isEditable" class="btn btn-default"  id="editPayment" @click="editPayment">Edit</button>
                         </template>  
                     </template>
 

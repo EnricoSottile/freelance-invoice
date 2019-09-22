@@ -1,5 +1,5 @@
 <template>
-    <div class="pr-6 flex flex-wrap">
+    <form class="pr-6 flex flex-wrap" @submit.prevent="$emit('submit')">
 
         <template v-if="isReady">
 
@@ -8,6 +8,7 @@
                     Full name
                 </label>
                 <input class="input-default" 
+                    required
                     :readonly="!isEdit"
                     v-model="model.full_name" 
                     name="full_name" 
@@ -65,7 +66,7 @@
                 <input class="input-default" readonly="true"/>
             </div>
         </template>
-    </div>
+    </form>
 </template>
 
 <script>

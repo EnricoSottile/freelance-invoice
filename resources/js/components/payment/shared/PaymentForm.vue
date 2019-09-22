@@ -1,5 +1,5 @@
 <template>
-    <div class="pr-6 flex flex-wrap">
+    <form class="pr-6 flex flex-wrap" @submit.prevent="$emit('submit')">
 
         <template v-if="invoicesAreReady && isReady">
             <div class="mb-6 w-1/2 px-2">
@@ -8,6 +8,7 @@
                 </label>
 
                 <custom-select 
+                    :required="true"
                     :disabled="!isEdit"
                     v-model="model.invoice_id">
                         <option default selected value="">Choose an invoice</option>
@@ -25,6 +26,7 @@
                     Net amount
                 </label>
                 <money
+                    required
                     class="input-default"
                     :readonly="!isEdit"
                     v-model="model.net_amount" 
@@ -70,7 +72,7 @@
                 <input class="input-default" readonly="true"/>
             </div>
         </template>
-    </div>
+    </form>
 </template>
 
 <script>

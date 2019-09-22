@@ -1,6 +1,7 @@
 <template>
     <div :class="{'select-small': this.small}" class="relative">
         <select
+            :required="required"
             :disabled="disabled"
             v-bind:value="value" 
             v-on:change="$emit('input', $event.target.value)" 
@@ -16,6 +17,10 @@
 <script>
 export default {
     props: {
+        required: {
+            type: Boolean,
+            required: false,
+        },
         value: {
             required: true,
             type: [Number, String]

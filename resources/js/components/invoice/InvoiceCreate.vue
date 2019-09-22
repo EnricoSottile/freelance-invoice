@@ -10,12 +10,13 @@
         <div class="flex mt-10">
             <div class="w-1/2">
                 <invoice-form
+                    @submit="saveNewInvoice"
                     :invoiceClass="invoiceClass"
                     :model="invoice"
                     :isEdit="true">
 
                     <template v-slot:buttons>
-                        <button class="btn btn-success" id="saveNewInvoice" @click="saveNewInvoice">Save</button>
+                        <button type="submit" class="btn btn-success">Save</button>
                     </template>
 
                 </invoice-form>  
@@ -71,7 +72,7 @@
             async saveNewInvoice(){
                 const {data: {invoice}} = await this.invoiceClass.store(this.invoice);
                 SweetAlert.fire('Done!', `The invoice has been created.`, 'success');
-                router.push({ name: 'invoice.show', params: { invoiceId: invoice.id } })
+                router.push({ name: 'invoice.show', params: { invoiceId: invoice.id } })                
             },
             setCustomer(customerId){
                 if (customerId === null) return;

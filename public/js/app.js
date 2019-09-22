@@ -1890,6 +1890,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -1957,6 +1958,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -2318,6 +2320,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     customerClass: {
@@ -2523,6 +2526,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -2606,6 +2610,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -2781,7 +2786,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } = await this.invoiceClass.update(this.invoice.id, this.invoiceBeingEdited);
       this.invoiceBeingEdited = null;
       this.invoice = _objectSpread({}, invoice);
-      alert('invoice was updated');
+      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Done!', `The invoice has been updated.`, 'success');
     },
 
     cancelEditInvoice(event, invoiceId) {
@@ -2805,6 +2810,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_shared_Select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @components/shared/Select */ "./resources/js/components/shared/Select.vue");
 /* harmony import */ var v_money__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! v-money */ "./node_modules/v-money/dist/v-money.js");
 /* harmony import */ var v_money__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(v_money__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
 //
 //
 //
@@ -3182,6 +3191,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 
 
 
@@ -3262,6 +3272,7 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
 //
 //
 //
@@ -3434,6 +3445,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_shared_Select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @components/shared/Select */ "./resources/js/components/shared/Select.vue");
 /* harmony import */ var v_money__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! v-money */ "./node_modules/v-money/dist/v-money.js");
 /* harmony import */ var v_money__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(v_money__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
 //
 //
 //
@@ -4227,8 +4240,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
+    required: {
+      type: Boolean,
+      required: false
+    },
     value: {
       required: true,
       type: [Number, String]
@@ -23174,6 +23192,7 @@ var render = function() {
               model: _vm.customer,
               isEdit: true
             },
+            on: { submit: _vm.saveNewCustomer },
             scopedSlots: _vm._u([
               {
                 key: "buttons",
@@ -23183,8 +23202,7 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-success",
-                        attrs: { id: "saveNewCustomer" },
-                        on: { click: _vm.saveNewCustomer }
+                        attrs: { type: "submit" }
                       },
                       [_vm._v("Save")]
                     )
@@ -23288,6 +23306,7 @@ var render = function() {
               model: _vm.getCustomerModel,
               isEdit: _vm.customerBeingEdited !== null
             },
+            on: { submit: _vm.updateCustomer },
             scopedSlots: _vm._u([
               {
                 key: "buttons",
@@ -23299,7 +23318,10 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-default",
-                              attrs: { id: "cancelEditCustomer" },
+                              attrs: {
+                                type: "button",
+                                id: "cancelEditCustomer"
+                              },
                               on: { click: _vm.cancelEditCustomer }
                             },
                             [_vm._v("Cancel")]
@@ -23309,8 +23331,7 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-success",
-                              attrs: { id: "updateCustomer" },
-                              on: { click: _vm.updateCustomer }
+                              attrs: { type: "submit" }
                             },
                             [_vm._v("Update")]
                           )
@@ -23321,7 +23342,7 @@ var render = function() {
                                 "button",
                                 {
                                   staticClass: "btn btn-default",
-                                  attrs: { id: "editCustomer" },
+                                  attrs: { type: "button", id: "editCustomer" },
                                   on: { click: _vm.editCustomer }
                                 },
                                 [_vm._v("Edit")]
@@ -23477,8 +23498,16 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "pr-6 flex flex-wrap" },
+    "form",
+    {
+      staticClass: "pr-6 flex flex-wrap",
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.$emit("submit")
+        }
+      }
+    },
     [
       _vm.isReady
         ? [
@@ -23498,6 +23527,7 @@ var render = function() {
                 ],
                 staticClass: "input-default",
                 attrs: {
+                  required: "",
                   readonly: !_vm.isEdit,
                   name: "full_name",
                   placeholder: "Full name",
@@ -23753,6 +23783,7 @@ var render = function() {
               model: _vm.invoice,
               isEdit: true
             },
+            on: { submit: _vm.saveNewInvoice },
             scopedSlots: _vm._u([
               {
                 key: "buttons",
@@ -23762,8 +23793,7 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-success",
-                        attrs: { id: "saveNewInvoice" },
-                        on: { click: _vm.saveNewInvoice }
+                        attrs: { type: "submit" }
                       },
                       [_vm._v("Save")]
                     )
@@ -23869,6 +23899,7 @@ var render = function() {
               model: _vm.getInvoiceModel,
               isEdit: _vm.invoiceBeingEdited !== null
             },
+            on: { submit: _vm.updateInvoice },
             scopedSlots: _vm._u([
               {
                 key: "buttons",
@@ -23880,7 +23911,10 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-default",
-                              attrs: { id: "cancelEditInvoice" },
+                              attrs: {
+                                type: "button",
+                                id: "cancelEditInvoice"
+                              },
                               on: { click: _vm.cancelEditInvoice }
                             },
                             [_vm._v("Cancel")]
@@ -23890,8 +23924,7 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-success",
-                              attrs: { id: "updateInvoice" },
-                              on: { click: _vm.updateInvoice }
+                              attrs: { type: "submit" }
                             },
                             [_vm._v("Update")]
                           )
@@ -23902,7 +23935,7 @@ var render = function() {
                                 "button",
                                 {
                                   staticClass: "btn btn-default",
-                                  attrs: { id: "editInvoice" },
+                                  attrs: { type: "button", id: "editInvoice" },
                                   on: { click: _vm.editInvoice }
                                 },
                                 [_vm._v("Edit")]
@@ -23982,8 +24015,16 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "pr-6 flex flex-wrap" },
+    "form",
+    {
+      staticClass: "pr-6 flex flex-wrap",
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.$emit("submit")
+        }
+      }
+    },
     [
       _vm.customersAreReady && _vm.isReady
         ? [
@@ -23998,7 +24039,7 @@ var render = function() {
                 _c(
                   "custom-select",
                   {
-                    attrs: { disabled: !_vm.isEdit },
+                    attrs: { required: true, disabled: !_vm.isEdit },
                     model: {
                       value: _vm.model.customer_id,
                       callback: function($$v) {
@@ -24052,6 +24093,7 @@ var render = function() {
                 ],
                 staticClass: "input-default",
                 attrs: {
+                  required: "",
                   readonly: !_vm.isEdit,
                   name: "number",
                   placeholder: "Number",
@@ -24080,6 +24122,7 @@ var render = function() {
                 _c("money", {
                   staticClass: "input-default",
                   attrs: {
+                    required: "",
                     readonly: !_vm.isEdit,
                     name: "net_amount",
                     placeholder: "Net amount"
@@ -24110,6 +24153,7 @@ var render = function() {
                     {
                       staticClass: "input-default",
                       attrs: {
+                        required: "",
                         readonly: !_vm.isEdit,
                         name: "tax",
                         placeholder: "Tax"
@@ -24437,6 +24481,7 @@ var render = function() {
               model: _vm.payment,
               isEdit: true
             },
+            on: { submit: _vm.saveNewPayment },
             scopedSlots: _vm._u([
               {
                 key: "buttons",
@@ -24446,8 +24491,7 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-success",
-                        attrs: { id: "saveNewPayment" },
-                        on: { click: _vm.saveNewPayment }
+                        attrs: { type: "submit" }
                       },
                       [_vm._v("Save")]
                     )
@@ -24553,6 +24597,7 @@ var render = function() {
               model: _vm.getPaymentModel,
               isEdit: _vm.paymentBeingEdited !== null
             },
+            on: { submit: _vm.updatePayment },
             scopedSlots: _vm._u([
               {
                 key: "buttons",
@@ -24564,7 +24609,10 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-default",
-                              attrs: { id: "cancelEditPayment" },
+                              attrs: {
+                                type: "button",
+                                id: "cancelEditPayment"
+                              },
                               on: { click: _vm.cancelEditPayment }
                             },
                             [_vm._v("Cancel")]
@@ -24574,8 +24622,7 @@ var render = function() {
                             "button",
                             {
                               staticClass: "btn btn-success",
-                              attrs: { id: "updatePayment" },
-                              on: { click: _vm.updatePayment }
+                              attrs: { type: "submit" }
                             },
                             [_vm._v("Update")]
                           )
@@ -24586,7 +24633,7 @@ var render = function() {
                                 "button",
                                 {
                                   staticClass: "btn btn-default",
-                                  attrs: { id: "editPayment" },
+                                  attrs: { type: "button", id: "editPayment" },
                                   on: { click: _vm.editPayment }
                                 },
                                 [_vm._v("Edit")]
@@ -24646,8 +24693,16 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c(
-    "div",
-    { staticClass: "pr-6 flex flex-wrap" },
+    "form",
+    {
+      staticClass: "pr-6 flex flex-wrap",
+      on: {
+        submit: function($event) {
+          $event.preventDefault()
+          return _vm.$emit("submit")
+        }
+      }
+    },
     [
       _vm.invoicesAreReady && _vm.isReady
         ? [
@@ -24662,7 +24717,7 @@ var render = function() {
                 _c(
                   "custom-select",
                   {
-                    attrs: { disabled: !_vm.isEdit },
+                    attrs: { required: true, disabled: !_vm.isEdit },
                     model: {
                       value: _vm.model.invoice_id,
                       callback: function($$v) {
@@ -24709,6 +24764,7 @@ var render = function() {
                 _c("money", {
                   staticClass: "input-default",
                   attrs: {
+                    required: "",
                     readonly: !_vm.isEdit,
                     name: "net_amount",
                     placeholder: "Net amount"
@@ -25370,7 +25426,7 @@ var render = function() {
         "select",
         {
           staticClass: "select-default",
-          attrs: { disabled: _vm.disabled },
+          attrs: { required: _vm.required, disabled: _vm.disabled },
           domProps: { value: _vm.value },
           on: {
             change: function($event) {

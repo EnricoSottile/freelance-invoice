@@ -29,6 +29,7 @@
             <!-- customer -->
             <div class="w-1/2">
                 <customer-form
+                    @submit="updateCustomer"    
                     :isReady="customerIsReady"
                     :customerClass="customerClass"
                     :model="getCustomerModel"
@@ -36,11 +37,11 @@
 
                     <template v-slot:buttons>
                         <template  v-if="customerBeingEdited">
-                            <button class="btn btn-default" id="cancelEditCustomer" @click="cancelEditCustomer">Cancel</button>
-                            <button class="btn btn-success" id="updateCustomer" @click="updateCustomer">Update</button>
+                            <button type="button" class="btn btn-default" id="cancelEditCustomer" @click="cancelEditCustomer">Cancel</button>
+                            <button type="submit" class="btn btn-success">Update</button>
                         </template>
                         <template v-else>
-                            <button v-if="isEditable" class="btn btn-default"  id="editCustomer" @click="editCustomer">Edit</button>
+                            <button type="button" v-if="isEditable" class="btn btn-default"  id="editCustomer" @click="editCustomer">Edit</button>
                         </template>  
                     </template>
 

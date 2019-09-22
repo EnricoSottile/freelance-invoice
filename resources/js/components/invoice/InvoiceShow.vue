@@ -30,6 +30,7 @@
             <!-- invoice -->
             <div class="w-1/2">
                 <invoice-form
+                    @submit="updateInvoice"    
                     :isReady="invoiceIsReady"
                     :invoiceClass="invoiceClass"
                     :model="getInvoiceModel"
@@ -37,11 +38,11 @@
 
                     <template v-slot:buttons>
                         <template  v-if="invoiceBeingEdited">
-                            <button class="btn btn-default" id="cancelEditInvoice" @click="cancelEditInvoice">Cancel</button>
-                            <button class="btn btn-success" id="updateInvoice" @click="updateInvoice">Update</button>
+                            <button type="button" class="btn btn-default" id="cancelEditInvoice" @click="cancelEditInvoice">Cancel</button>
+                            <button type="submit" class="btn btn-success">Update</button>
                         </template>
                         <template v-else>
-                            <button v-if="isEditable" class="btn btn-default"  id="editInvoice" @click="editInvoice">Edit</button>
+                            <button type="button" v-if="isEditable" class="btn btn-default"  id="editInvoice" @click="editInvoice">Edit</button>
                         </template>  
                     </template>
 
@@ -166,7 +167,7 @@
                 const {data: {invoice}} = await this.invoiceClass.update(this.invoice.id, this.invoiceBeingEdited);
                 this.invoiceBeingEdited = null;
                 this.invoice = {...invoice};
-                alert('invoice was updated');
+                SweetAlert.fire('Done!', `The invoice has been updated.`, 'success');
             },
             cancelEditInvoice(event, invoiceId) {
                 this.invoiceBeingEdited = null;

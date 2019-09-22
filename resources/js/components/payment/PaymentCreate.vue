@@ -10,12 +10,13 @@
         <div class="flex mt-10">
             <div class="w-1/2">
                 <payment-form
+                    @submit="saveNewPayment"
                     :paymentClass="paymentClass"
                     :model="payment"
                     :isEdit="true">
 
                     <template v-slot:buttons>
-                        <button class="btn btn-success" id="saveNewPayment" @click="saveNewPayment">Save</button>
+                        <button type="submit" class="btn btn-success">Save</button>
                     </template>
 
                 </payment-form>  
