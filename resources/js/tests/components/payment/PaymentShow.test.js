@@ -45,9 +45,6 @@ describe('PaymentShow', () => {
     expect( wrapper.vm.paymentIsReady ).toBeTruthy();
   })
 
-  test('computed return correct bool', () => {
-    expect(wrapper.vm.isEditable).toBeTruthy();
-    expect(wrapper.vm.isDestroyable).toBeTruthy();
-  })
+
 
 })

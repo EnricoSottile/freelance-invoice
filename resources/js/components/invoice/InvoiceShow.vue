@@ -133,17 +133,11 @@
             getInvoiceModel(){
                 return this.invoiceBeingEdited ? this.invoiceBeingEdited : this.invoice;
             },
-            hasPayedPayments(){
-                return this.payments 
-                && this.payments.filter(p => p.payed_date).length;
-            },
             isEditable() {
-                return this.invoice.registered_date === null
-                && this.hasPayedPayments === 0;
+                return this.invoice.is_editable;
             },
             isDestroyable() {
-                return this.invoice.registered_date === null
-                && this.hasPayedPayments === 0;
+                return this.invoice.is_destroyable;
             }
         },
 

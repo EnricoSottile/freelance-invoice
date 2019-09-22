@@ -59,12 +59,6 @@ describe('InvoiceShow', () => {
     expect( wrapper.vm.invoiceBeingEdited ).toBeNull();
   })
 
-  test('computed return correct bool', () => {
-    expect(wrapper.vm.hasPayedPayments).toBeFalsy();
-    expect(wrapper.vm.isEditable).toBeTruthy();
-    expect(wrapper.vm.isDestroyable).toBeTruthy();
-  })
-
 
   // test('it calls for destroy when clicking the button', () => {
   //   const btn = wrapper.find('#destroyInvoice')

@@ -12,9 +12,9 @@
 
 
         <data-table 
-        :collection="customers" 
-        :fields="fields" 
-        :dataIsReady="customersAreReady">
+            :collection="customers" 
+            :fields="fields" 
+            :dataIsReady="customersAreReady">
         </data-table>
 
     </div>

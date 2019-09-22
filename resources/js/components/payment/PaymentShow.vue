@@ -114,11 +114,11 @@
                 return this.paymentBeingEdited ? this.paymentBeingEdited : this.payment;
             },
             isEditable() {
-                return this.payment.payed_date === null;
+                return this.payment.is_editable;
             },
             isDestroyable() {
-                return this.payment.payed_date === null;
-            },
+                return this.payment.is_destroyable;
+            }
         },
 
         methods: {

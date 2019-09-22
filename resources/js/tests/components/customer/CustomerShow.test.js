@@ -65,22 +65,6 @@ describe('CustomerShow', () => {
   })
 
 
-  test('computed return correct bool', () => {
-    expect(wrapper.vm.hasPayedPayments).toBeFalsy();
-    expect(wrapper.vm.hasRegisteredInvoices).toBeFalsy();
-    expect(wrapper.vm.isDestroyable).toBeTruthy();
-
-    wrapper.vm.invoices.push({id: 100, registered_date: '2019-09-07 00:00:00'});
-    expect(wrapper.vm.hasRegisteredInvoices).toBeTruthy();
-    expect(wrapper.vm.isDestroyable).toBeFalsy();
-
-    wrapper.vm.invoices.pop();
-    wrapper.vm.payments.push({id: 100, payed_date: '2019-09-07 00:00:00'});
-    expect(wrapper.vm.hasPayedPayments).toBeTruthy();
-    expect(wrapper.vm.isDestroyable).toBeFalsy();
-    
-    wrapper.vm.payments.pop();
-  })
 
 
 

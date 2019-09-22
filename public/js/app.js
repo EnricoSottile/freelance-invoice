@@ -2098,20 +2098,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.customerBeingEdited ? this.customerBeingEdited : this.customer;
     },
 
-    hasPayedPayments() {
-      return this.payments && this.payments.filter(p => p.payed_date).length;
-    },
-
-    hasRegisteredInvoices() {
-      return this.invoices && this.invoices.filter(i => i.registered_date).length;
-    },
-
     isEditable() {
-      return this.hasPayedPayments === 0 && this.hasRegisteredInvoices === 0;
+      return this.customer.is_editable;
     },
 
     isDestroyable() {
-      return this.hasPayedPayments === 0 && this.hasRegisteredInvoices === 0;
+      return this.customer.is_destroyable;
     }
 
   },
@@ -2751,16 +2743,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       return this.invoiceBeingEdited ? this.invoiceBeingEdited : this.invoice;
     },
 
-    hasPayedPayments() {
-      return this.payments && this.payments.filter(p => p.payed_date).length;
-    },
-
     isEditable() {
-      return this.invoice.registered_date === null && this.hasPayedPayments === 0;
+      return this.invoice.is_editable;
     },
 
     isDestroyable() {
-      return this.invoice.registered_date === null && this.hasPayedPayments === 0;
+      return this.invoice.is_destroyable;
     }
 
   },
@@ -3391,11 +3379,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
 
     isEditable() {
-      return this.payment.payed_date === null;
+      return this.payment.is_editable;
     },
 
     isDestroyable() {
-      return this.payment.payed_date === null;
+      return this.payment.is_destroyable;
     }
 
   },

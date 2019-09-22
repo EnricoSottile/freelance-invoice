@@ -147,21 +147,11 @@
             getCustomerModel(){
                 return this.customerBeingEdited ? this.customerBeingEdited : this.customer;
             },
-            hasPayedPayments(){
-                return this.payments 
-                && this.payments.filter(p => p.payed_date).length;
-            },
-            hasRegisteredInvoices(){
-                return this.invoices 
-                && this.invoices.filter(i => i.registered_date).length;
-            },
             isEditable() {
-                return this.hasPayedPayments === 0 
-                && this.hasRegisteredInvoices === 0
+                return this.customer.is_editable;
             },
             isDestroyable() {
-                return this.hasPayedPayments === 0 
-                && this.hasRegisteredInvoices === 0
+                return this.customer.is_destroyable;
             }
         },
 
