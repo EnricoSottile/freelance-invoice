@@ -9,6 +9,8 @@ use App\Models\Invoice;
 use App\Models\Payment;
 use App\Models\Upload;
 
+use App\Helpers\CustomerStatus;
+
 
 class Customer extends Model
 {
@@ -70,6 +72,30 @@ class Customer extends Model
         $this->uploads()->each(function($upload){
             $upload->delete();
         });
+    }
+
+
+    /**
+     * Returns a bool indicating the destroyable status of the customer
+     *
+     * @return String
+     */
+    public function getIsDestroyableAttribute() : bool
+    {
+        $status = new CustomerStatus($this);
+        return $status->canBeDeleted();
+    }
+
+
+    /**
+     * Returns a bool indicating the destroyable status of the customer
+     *
+     * @return String
+     */
+    public function getIsEditableAttribute() : bool
+    {
+        $status = new CustomerStatus($this);
+        return $status->canBeUpdated();
     }
     
 }

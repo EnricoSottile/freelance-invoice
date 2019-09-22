@@ -84,15 +84,15 @@ describe('CustomerShow', () => {
 
 
 
-  test('it calls for destroy when clicking the button', () => {
-    const btn = wrapper.find('#destroyCustomer')
-    window.alert = () => {};
-    window.router = {
-      go: jest.fn()
-    }
-    btn.trigger('click')
-    expect(wrapper.vm.customerClass.destroy).toBeCalled();
-  })
+  // test('it calls for destroy when clicking the button', () => {
+  //   const btn = wrapper.find('#destroyCustomer')
+  //   window.alert = () => {};
+  //   window.router = {
+  //     go: jest.fn()
+  //   }
+  //   btn.trigger('click')
+  //   expect(wrapper.vm.customerClass.destroy).toBeCalled();
+  // })
 
 
   // test('edit button works correctly', async() => {

@@ -14,6 +14,10 @@ use App\Services\InvoiceService;
 class InvoiceController extends Controller
 {
 
+    // used everywhere but index 
+    // (because it's heavy on performance and not needed)
+    protected $appends = ['is_editable', 'is_destroyable'];
+
 
     /**
      * Display a listing of the resource.
@@ -39,6 +43,7 @@ class InvoiceController extends Controller
     public function store(StoreInvoice $request, InvoiceService $invoiceService)
     {
         $invoice = $invoiceService->store( $request->getDto() );
+        $invoice->setAppends($this->appends);
         return response()->json(['invoice' => $invoice]);
     }
 
@@ -53,7 +58,7 @@ class InvoiceController extends Controller
     public function show($id)
     {
         $invoice = Auth::user()->invoices()->findOrFail($id);
-        return $invoice->toJson();
+        return $invoice->setAppends($this->appends)->toJson();
     }
 
 
@@ -69,6 +74,7 @@ class InvoiceController extends Controller
     public function update(UpdateInvoice $request, InvoiceService $invoiceService, $id)
     {
         $invoice = $invoiceService->update( $request->getDto(), $id );
+        $invoice->setAppends($this->appends);
         return response()->json(['invoice' => $invoice]);
     }
 

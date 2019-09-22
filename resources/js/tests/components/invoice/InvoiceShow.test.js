@@ -66,15 +66,15 @@ describe('InvoiceShow', () => {
   })
 
 
-  test('it calls for destroy when clicking the button', () => {
-    const btn = wrapper.find('#destroyInvoice')
-    window.alert = () => {};
-    window.router = {
-      go: jest.fn()
-    }
-    btn.trigger('click')
-    expect(wrapper.vm.invoiceClass.destroy).toBeCalled();
-  })
+  // test('it calls for destroy when clicking the button', () => {
+  //   const btn = wrapper.find('#destroyInvoice')
+  //   window.alert = () => {};
+  //   window.router = {
+  //     go: jest.fn()
+  //   }
+  //   btn.trigger('click')
+  //   expect(wrapper.vm.invoiceClass.destroy).toBeCalled();
+  // })
 
 
   // test('edit button works correctly', async() => {

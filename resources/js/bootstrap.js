@@ -42,7 +42,7 @@ window.axios.interceptors.response.use( response => response,  error => {
                 SweetAlert.fire('Thou shall not pass', values.join("\n"), 'error');
             }
         } else {
-            alert("Unknown error");
+            SweetAlert.fire('Unknown error', 'Something did not work as expected', 'error');
         }
 
 

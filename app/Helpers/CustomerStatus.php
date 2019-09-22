@@ -52,8 +52,17 @@ final class CustomerStatus {
     }
 
 
+    /**
+     * Determines if the customer can de updated
+     *
+     * @return boolean
+     */
+    public function canBeUpdated() : bool {
+        return 
+            ! $this->hasRegisteredInvoices &&
+            ! $this->hasPayedPayments;
+    }
 
-    
  
 
     /**

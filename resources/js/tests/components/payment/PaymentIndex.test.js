@@ -70,36 +70,36 @@ describe('PaymentIndex with own loading', () => {
   })
 
 
-  test('correctly removes the deleted payment from the array', () => {
-      window.alert = () => {};
-      wrapper.vm.payments = [
-        {id:1},
-        {id:2},
-        {id:3},
-        {id:4},
-      ];     
+  // test('correctly removes the deleted payment from the array', () => {
+  //     window.alert = () => {};
+  //     wrapper.vm.payments = [
+  //       {id:1},
+  //       {id:2},
+  //       {id:3},
+  //       {id:4},
+  //     ];     
 
-      wrapper.vm.handlePaymentWasDeleted('evt', 2);
+  //     wrapper.vm.handlePaymentWasDeleted('evt', 2);
 
-      expect(wrapper.vm.payments).toEqual([{id:1},{id:3},{id:4}]);
-  })
-
-
+  //     expect(wrapper.vm.payments).toEqual([{id:1},{id:3},{id:4}]);
+  // })
 
 
-test('correctly updates the payment in the array', () => {
-    window.alert = () => {};
-    window.Vue = require('vue');
-    wrapper.vm.payments = [
-      {id:1},
-      {id:2},
-      {id:3, test: 'abc'},
-    ];     
 
-    const updatedPayment = { data: {payment: {id: 3, test:'def'}}};
-    wrapper.vm.handlePaymentWasUpdated(updatedPayment);
-    expect(wrapper.vm.payments).toEqual([{id:1},{id:2},{id:3, test: 'def'}]);
-  })  
+
+// test('correctly updates the payment in the array', () => {
+//     window.alert = () => {};
+//     window.Vue = require('vue');
+//     wrapper.vm.payments = [
+//       {id:1},
+//       {id:2},
+//       {id:3, test: 'abc'},
+//     ];     
+
+//     const updatedPayment = { data: {payment: {id: 3, test:'def'}}};
+//     wrapper.vm.handlePaymentWasUpdated(updatedPayment);
+//     expect(wrapper.vm.payments).toEqual([{id:1},{id:2},{id:3, test: 'def'}]);
+//   })  
   
 })    
   

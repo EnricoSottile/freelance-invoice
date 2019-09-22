@@ -12,6 +12,12 @@ use \Auth;
 
 class CustomerController extends Controller
 {
+
+    // used everywhere but index 
+    // (because it's heavy on performance and not needed)
+    protected $appends = ['is_editable', 'is_destroyable'];
+
+
      /**
      * Display a listing of the resource.
      *
@@ -32,6 +38,7 @@ class CustomerController extends Controller
     public function store(StoreCustomer $request, CustomerService $customerService)
     {        
         $customer = $customerService->store( $request->getDto() );
+        $customer->setAppends($this->appends);
         return response()->json(['customer' => $customer]);
     }
 
@@ -45,7 +52,7 @@ class CustomerController extends Controller
     public function show($id)
     {
         $customer = Auth::user()->customers()->findOrFail($id);
-        return $customer->toJson();
+        return $customer->setAppends($this->appends)->toJson();
     }
 
 
@@ -60,6 +67,7 @@ class CustomerController extends Controller
     public function update(UpdateCustomer $request, CustomerService $customerService, $id)
     {
         $customer = $customerService->update( $request->getDto(), $id );
+        $customer->setAppends($this->appends);
         return response()->json(['customer' => $customer]);
     }
 

@@ -13,6 +13,12 @@ use \Auth;
 
 class PaymentController extends Controller
 {
+
+    // used everywhere but index 
+    // (because it's heavy on performance and not needed)
+    protected $appends = ['is_editable', 'is_destroyable'];
+
+
      /**
      * Display a listing of the resource.
      *
@@ -37,6 +43,7 @@ class PaymentController extends Controller
     public function store(StorePayment $request, PaymentService $paymentService)
     {        
         $payment = $paymentService->store( $request->getDto() );
+        $payment->setAppends($this->appends);
         return response()->json(['payment' => $payment]);
     }
 
@@ -49,7 +56,7 @@ class PaymentController extends Controller
     public function show($id)
     {
         $payment = Auth::user()->payments()->findOrFail($id);
-        return $payment->toJson();
+        return $payment->setAppends($this->appends)->toJson();
     }
 
 
@@ -65,6 +72,7 @@ class PaymentController extends Controller
     {
 
         $payment = $paymentService->update( $request->getDto(), $id );
+        $payment->setAppends($this->appends);
         return response()->json(['payment' => $payment]);
     }
 

@@ -9,6 +9,8 @@ use App\Models\Payment;
 use App\Models\Customer;
 use App\Models\Upload;
 
+use App\Helpers\InvoiceStatus;
+
 class Invoice extends Model
 {
     use SoftDeletes;
@@ -70,5 +72,29 @@ class Invoice extends Model
         $this->uploads()->each(function($upload){
             $upload->delete();
         });
+    }
+
+
+    /**
+     * Returns a bool indicating the destroyable status of the invoice
+     *
+     * @return String
+     */
+    public function getIsDestroyableAttribute() : bool
+    {
+        $status = new InvoiceStatus($this);
+        return $status->canBeDeleted();
+    }
+
+
+    /**
+     * Returns a bool indicating the destroyable status of the invoice
+     *
+     * @return String
+     */
+    public function getIsEditableAttribute() : bool
+    {
+        $status = new InvoiceStatus($this);
+        return $status->canBeUpdated();
     }
 }

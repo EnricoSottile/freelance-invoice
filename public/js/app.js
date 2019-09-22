@@ -40901,7 +40901,7 @@ window.axios.interceptors.response.use(response => response, error => {
         _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Thou shall not pass', values.join("\n"), 'error');
       }
     } else {
-      alert("Unknown error");
+      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Unknown error', 'Something did not work as expected', 'error');
     }
   }
 
