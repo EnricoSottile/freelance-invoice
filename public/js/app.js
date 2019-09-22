@@ -4083,10 +4083,6 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
-    getIcon(icon) {
-      return _getIcon(icon);
-    },
-
     handleInput(event) {
       this.$emit('input', event); // this enables v-model on parent
 

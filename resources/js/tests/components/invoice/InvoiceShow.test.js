@@ -17,6 +17,9 @@ invoiceClass.customers = jest.fn().mockReturnValue({data: mockData});
 const wrapper = shallowMount(InvoiceShow, {
   propsData: {invoiceId: 1},
   // methods: {  },
+  components: {
+    'upload': jest.fn(),
+  },
   data: function() {
     return {
       invoiceClass

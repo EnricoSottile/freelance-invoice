@@ -4,8 +4,9 @@ import CustomerShow from '@components/customer/CustomerShow'
 import Customer from '@classes/Customer'
 const customerClass = new Customer();
 
-const getCustomerObj = {'id': 1};
-const getCustomerInvoicesArr = [{id:1}, {id:2}];
+const bools = {is_editable: true, is_deletable: true};
+const getCustomerObj = {'id': 1, ...bools};
+const getCustomerInvoicesArr = [{id:1,}, {id:2}];
 const getCustomerPaymentsArr = [{id:10}, {id:20}];
 const mockUpdatedCustomer = {id: 2, test: 'abc'}
 
@@ -18,6 +19,9 @@ customerClass.destroy = jest.fn();
 const wrapper = shallowMount(CustomerShow, {
   propsData: {customerId: 1},
   // methods: {  },
+  components: {
+    'upload': jest.fn(),
+  },
   data: function() {
     return {
       customerClass

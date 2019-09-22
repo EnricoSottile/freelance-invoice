@@ -10,6 +10,9 @@ paymentClass.show = jest.fn().mockReturnValue({data: getPaymentObj});
 const wrapper = shallowMount(PaymentShow, {
   propsData: {paymentId: 1},
   // methods: {  },
+  components: {
+    'upload': jest.fn(),
+  },
   data: function() {
     return {
       paymentClass
