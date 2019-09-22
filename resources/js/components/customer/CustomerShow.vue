@@ -87,10 +87,7 @@
 
 <script>
     import SweetAlert from '@classes/SweetAlert'
-
-    import _getIcon from '@helpers/getIcon'
-    import _formatDate from '@helpers/formatDate'
-
+    import UiCommonMethods from '@mixins/UiCommonMethods'
     import Customer from '@classes/Customer'
     import CustomerForm from '@components/customer/shared/CustomerForm'
     import InvoiceIndex from '@components/invoice/Index/InvoiceIndex'
@@ -113,6 +110,8 @@
             'payment-index': PaymentIndex,
             'upload': Upload
         },
+
+        mixins: [ UiCommonMethods ],
 
 
         created(){
@@ -192,13 +191,6 @@
             cancelEditCustomer(event, customerId) {
                 this.customerBeingEdited = null;
             },
-
-            formatDate(options, value) {
-                return _formatDate(options, value)
-            },
-            getIcon(icon) {
-                return _getIcon(icon);
-            }
         },
 
 

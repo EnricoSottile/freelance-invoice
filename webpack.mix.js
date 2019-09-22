@@ -19,6 +19,7 @@ mix.webpackConfig({
       alias: {
         // 'vue$': 'vue/dist/vue.esm.js',
         '@classes': __dirname + '/resources/js/classes',
+        '@mixins': __dirname + '/resources/js/mixins',
         '@components': __dirname + '/resources/js/components',
         '@helpers': __dirname + '/resources/js/helpers'
       },

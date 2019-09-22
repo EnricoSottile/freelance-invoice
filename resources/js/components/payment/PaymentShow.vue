@@ -65,10 +65,8 @@
 </template>
 
 <script>
-    import _getIcon from '@helpers/getIcon'
-    import _formatDate from '@helpers/formatDate'
-
     import SweetAlert from '@classes/SweetAlert'
+    import UiCommonMethods from '@mixins/UiCommonMethods'
     import Payment from '@classes/Payment'
     import PaymentForm from '@components/payment/shared/PaymentForm'
     import Upload from '@components/shared/Upload/Upload'
@@ -87,6 +85,8 @@
             'upload': Upload,
             'payment-form': PaymentForm,
         },
+
+        mixins: [ UiCommonMethods ],
 
 
         created(){
@@ -149,13 +149,6 @@
             cancelEditPayment(event, paymentId) {
                 this.paymentBeingEdited = null;
             },
-
-            formatDate(options, value) {
-                return _formatDate(options, value)
-            },
-            getIcon(icon) {
-                return _getIcon(icon);
-            }
         },
 
 

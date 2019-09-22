@@ -4,6 +4,7 @@ module.exports = {
       "^@components(.*)$": "<rootDir>/resources/js/components$1",
       "^@helpers(.*)$": "<rootDir>/resources/js/helpers$1",
       "^@classes(.*)$": "<rootDir>/resources/js/classes$1",
+      "^@mixins(.*)$": "<rootDir>/resources/js/mixins$1",
     },
     moduleFileExtensions: [
       'js',

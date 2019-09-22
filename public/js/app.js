@@ -1945,13 +1945,12 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/SweetAlert */ "./resources/js/classes/SweetAlert.js");
-/* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
-/* harmony import */ var _helpers_formatDate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @helpers/formatDate */ "./resources/js/helpers/formatDate.js");
-/* harmony import */ var _classes_Customer__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @classes/Customer */ "./resources/js/classes/Customer.js");
-/* harmony import */ var _components_customer_shared_CustomerForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/customer/shared/CustomerForm */ "./resources/js/components/customer/shared/CustomerForm.vue");
-/* harmony import */ var _components_invoice_Index_InvoiceIndex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @components/invoice/Index/InvoiceIndex */ "./resources/js/components/invoice/Index/InvoiceIndex.vue");
-/* harmony import */ var _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @components/payment/Index/PaymentIndex */ "./resources/js/components/payment/Index/PaymentIndex.vue");
-/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
+/* harmony import */ var _mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mixins/UiCommonMethods */ "./resources/js/mixins/UiCommonMethods.vue");
+/* harmony import */ var _classes_Customer__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @classes/Customer */ "./resources/js/classes/Customer.js");
+/* harmony import */ var _components_customer_shared_CustomerForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/customer/shared/CustomerForm */ "./resources/js/components/customer/shared/CustomerForm.vue");
+/* harmony import */ var _components_invoice_Index_InvoiceIndex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/invoice/Index/InvoiceIndex */ "./resources/js/components/invoice/Index/InvoiceIndex.vue");
+/* harmony import */ var _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @components/payment/Index/PaymentIndex */ "./resources/js/components/payment/Index/PaymentIndex.vue");
+/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2052,7 +2051,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     customerId: {
@@ -2061,11 +2059,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   components: {
-    'customer-form': _components_customer_shared_CustomerForm__WEBPACK_IMPORTED_MODULE_4__["default"],
-    'invoice-index': _components_invoice_Index_InvoiceIndex__WEBPACK_IMPORTED_MODULE_5__["default"],
-    'payment-index': _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_6__["default"],
-    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_7__["default"]
+    'customer-form': _components_customer_shared_CustomerForm__WEBPACK_IMPORTED_MODULE_3__["default"],
+    'invoice-index': _components_invoice_Index_InvoiceIndex__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'payment-index': _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_5__["default"],
+    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_6__["default"]
   },
+  mixins: [_mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_1__["default"]],
 
   created() {
     this.getCustomer(this.customerId);
@@ -2082,7 +2081,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   data() {
     return {
-      customerClass: _classes_Customer__WEBPACK_IMPORTED_MODULE_3__["default"],
+      customerClass: _classes_Customer__WEBPACK_IMPORTED_MODULE_2__["default"],
       customer: {},
       invoices: [],
       payments: [],
@@ -2159,14 +2158,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     cancelEditCustomer(event, customerId) {
       this.customerBeingEdited = null;
-    },
-
-    formatDate(options, value) {
-      return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_2__["default"])(options, value);
-    },
-
-    getIcon(icon) {
-      return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_1__["default"])(icon);
     }
 
   }
@@ -2604,12 +2595,11 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/SweetAlert */ "./resources/js/classes/SweetAlert.js");
-/* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
-/* harmony import */ var _helpers_formatDate__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @helpers/formatDate */ "./resources/js/helpers/formatDate.js");
-/* harmony import */ var _classes_Invoice__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @classes/Invoice */ "./resources/js/classes/Invoice.js");
-/* harmony import */ var _components_invoice_shared_InvoiceForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/invoice/shared/InvoiceForm */ "./resources/js/components/invoice/shared/InvoiceForm.vue");
-/* harmony import */ var _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @components/payment/Index/PaymentIndex */ "./resources/js/components/payment/Index/PaymentIndex.vue");
-/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
+/* harmony import */ var _mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mixins/UiCommonMethods */ "./resources/js/mixins/UiCommonMethods.vue");
+/* harmony import */ var _classes_Invoice__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @classes/Invoice */ "./resources/js/classes/Invoice.js");
+/* harmony import */ var _components_invoice_shared_InvoiceForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/invoice/shared/InvoiceForm */ "./resources/js/components/invoice/shared/InvoiceForm.vue");
+/* harmony import */ var _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/payment/Index/PaymentIndex */ "./resources/js/components/payment/Index/PaymentIndex.vue");
+/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -2701,7 +2691,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     invoiceId: {
@@ -2709,10 +2698,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       type: [String, Number]
     }
   },
+  mixins: [_mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_1__["default"]],
   components: {
-    'payment-index': _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_5__["default"],
-    'invoice-form': _components_invoice_shared_InvoiceForm__WEBPACK_IMPORTED_MODULE_4__["default"],
-    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_6__["default"]
+    'payment-index': _components_payment_Index_PaymentIndex__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'invoice-form': _components_invoice_shared_InvoiceForm__WEBPACK_IMPORTED_MODULE_3__["default"],
+    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_5__["default"]
   },
 
   created() {
@@ -2729,7 +2719,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   data() {
     return {
-      invoiceClass: _classes_Invoice__WEBPACK_IMPORTED_MODULE_3__["default"],
+      invoiceClass: _classes_Invoice__WEBPACK_IMPORTED_MODULE_2__["default"],
       invoice: {},
       payments: [],
       invoiceIsReady: false,
@@ -2796,14 +2786,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     cancelEditInvoice(event, invoiceId) {
       this.invoiceBeingEdited = null;
-    },
-
-    formatDate(options, value) {
-      return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_2__["default"])(options, value);
-    },
-
-    getIcon(icon) {
-      return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_1__["default"])(icon);
     }
 
   }
@@ -3258,12 +3240,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
-/* harmony import */ var _helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @helpers/formatDate */ "./resources/js/helpers/formatDate.js");
-/* harmony import */ var _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @classes/SweetAlert */ "./resources/js/classes/SweetAlert.js");
-/* harmony import */ var _classes_Payment__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @classes/Payment */ "./resources/js/classes/Payment.js");
-/* harmony import */ var _components_payment_shared_PaymentForm__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/payment/shared/PaymentForm */ "./resources/js/components/payment/shared/PaymentForm.vue");
-/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
+/* harmony import */ var _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/SweetAlert */ "./resources/js/classes/SweetAlert.js");
+/* harmony import */ var _mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mixins/UiCommonMethods */ "./resources/js/mixins/UiCommonMethods.vue");
+/* harmony import */ var _classes_Payment__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @classes/Payment */ "./resources/js/classes/Payment.js");
+/* harmony import */ var _components_payment_shared_PaymentForm__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/payment/shared/PaymentForm */ "./resources/js/components/payment/shared/PaymentForm.vue");
+/* harmony import */ var _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! @components/shared/Upload/Upload */ "./resources/js/components/shared/Upload/Upload.vue");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(source, true).forEach(function (key) { _defineProperty(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(source).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
@@ -3341,7 +3322,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
 
 
-
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     paymentId: {
@@ -3350,9 +3330,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   },
   components: {
-    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_5__["default"],
-    'payment-form': _components_payment_shared_PaymentForm__WEBPACK_IMPORTED_MODULE_4__["default"]
+    'upload': _components_shared_Upload_Upload__WEBPACK_IMPORTED_MODULE_4__["default"],
+    'payment-form': _components_payment_shared_PaymentForm__WEBPACK_IMPORTED_MODULE_3__["default"]
   },
+  mixins: [_mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_1__["default"]],
 
   created() {
     this.getPayment(this.paymentId);
@@ -3366,7 +3347,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
   data() {
     return {
-      paymentClass: _classes_Payment__WEBPACK_IMPORTED_MODULE_3__["default"],
+      paymentClass: _classes_Payment__WEBPACK_IMPORTED_MODULE_2__["default"],
       payment: {},
       paymentIsReady: false,
       paymentBeingEdited: null
@@ -3397,10 +3378,10 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
 
     async destroyPayment() {
-      const canDelete = await _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_2__["default"].confirmDelete('payment');
+      const canDelete = await _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].confirmDelete('payment');
       if (canDelete === false) return;
       const response = await this.paymentClass.destroy(this.paymentId);
-      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_2__["default"].fire('Deleted!', `The payment has been deleted.`, 'success');
+      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Deleted!', `The payment has been deleted.`, 'success');
       router.go(-1);
     },
 
@@ -3418,19 +3399,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       } = await this.paymentClass.update(this.payment.id, this.paymentBeingEdited);
       this.paymentBeingEdited = null;
       this.payment = _objectSpread({}, payment);
-      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_2__["default"].fire('Updated!', `The payment has been updated.`, 'success');
+      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Updated!', `The payment has been updated.`, 'success');
     },
 
     cancelEditPayment(event, paymentId) {
       this.paymentBeingEdited = null;
-    },
-
-    formatDate(options, value) {
-      return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__["default"])(options, value);
-    },
-
-    getIcon(icon) {
-      return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__["default"])(icon);
     }
 
   }
@@ -4022,7 +3995,7 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _components_shared_Select__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @components/shared/Select */ "./resources/js/components/shared/Select.vue");
-/* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
+/* harmony import */ var _mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @mixins/UiCommonMethods */ "./resources/js/mixins/UiCommonMethods.vue");
 //
 //
 //
@@ -4087,6 +4060,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     'custom-select': _components_shared_Select__WEBPACK_IMPORTED_MODULE_0__["default"]
   },
+  mixins: [_mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_1__["default"]],
   computed: {
     getPaginationSegment() {
       const first = this.itemsPerPage * (this.currentPage - 1) + 1;
@@ -4110,7 +4084,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getIcon(icon) {
-      return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_1__["default"])(icon);
+      return _getIcon(icon);
     },
 
     handleInput(event) {
@@ -4271,7 +4245,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
+/* harmony import */ var _mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UiCommonMethods */ "./resources/js/mixins/UiCommonMethods.vue");
 /* harmony import */ var dropzone__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! dropzone */ "./node_modules/dropzone/dist/dropzone.js");
 /* harmony import */ var dropzone__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(dropzone__WEBPACK_IMPORTED_MODULE_1__);
 /* harmony import */ var _components_shared_CardItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @components/shared/CardItem */ "./resources/js/components/shared/CardItem.vue");
@@ -4343,6 +4317,7 @@ __webpack_require__.r(__webpack_exports__);
   components: {
     'card-item': _components_shared_CardItem__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
+  mixins: [_mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_0__["default"]],
   computed: {
     getToken() {
       const token = document.head.querySelector('meta[name="csrf-token"]');
@@ -4355,10 +4330,6 @@ __webpack_require__.r(__webpack_exports__);
 
   },
   methods: {
-    getIcon(icon) {
-      return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__["default"])(icon);
-    },
-
     init() {
       const VM = this;
       const cardTemplate = document.querySelector('#dropzone-card-template').innerHTML;
@@ -4442,10 +4413,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
-/* harmony import */ var _helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @helpers/formatDate */ "./resources/js/helpers/formatDate.js");
-/* harmony import */ var _components_shared_CardItem__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @components/shared/CardItem */ "./resources/js/components/shared/CardItem.vue");
-/* harmony import */ var _components_shared_Modal__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @components/shared/Modal */ "./resources/js/components/shared/Modal.vue");
+/* harmony import */ var _mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UiCommonMethods */ "./resources/js/mixins/UiCommonMethods.vue");
+/* harmony import */ var _components_shared_CardItem__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/shared/CardItem */ "./resources/js/components/shared/CardItem.vue");
+/* harmony import */ var _components_shared_Modal__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @components/shared/Modal */ "./resources/js/components/shared/Modal.vue");
 //
 //
 //
@@ -4495,7 +4465,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
 
 
 
@@ -4520,9 +4489,10 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   components: {
-    'modal': _components_shared_Modal__WEBPACK_IMPORTED_MODULE_3__["default"],
-    'card-item': _components_shared_CardItem__WEBPACK_IMPORTED_MODULE_2__["default"]
+    'modal': _components_shared_Modal__WEBPACK_IMPORTED_MODULE_2__["default"],
+    'card-item': _components_shared_CardItem__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
+  mixins: [_mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_0__["default"]],
 
   data() {
     return {
@@ -4556,14 +4526,6 @@ __webpack_require__.r(__webpack_exports__);
 
     getDownloadUrl(upload) {
       return this.uploadClass.getDownloadUrl(upload.id);
-    },
-
-    formatDate(options, value) {
-      return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__["default"])(options, value);
-    },
-
-    getIcon(icon) {
-      return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__["default"])(icon);
     }
 
   }
@@ -4676,6 +4638,34 @@ const MODELS = ['invoice', 'customer', 'payment'];
 
     handleUpload(upload) {
       this.existingUploads.push(upload);
+    }
+
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/mixins/UiCommonMethods.vue?vue&type=script&lang=js&":
+/*!**********************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/mixins/UiCommonMethods.vue?vue&type=script&lang=js& ***!
+  \**********************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/getIcon */ "./resources/js/helpers/getIcon.js");
+/* harmony import */ var _helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @helpers/formatDate */ "./resources/js/helpers/formatDate.js");
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  methods: {
+    formatDate(options, value) {
+      return Object(_helpers_formatDate__WEBPACK_IMPORTED_MODULE_1__["default"])(options, value);
+    },
+
+    getIcon(icon) {
+      return Object(_helpers_getIcon__WEBPACK_IMPORTED_MODULE_0__["default"])(icon);
     }
 
   }
@@ -43272,6 +43262,56 @@ __webpack_require__.r(__webpack_exports__);
 
   return isValid;
 });
+
+/***/ }),
+
+/***/ "./resources/js/mixins/UiCommonMethods.vue":
+/*!*************************************************!*\
+  !*** ./resources/js/mixins/UiCommonMethods.vue ***!
+  \*************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _UiCommonMethods_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./UiCommonMethods.vue?vue&type=script&lang=js& */ "./resources/js/mixins/UiCommonMethods.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+var render, staticRenderFns
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_1__["default"])(
+  _UiCommonMethods_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"],
+  render,
+  staticRenderFns,
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/js/mixins/UiCommonMethods.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/js/mixins/UiCommonMethods.vue?vue&type=script&lang=js&":
+/*!**************************************************************************!*\
+  !*** ./resources/js/mixins/UiCommonMethods.vue?vue&type=script&lang=js& ***!
+  \**************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UiCommonMethods_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./UiCommonMethods.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/mixins/UiCommonMethods.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_UiCommonMethods_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 

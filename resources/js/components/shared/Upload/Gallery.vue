@@ -48,8 +48,7 @@
 </template>
 
 <script>
-    import _getIcon from '@helpers/getIcon'
-    import _formatDate from '@helpers/formatDate'
+    import UiCommonMethods from '@mixins/UiCommonMethods'
     import CardItem from '@components/shared/CardItem'
     import Modal from '@components/shared/Modal'
 
@@ -79,6 +78,8 @@
             'modal': Modal,
             'card-item': CardItem
         },
+
+        mixins: [ UiCommonMethods ],
         
         data(){
             return {
@@ -108,13 +109,6 @@
             },
             getDownloadUrl(upload){
                 return this.uploadClass.getDownloadUrl(upload.id);
-            },
-
-            formatDate(options, value) {
-                return _formatDate(options, value)
-            },
-            getIcon(icon) {
-                return _getIcon(icon);
             },
         }
 

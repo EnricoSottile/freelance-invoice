@@ -43,8 +43,7 @@
 </template>
 
 <script>
-    import _getIcon from '@helpers/getIcon'
-
+    import UiCommonMethods from '@mixins/UiCommonMethods'
     import Dropzone from 'dropzone'
     import CardItem from '@components/shared/CardItem'
 
@@ -74,6 +73,8 @@
             'card-item': CardItem
         },
 
+        mixins: [ UiCommonMethods ],
+
         computed: {
             getToken(){
                 const token = document.head.querySelector('meta[name="csrf-token"]');
@@ -85,9 +86,6 @@
         },
 
         methods: {
-            getIcon(icon) {
-                return _getIcon(icon);
-            },
             init(){
                 const VM = this;
                 const cardTemplate = document.querySelector('#dropzone-card-template').innerHTML;

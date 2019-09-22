@@ -79,10 +79,7 @@
 
 <script>
     import SweetAlert from '@classes/SweetAlert'
-
-    import _getIcon from '@helpers/getIcon'
-    import _formatDate from '@helpers/formatDate'
-
+    import UiCommonMethods from '@mixins/UiCommonMethods'
     import Invoice from '@classes/Invoice'
     import InvoiceForm from '@components/invoice/shared/InvoiceForm'
     import PaymentIndex from '@components/payment/Index/PaymentIndex'
@@ -96,6 +93,8 @@
                 type: [String, Number]
             },
         },
+
+        mixins: [ UiCommonMethods ],
 
         components: {
             'payment-index': PaymentIndex,
@@ -125,7 +124,6 @@
                 invoiceIsReady: false,
                 paymentsAreReady: false,
                 invoiceBeingEdited: null,
-
             }
         },
 
@@ -173,13 +171,6 @@
             cancelEditInvoice(event, invoiceId) {
                 this.invoiceBeingEdited = null;
             },
-
-            formatDate(options, value) {
-                return _formatDate(options, value)
-            },
-            getIcon(icon) {
-                return _getIcon(icon);
-            }
         },
 
 

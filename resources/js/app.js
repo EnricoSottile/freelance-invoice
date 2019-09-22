@@ -14,4 +14,6 @@ const app = new Vue({
         'nav-bar': Navbar,
     },
 
+
+
 });

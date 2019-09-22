@@ -40,7 +40,7 @@
 
 <script>
 import Select from '@components/shared/Select'
-import _getIcon from '@helpers/getIcon'
+import UiCommonMethods from '@mixins/UiCommonMethods'
 
 export default {
     
@@ -69,6 +69,8 @@ export default {
         'custom-select': Select,
     },
 
+    mixins: [ UiCommonMethods ],
+
     computed: {
         getPaginationSegment(){
             const first = (this.itemsPerPage * (this.currentPage-1)) +1;
@@ -90,9 +92,7 @@ export default {
     },
 
     methods: {
-        getIcon(icon) {
-            return _getIcon(icon);
-        },
+
         handleInput(event){
             this.$emit('input', event); // this enables v-model on parent
             this.setPage('first');
