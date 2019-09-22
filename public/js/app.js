@@ -40871,28 +40871,33 @@ if (token) {
 
 
 window.axios.interceptors.response.use(response => response, error => {
-  if (error.response && error.response.status) {
-    if (error.response.status === 404) {
-      // missing resource
-      if (error.response && error.response.data && error.response.data.message) {
-        _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Are you lost?', error.response.data.message, 'error'); // alert(error.response.data.message);
-      }
+  if (error.response.status) {
+    switch (error.response.status) {
+      case 500:
+        _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Unexpected problem', 'Something did not work', 'error');
+        break;
 
-      router.push('/home');
-    } else if (error.response.status === 403) {
-      // error in deleting/editing
-      if (error.response && error.response.data && error.response.data.message) {
-        _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('You can\'t do that!', error.response.data.message, 'error');
-      }
-    } else if (error.response.status === 422) {
-      // validation error            
-      if (error.response && error.response.data && error.response.data.errors) {
+      case 422:
         const errors = error.response.data.errors;
         const values = Object.values(errors);
         _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Thou shall not pass', values.join("\n"), 'error');
-      }
-    } else {
-      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Unknown error', 'Something did not work as expected', 'error');
+        break;
+
+      case 419:
+        _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Try to reload the page', error.response.data.message, 'error');
+        break;
+
+      case 404:
+        _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Are you lost?', error.response.data.message, 'error');
+        break;
+
+      case 403:
+        _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('You can\'t do that!', error.response.data.message, 'error');
+        break;
+
+      default:
+        _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Unknown error', 'An unhandled error just happened', 'error');
+        break;
     }
   }
 

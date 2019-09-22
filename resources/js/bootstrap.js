@@ -19,33 +19,30 @@ if (token) {
 // TODO: better handling of errors
 window.axios.interceptors.response.use( response => response,  error => {
 
-    if (error.response && error.response.status) {
+    if (error.response.status) {
 
-        if (error.response.status === 404) {
-            // missing resource
-            if (error.response && error.response.data && error.response.data.message) {
-                SweetAlert.fire('Are you lost?', error.response.data.message, 'error');
-                // alert(error.response.data.message);
-            }
-            router.push('/home')
-        } else if (error.response.status === 403) {
-            // error in deleting/editing
-            if (error.response && error.response.data && error.response.data.message) {
-                SweetAlert.fire('You can\'t do that!', error.response.data.message, 'error');
-            }
-        } else if (error.response.status === 422) {
-            // validation error            
-            if (error.response && error.response.data && error.response.data.errors) {
+        switch(error.response.status) {
+            case 500:
+                SweetAlert.fire('Unexpected problem', 'Something did not work', 'error');
+                break;
+            case 422: 
                 const errors = error.response.data.errors;
                 const values = Object.values(errors);
-
                 SweetAlert.fire('Thou shall not pass', values.join("\n"), 'error');
-            }
-        } else {
-            SweetAlert.fire('Unknown error', 'Something did not work as expected', 'error');
+                break;
+            case 419:
+                SweetAlert.fire('Try to reload the page', error.response.data.message, 'error');
+                break;
+            case 404:
+                SweetAlert.fire('Are you lost?', error.response.data.message, 'error');
+                break;
+            case 403:
+                SweetAlert.fire('You can\'t do that!', error.response.data.message, 'error');
+                break;
+            default:
+                SweetAlert.fire('Unknown error', 'An unhandled error just happened', 'error');
+                break;
         }
-
-
 
     }
 
