@@ -6,6 +6,11 @@
         id: {{ trashedId }} <br/>
 
 
+        <pre>
+            {{ trashed }}
+        </pre>
+
+
         <button @click="restore">restore</button>
         <button @click="destroy">delete forever</button>
         
@@ -31,7 +36,30 @@
         },
 
 
+        created(){
+            this.getTrashedItem(this.resource, this.trashedId);
+        },
+
+        beforeRouteUpdate (to, from, next) {
+            const resource = to.params.resource
+            const trashedId = to.params.trashedId;
+            this.getTrashedItem(resource, trashedId);
+            next();
+        },
+
+        data(){
+            return {
+                trashed: '',
+            }
+        },
+
+
         methods: {
+            async getTrashedItem(resource, trashedId){
+                const { data } = await Trash.show(resource, trashedId);
+                this.trashed = data;
+                this.trashedIsReady = true;
+            },
             async restore(){
                 const canRestore = await SweetAlert.confirmRestore(this.resource);
                 if (canRestore === false) return;
@@ -48,7 +76,7 @@
                 if (canDelete === false) return;
 
                 const response = await Trash.destroy(this.resource, this.trashedId)
-                SweetAlert.fire('Deleted!', `The invoice has been deleted.`, 'success');
+                SweetAlert.fire('Deleted!', `The ${this.resource} has been deleted.`, 'success');
                 router.go(-1)
             }
         }

@@ -12,6 +12,18 @@ use App\Http\Traits\DestroyAndRestore;
 
 class PaymentTrashController extends Controller
 {
+
+    /**
+     * Show the trashed resource
+     *
+     * @param  int  $id
+     * @return Payment
+     */
+    public function show($id){
+        $payment = Auth::user()->payments()->onlyTrashed()->findOrFail($id);
+        return $payment->toJson();
+    }
+
     
     /**
      * StoresUploads

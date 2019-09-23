@@ -12,6 +12,17 @@ use App\Http\Traits\DestroyAndRestore;
 
 class CustomerTrashController extends Controller
 {
+
+    /**
+     * Show the trashed resource
+     *
+     * @param  int  $id
+     * @return Customer
+     */
+    public function show($id){
+        $customer = Auth::user()->customers()->onlyTrashed()->findOrFail($id);
+        return $customer->toJson();
+    }
     
     /**
      * StoresUploads

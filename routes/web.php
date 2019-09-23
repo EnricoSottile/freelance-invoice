@@ -46,10 +46,13 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
                         ->name('customer.upload.destroy');
 
                 // CUSTOMER TRASH
-                Route::get('customer/{customer}/restore', 'Customer\CustomerTrashController@restore')
-                ->name('customer.trash.restore');
+                Route::get('customer/{customer}/trashed', 'Customer\CustomerTrashController@show')
+                        ->name('customer.trash.show');
+
+                Route::get('customer/{customer}/trashed/restore', 'Customer\CustomerTrashController@restore')
+                        ->name('customer.trash.restore');
         
-                Route::delete('customer/{customer}/destroy', 'Customer\CustomerTrashController@destroy')
+                Route::delete('customer/{customer}/trashed/destroy', 'Customer\CustomerTrashController@destroy')
                         ->name('customer.trash.destroy');
 
 
@@ -73,10 +76,13 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
                         ->name('invoice.payment.index');
 
                 // INVOICE TRASH
-                Route::get('invoice/{invoice}/restore', 'Invoice\InvoiceTrashController@restore')
+                Route::get('invoice/{invoice}/trashed', 'Invoice\InvoiceTrashController@show')
+                        ->name('invoice.trash.show');
+
+                Route::get('invoice/{invoice}/trashed/restore', 'Invoice\InvoiceTrashController@restore')
                         ->name('invoice.trash.restore');
         
-                Route::delete('invoice/{invoice}/destroy', 'Invoice\InvoiceTrashController@destroy')
+                Route::delete('invoice/{invoice}/trashed/destroy', 'Invoice\InvoiceTrashController@destroy')
                         ->name('invoice.trash.destroy');
 
 
@@ -96,10 +102,13 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
                         ->name('payment.upload.destroy');
 
                 // PAYMENT TRASH
-                Route::get('payment/{payment}/restore', 'Payment\PaymentTrashController@restore')
+                Route::get('payment/{payment}/trashed', 'Payment\PaymentTrashController@show')
+                        ->name('payment.trash.show');
+
+                Route::get('payment/{payment}/trashed/restore', 'Payment\PaymentTrashController@restore')
                         ->name('payment.trash.restore');
                 
-                Route::delete('payment/{payment}/destroy', 'Payment\PaymentTrashController@destroy')
+                Route::delete('payment/{payment}/trashed/destroy', 'Payment\PaymentTrashController@destroy')
                         ->name('payment.trash.destroy');
 
 
@@ -114,9 +123,6 @@ Route::prefix('app')->middleware(['web', 'auth'])->group(function () {
         // TRASH
         Route::get('trash', 'TrashController@index')
                 ->name('trash.index');
-
-        Route::get('trash/{resource}/{id}', 'TrashController@show')
-                ->name('trash.show');
 
 });
 

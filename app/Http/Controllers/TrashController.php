@@ -26,17 +26,4 @@ class TrashController extends Controller
     }
 
 
-    /**
-     * Show the resource
-     *
-     * @param  String  $resource
-     * @param  int  $id
-     * @return Invoice|Customer|Payment
-     */
-    public function show($resource, $id)
-    {
-        $trashed = $this->getRelation($resource)->findOrFail($id);
-        return $trashed->toJson();
-    }
-
 }

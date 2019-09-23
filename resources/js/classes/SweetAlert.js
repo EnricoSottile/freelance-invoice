@@ -26,7 +26,8 @@ class SweetAlert {
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, restore it!',
-            cancelButtonText: 'Nevermind'
+            cancelButtonText: 'Nevermind',
+            allowEscapeKey : false,
         };
 
         config = Object.assign({}, defaults, config);
@@ -53,7 +54,8 @@ class SweetAlert {
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
-            cancelButtonText: 'No, keep it'
+            cancelButtonText: 'No, keep it',
+            allowEscapeKey : false,
         };
 
         config = Object.assign({}, defaults, config);

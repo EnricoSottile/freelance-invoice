@@ -12,6 +12,17 @@ use App\Http\Traits\DestroyAndRestore;
 
 class InvoiceTrashController extends Controller
 {
+
+    /**
+     * Show the trashed resource
+     *
+     * @param  int  $id
+     * @return Invoice
+     */
+    public function show($id){
+        $invoice = Auth::user()->invoices()->onlyTrashed()->findOrFail($id);
+        return $invoice->toJson();
+    }
     
     /**
      * StoresUploads

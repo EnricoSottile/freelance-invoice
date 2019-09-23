@@ -4673,7 +4673,10 @@ const MODELS = ['invoice', 'customer', 'payment'];
     },
 
     async destroyUpload(uploadId) {
-      const canDelete = await _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].confirmDelete('file');
+      const canDelete = await _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].confirmDelete('file', {
+        text: `This file will be permanentyle deleted and will not be recoverable.`,
+        confirmButtonText: 'Yes, delete it forever'
+      });
       if (canDelete === false) return;
       const response = await this.uploadClass.destroy(uploadId);
       _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Deleted!', `The payment has been deleted.`, 'success');
@@ -4817,6 +4820,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -4830,7 +4838,33 @@ __webpack_require__.r(__webpack_exports__);
       type: [String, Number]
     }
   },
+
+  created() {
+    this.getTrashedItem(this.resource, this.trashedId);
+  },
+
+  beforeRouteUpdate(to, from, next) {
+    const resource = to.params.resource;
+    const trashedId = to.params.trashedId;
+    this.getTrashedItem(resource, trashedId);
+    next();
+  },
+
+  data() {
+    return {
+      trashed: ''
+    };
+  },
+
   methods: {
+    async getTrashedItem(resource, trashedId) {
+      const {
+        data
+      } = await _classes_Trash__WEBPACK_IMPORTED_MODULE_1__["default"].show(resource, trashedId);
+      this.trashed = data;
+      this.trashedIsReady = true;
+    },
+
     async restore() {
       const canRestore = await _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].confirmRestore(this.resource);
       if (canRestore === false) return;
@@ -4846,7 +4880,7 @@ __webpack_require__.r(__webpack_exports__);
       });
       if (canDelete === false) return;
       const response = await _classes_Trash__WEBPACK_IMPORTED_MODULE_1__["default"].destroy(this.resource, this.trashedId);
-      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Deleted!', `The invoice has been deleted.`, 'success');
+      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Deleted!', `The ${this.resource} has been deleted.`, 'success');
       router.go(-1);
     }
 
@@ -26124,6 +26158,8 @@ var render = function() {
     _vm._v("\n    id: " + _vm._s(_vm.trashedId) + " "),
     _c("br"),
     _vm._v(" "),
+    _c("pre", [_vm._v("        " + _vm._s(_vm.trashed) + "\n    ")]),
+    _vm._v(" "),
     _c("button", { on: { click: _vm.restore } }, [_vm._v("restore")]),
     _vm._v(" "),
     _c("button", { on: { click: _vm.destroy } }, [_vm._v("delete forever")])
@@ -41449,7 +41485,8 @@ class SweetAlert {
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, restore it!',
-      cancelButtonText: 'Nevermind'
+      cancelButtonText: 'Nevermind',
+      allowEscapeKey: false
     };
     config = Object.assign({}, defaults, config);
     const result = await sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire(config);
@@ -41473,7 +41510,8 @@ class SweetAlert {
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'No, keep it'
+      cancelButtonText: 'No, keep it',
+      allowEscapeKey: false
     };
     config = Object.assign({}, defaults, config);
     const result = await sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire(config);
@@ -41505,12 +41543,16 @@ class Trash {
     return axios.get('app/trash');
   }
 
+  static show(resource, id) {
+    return axios.get(`app/${resource}/${id}/trashed`);
+  }
+
   static restore(resource, id) {
-    return axios.get(`app/${resource}/${id}/restore`);
+    return axios.get(`app/${resource}/${id}/trashed/restore`);
   }
 
   static destroy(resource, id) {
-    return axios.delete(`app/${resource}/${id}/destroy`);
+    return axios.delete(`app/${resource}/${id}/trashed/destroy`);
   }
 
 }

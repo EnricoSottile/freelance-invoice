@@ -83,7 +83,10 @@
                 this.galleryIsReady = true;
             },
             async destroyUpload(uploadId){
-                const canDelete = await SweetAlert.confirmDelete('file');
+                const canDelete = await SweetAlert.confirmDelete('file', {
+                    text: `This file will be permanentyle deleted and will not be recoverable.`,
+                    confirmButtonText: 'Yes, delete it forever'
+                });
                 if (canDelete === false) return;
                 
                 const response = await this.uploadClass.destroy(uploadId);
