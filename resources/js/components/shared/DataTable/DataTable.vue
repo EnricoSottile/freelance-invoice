@@ -148,10 +148,10 @@
             getData(){
                 // if search input is empty, 
                 // 'this.searchResults' is always 'null'
-                const data = this.searchResults || this.collection;
+                let data = this.searchResults || this.collection;
                 const orderedData = this._orderData(data);
                 
-                // sort and 'search', then paginate
+                //  'search' and sort, then paginate
                 return this.paginate(orderedData);                
             },
 
@@ -174,6 +174,7 @@
                 
                 if (param === 'first') this.currentPage = 1;
             },
+
 
             /**
              *  helper function, returns ordered data

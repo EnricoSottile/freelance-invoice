@@ -1,3 +1,4 @@
+import _moneyFormat from '@helpers/moneyFormat'
 
 /**
  * Fields used to build the datatable
@@ -23,19 +24,11 @@ export default [
     },
     {
         name: 'type', 
-        label: 'type',
-        display: (data) => {
-            return data.full_name ? 
-                'customer' : data.number ? 
-                    'invoice' : 'payment';
-        },
+        label: 'type'
     },
     {
-        name: 'name', 
+        name: 'identifier', 
         label: 'identifier',
-        display: (data) => {
-            return data.full_name || data.number || '';
-        },
     },
     {
         name: 'deleted_at', 

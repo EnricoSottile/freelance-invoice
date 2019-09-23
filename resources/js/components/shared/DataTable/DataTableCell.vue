@@ -4,15 +4,15 @@
         <template v-if="field.link ">
             <router-link 
                 :to="getLinkOptions(field.link, data)">
-                {{ getContent(data, field) }}
+                {{ formatContent(data, field) }}
             </router-link>
         </template>
 
         <template v-else-if="field.date ">
-            {{ formatDate(field.date, getContent(data, field))}}
+            {{ formatDate(field.date, formatContent(data, field))}}
         </template>
 
-        <template v-else>{{ getContent(data, field) }}</template>
+        <template v-else>{{ formatContent(data, field) }}</template>
 
     </div>
 </template>
@@ -20,7 +20,6 @@
 <script>
 import _formatDate from '@helpers/formatDate'
 import _moneyFormat from '@helpers/moneyFormat'
-import { isFunction, isObject, isArray } from 'util'
 
 export default {
     
@@ -51,7 +50,7 @@ export default {
          * @param {Object} data
          */ 
         buildLinkParamsObject(link, data){
-            if (!isFunction(link.params)) {
+            if (typeof(link.params) !== 'function') {
                 return {[link.params.name] : data[link.params.property]};
             }
 
@@ -77,17 +76,9 @@ export default {
             return _formatDate(options, value)
         },
 
-        getContent(data, field) {
-            let content;
-            if (isFunction(field.display)) {
-                content = field.display(data);
-            } else {
-                const key = field.name;
-                content = data[key];
-            }
-
-
-            if (!content) return content;
+        formatContent(data, field) {
+            let content = data[field.name];
+            if (!content) return '';
 
             if (content.length > 25) {
                 content = content.substr(0, 25) + "...";
