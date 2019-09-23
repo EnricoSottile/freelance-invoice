@@ -18,6 +18,7 @@ import TrashShow from './components/trash/TrashShow'
 
 const routes = [
 
+    { path: '/', name: 'dashboard' },
 
     // CUSTOMER
     { path: '/customer', name: 'customer.index', component: CustomerIndex },

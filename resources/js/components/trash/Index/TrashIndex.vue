@@ -3,7 +3,7 @@
 
 
         <div class="flex mt-10 justify-between">
-            <h1 class="font-light text-2xl">trash</h1>
+            <h1 class="font-light text-2xl">Trash</h1>
 
 
         </div>

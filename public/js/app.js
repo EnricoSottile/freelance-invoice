@@ -3998,6 +3998,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @mixins/UiCommonMethods */ "./resources/js/mixins/UiCommonMethods.vue");
 //
 //
 //
@@ -4024,7 +4025,29 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-/* harmony default export */ __webpack_exports__["default"] = ({});
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  mixins: [_mixins_UiCommonMethods__WEBPACK_IMPORTED_MODULE_0__["default"]]
+});
 
 /***/ }),
 
@@ -4948,7 +4971,7 @@ exports = module.exports = __webpack_require__(/*! ../../../../node_modules/css-
 
 
 // module
-exports.push([module.i, ".nav {\n  background-color: #fff;\n  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n}\n.nav-a {\n  padding: 1.5rem;\n  font-weight: 300;\n  color: #4a5568;\n  transition: all .2s linear;\n}\n.router-link-active,\n.router-link-active:hover {\n  text-decoration: none;\n  border-bottom-width: 2px;\n  border-color: #38b2ac;\n  color: #38b2ac;\n  cursor:default;\n  transition: all .2s linear;\n}\n.nav-a:hover:not(.router-link-active) {\n  text-decoration: none;\n  background-color: #f7fafc;\n  border-bottom-width: 2px;\n  border-color: #f7fafc;\n  color: #38b2ac;\n  cursor:pointer;\n  transition: all .2s linear;\n}\n\n\n", ""]);
+exports.push([module.i, ".nav {\n  background-color: #fff;\n  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n}\n.nav-a,\n.nav-a-exact {\n  padding: 1.5rem;\n  font-weight: 300;\n  color: #4a5568;\n  border-bottom-width: 2px;\n  border-color: transparent;\n  transition: all .2s linear;\n}\n.nav-a.router-link-active,\n.nav-a.router-link-active:hover {\n  text-decoration: none;\n  border-bottom-width: 2px;\n  border-color: #38b2ac;\n  color: #38b2ac;\n  cursor:default;\n  transition: all .2s linear;\n}\n.nav-a-exact.router-link-exact-active,\n.nav-a-exact.router-link-exact-active:hover {\n  text-decoration: none;\n  border-bottom-width: 2px;\n  border-color: #38b2ac;\n  color: #38b2ac;\n  cursor:default;\n  transition: all .2s linear;\n}\n.nav-a-exact:hover:not(.router-link-active),\n.nav-a:hover:not(.router-link-active) {\n  text-decoration: none;\n  background-color: #f7fafc;\n  border-bottom-width: 2px;\n  border-color: #f7fafc;\n  color: #38b2ac;\n  cursor:pointer;\n  transition: all .2s linear;\n}\n.dropdown-parent > span {\n  padding: 1.5rem;\n  font-weight: 300;\n  color: #4a5568;\n  border-bottom-width: 2px;\n  border-color: transparent;\n}\n.dropdown-parent {\n  display: flex;\n  position: relative;\n}\n.dropdown-parent:hover .dropdown-menu {\n  display:block;\n}\n.dropdown-menu {\n  position: absolute;\n  top:100%;\n  right: 0;\n  margin-top: -2px; /* align border-top with others */\n  background-color:white;\n  min-width:100%;\n  width: 300px;\n  display:none;\n  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);\n  border-top-width: 2px;\n  border-color: #38b2ac;\n}\n.dropdown-menu li {\n  display: block;\n  margin-top: 0.5rem;\n  margin-bottom: 0.5rem;\n}\n.dropdown-menu li a {\n  position: relative;\n  display: block;\n  padding-left: 1.5rem;\n  padding-right: 1.5rem;\n  padding-top: 1rem;\n  padding-bottom: 1rem;\n  font-weight: 300;\n  color: #4a5568;\n}\n.dropdown-menu li a.router-link-exact-active {\n  color: #38b2ac;\n}\n.dropdown-menu li a:hover {\n  text-decoration: none;\n  background-color: #f7fafc;\n  color: #38b2ac;\n}\n\n", ""]);
 
 // exports
 
@@ -25418,8 +25441,24 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", [
-    _c("nav", { staticClass: "nav" }, [
+    _c("nav", { staticClass: "nav px-2" }, [
       _c("ul", { staticClass: "flex" }, [
+        _c(
+          "li",
+          { staticClass: "flex" },
+          [
+            _c(
+              "router-link",
+              {
+                staticClass: "nav-a-exact",
+                attrs: { to: { name: "dashboard" } }
+              },
+              [_vm._v("\n                    Home\n                ")]
+            )
+          ],
+          1
+        ),
+        _vm._v(" "),
         _c(
           "li",
           { staticClass: "flex" },
@@ -25466,7 +25505,31 @@ var render = function() {
             )
           ],
           1
-        )
+        ),
+        _vm._v(" "),
+        _c("li", { staticClass: "flex dropdown-parent ml-auto" }, [
+          _c("span", [
+            _vm._v("\n                    submenu\n                ")
+          ]),
+          _vm._v(" "),
+          _c("ul", { staticClass: "dropdown-menu" }, [
+            _c(
+              "li",
+              [
+                _c("router-link", { attrs: { to: { name: "trash.index" } } }, [
+                  _vm._v(
+                    "\n                            Trash\n                            "
+                  ),
+                  _c("span", {
+                    staticClass: "absolute right-0 mr-4 text-xs",
+                    domProps: { innerHTML: _vm._s(_vm.getIcon("trash-2")) }
+                  })
+                ])
+              ],
+              1
+            )
+          ])
+        ])
       ])
     ])
   ])
@@ -26125,7 +26188,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "flex mt-10 justify-between" }, [
-      _c("h1", { staticClass: "font-light text-2xl" }, [_vm._v("trash")])
+      _c("h1", { staticClass: "font-light text-2xl" }, [_vm._v("Trash")])
     ])
   }
 ]
@@ -43965,7 +44028,10 @@ Vue.use(vue_router__WEBPACK_IMPORTED_MODULE_0__["default"]);
 
 
 
-const routes = [// CUSTOMER
+const routes = [{
+  path: '/',
+  name: 'dashboard'
+}, // CUSTOMER
 {
   path: '/customer',
   name: 'customer.index',
