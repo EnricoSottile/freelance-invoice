@@ -4698,8 +4698,9 @@ const MODELS = ['invoice', 'customer', 'payment'];
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @components/shared/DataTable/DataTable */ "./resources/js/components/shared/DataTable/DataTable.vue");
-/* harmony import */ var _DataTableFields__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DataTableFields */ "./resources/js/components/trash/Index/DataTableFields.js");
+/* harmony import */ var _helpers_moneyFormat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/moneyFormat */ "./resources/js/helpers/moneyFormat.js");
+/* harmony import */ var _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/shared/DataTable/DataTable */ "./resources/js/components/shared/DataTable/DataTable.vue");
+/* harmony import */ var _DataTableFields__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DataTableFields */ "./resources/js/components/trash/Index/DataTableFields.js");
 //
 //
 //
@@ -4720,12 +4721,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-// import Customer from '@classes/Customer'
+ // import Customer from '@classes/Customer'
+
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'data-table': _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_0__["default"]
+    'data-table': _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
 
   created() {
@@ -4742,7 +4744,7 @@ __webpack_require__.r(__webpack_exports__);
       // customerClass: Customer,
       trashed: [],
       trashedAreReady: false,
-      fields: _DataTableFields__WEBPACK_IMPORTED_MODULE_1__["default"]
+      fields: _DataTableFields__WEBPACK_IMPORTED_MODULE_2__["default"]
     };
   },
 
@@ -4751,7 +4753,17 @@ __webpack_require__.r(__webpack_exports__);
       const {
         data
       } = await axios.get('app/trash/index');
-      this.trashed = data;
+      const preparedData = data.map(item => {
+        const type = item.full_name ? 'customer' : item.number ? 'invoice' : 'payment';
+        const identifier = item.full_name ? item.full_name : item.numer ? item.number : Object(_helpers_moneyFormat__WEBPACK_IMPORTED_MODULE_0__["default"])(item.net_amount, {});
+        return {
+          id: item.id,
+          type,
+          identifier,
+          deleted_at: item.deleted_at
+        };
+      });
+      this.trashed = preparedData;
       this.trashedAreReady = true;
     }
 
@@ -43430,14 +43442,11 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _helpers_moneyFormat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/moneyFormat */ "./resources/js/helpers/moneyFormat.js");
-
 /**
  * Fields used to build the datatable
  * 
  * 
  */
-
 /* harmony default export */ __webpack_exports__["default"] = ([{
   name: 'id',
   label: 'Id',

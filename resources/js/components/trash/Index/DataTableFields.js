@@ -1,4 +1,4 @@
-import _moneyFormat from '@helpers/moneyFormat'
+
 
 /**
  * Fields used to build the datatable

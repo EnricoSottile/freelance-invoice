@@ -19,6 +19,8 @@
 </template>
 
 <script>
+    import _moneyFormat from '@helpers/moneyFormat'
+    
     // import Customer from '@classes/Customer'
     import DataTable from '@components/shared/DataTable/DataTable'
     import DataTableFields from './DataTableFields'
@@ -30,6 +32,7 @@
         components: {
             'data-table': DataTable,
         },
+
         
         created(){
             this.getTrashed();
@@ -57,7 +60,24 @@
             async getTrashed(){
                 const { data } = await axios.get('app/trash/index');
 
-                this.trashed = data;
+                const preparedData = data.map(item => {
+                    const type = item.full_name ? 
+                        'customer' : item.number ?
+                            'invoice' : 'payment';
+
+                    const identifier = item.full_name ?
+                        item.full_name : item.numer ?
+                            item.number : _moneyFormat(item.net_amount, {});
+
+                    return {
+                        id: item.id,
+                        type,
+                        identifier,
+                        deleted_at: item.deleted_at
+                    }
+                });
+
+                this.trashed = preparedData;
                 this.trashedAreReady = true;
             }
         },
