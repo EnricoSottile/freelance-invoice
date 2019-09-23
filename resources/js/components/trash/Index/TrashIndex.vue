@@ -21,7 +21,7 @@
 <script>
     import _moneyFormat from '@helpers/moneyFormat'
     
-    // import Customer from '@classes/Customer'
+    import Trash from '@classes/Trash'
     import DataTable from '@components/shared/DataTable/DataTable'
     import DataTableFields from './DataTableFields'
 
@@ -58,7 +58,7 @@
 
         methods: {
             async getTrashed(){
-                const { data } = await axios.get('app/trash/index');
+                const { data } = await Trash.index();
                 const preparedData = this.prepareData( data );
                 this.trashed = preparedData;
                 this.trashedAreReady = true;
@@ -80,7 +80,7 @@
                     const items = collection.forEach(item => {
                         data.push({
                             id: item.id,
-                            type: key,
+                            type: key.substr(0, key.length-1), // customers -> customer
                             identifier: item.full_name || item.number || _moneyFormat(item.net_amount, {}),
                             deleted_at: item.deleted_at
                         });

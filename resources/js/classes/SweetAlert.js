@@ -14,20 +14,51 @@ class SweetAlert {
         Swal.fire(...args);
     }
 
+
+        /**
+     * 
+     * @param {String} resource 
+     */
+    static async confirmRestore(resource, config = null){
+        const defaults = {
+            title: 'Are you sure?',
+            text: `This ${resource} will be restored.`,
+            type: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, restore it!',
+            cancelButtonText: 'Nevermind'
+        };
+
+        config = Object.assign({}, defaults, config);
+
+        const result = await Swal.fire(config);
+
+        if (result.value) {
+            return true;
+        }
+        else if (result.dismiss === Swal.DismissReason.cancel) {
+            return false;
+        }
+    }
+
   
     /**
      * 
      * @param {String} resource 
      */
-    static async confirmDelete(resource, text = null){
-        const result = await Swal.fire({
+    static async confirmDelete(resource, config = null){
+        const defaults = {
             title: 'Are you sure?',
-            text: text || `You will not be able to recover this ${resource}!`,
+            text: `This ${resource} will be deleted.`,
             type: 'warning',
             showCancelButton: true,
             confirmButtonText: 'Yes, delete it!',
             cancelButtonText: 'No, keep it'
-        });
+        };
+
+        config = Object.assign({}, defaults, config);
+
+        const result = await Swal.fire(config);
 
         if (result.value) {
             return true;

@@ -12,11 +12,8 @@ export default [
         link: {
             view: 'trash.show',
             params: (data) => {
-                const resource = data.full_name ? 
-                                    'customer' : data.number ? 
-                                        'invoice' : 'payment';
                 return {
-                    resource,
+                    resource: data.type,
                     trashedId: data.id
                 }
             }

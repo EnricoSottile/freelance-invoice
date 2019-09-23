@@ -172,7 +172,7 @@
                 this.paymentsAreReady = true;
             },
             async destroyCustomer(){
-                const canDelete = await SweetAlert.confirmDelete('custome');
+                const canDelete = await SweetAlert.confirmDelete('customer');
                 if (canDelete === false) return;
 
                 const response = await this.customerClass.destroy(this.customerId);

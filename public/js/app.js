@@ -2134,7 +2134,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
 
     async destroyCustomer() {
-      const canDelete = await _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].confirmDelete('custome');
+      const canDelete = await _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].confirmDelete('customer');
       if (canDelete === false) return;
       const response = await this.customerClass.destroy(this.customerId);
       _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Deleted!', `The customer has been deleted.`, 'success');
@@ -4699,8 +4699,9 @@ const MODELS = ['invoice', 'customer', 'payment'];
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _helpers_moneyFormat__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @helpers/moneyFormat */ "./resources/js/helpers/moneyFormat.js");
-/* harmony import */ var _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @components/shared/DataTable/DataTable */ "./resources/js/components/shared/DataTable/DataTable.vue");
-/* harmony import */ var _DataTableFields__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./DataTableFields */ "./resources/js/components/trash/Index/DataTableFields.js");
+/* harmony import */ var _classes_Trash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @classes/Trash */ "./resources/js/classes/Trash.js");
+/* harmony import */ var _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @components/shared/DataTable/DataTable */ "./resources/js/components/shared/DataTable/DataTable.vue");
+/* harmony import */ var _DataTableFields__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./DataTableFields */ "./resources/js/components/trash/Index/DataTableFields.js");
 //
 //
 //
@@ -4721,13 +4722,13 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
- // import Customer from '@classes/Customer'
+
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {
-    'data-table': _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_1__["default"]
+    'data-table': _components_shared_DataTable_DataTable__WEBPACK_IMPORTED_MODULE_2__["default"]
   },
 
   created() {
@@ -4744,7 +4745,7 @@ __webpack_require__.r(__webpack_exports__);
       // customerClass: Customer,
       trashed: [],
       trashedAreReady: false,
-      fields: _DataTableFields__WEBPACK_IMPORTED_MODULE_2__["default"]
+      fields: _DataTableFields__WEBPACK_IMPORTED_MODULE_3__["default"]
     };
   },
 
@@ -4752,7 +4753,7 @@ __webpack_require__.r(__webpack_exports__);
     async getTrashed() {
       const {
         data
-      } = await axios.get('app/trash/index');
+      } = await _classes_Trash__WEBPACK_IMPORTED_MODULE_1__["default"].index();
       const preparedData = this.prepareData(data);
       this.trashed = preparedData;
       this.trashedAreReady = true;
@@ -4774,7 +4775,8 @@ __webpack_require__.r(__webpack_exports__);
         const items = collection.forEach(item => {
           data.push({
             id: item.id,
-            type: key,
+            type: key.substr(0, key.length - 1),
+            // customers -> customer
             identifier: item.full_name || item.number || Object(_helpers_moneyFormat__WEBPACK_IMPORTED_MODULE_0__["default"])(item.net_amount, {}),
             deleted_at: item.deleted_at
           });
@@ -4798,6 +4800,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! @classes/SweetAlert */ "./resources/js/classes/SweetAlert.js");
+/* harmony import */ var _classes_Trash__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @classes/Trash */ "./resources/js/classes/Trash.js");
 //
 //
 //
@@ -4809,6 +4813,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     resource: {
@@ -4819,6 +4829,27 @@ __webpack_require__.r(__webpack_exports__);
       required: true,
       type: [String, Number]
     }
+  },
+  methods: {
+    async restore() {
+      const canRestore = await _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].confirmRestore(this.resource);
+      if (canRestore === false) return;
+      const response = await _classes_Trash__WEBPACK_IMPORTED_MODULE_1__["default"].restore(this.resource, this.trashedId);
+      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Restored!', `The ${this.resource} has been restored.`, 'success');
+      router.go(-1);
+    },
+
+    async destroy() {
+      const canDelete = await _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].confirmDelete(this.resource, {
+        text: `This ${this.resource} will be permanently deleted and will not be recoverable`,
+        confirmButtonText: 'Yes, delete it forever'
+      });
+      if (canDelete === false) return;
+      const response = await _classes_Trash__WEBPACK_IMPORTED_MODULE_1__["default"].destroy(this.resource, this.trashedId);
+      _classes_SweetAlert__WEBPACK_IMPORTED_MODULE_0__["default"].fire('Deleted!', `The invoice has been deleted.`, 'success');
+      router.go(-1);
+    }
+
   }
 });
 
@@ -26091,7 +26122,11 @@ var render = function() {
     _vm._v("\n\n    res: " + _vm._s(_vm.resource) + " "),
     _c("br"),
     _vm._v("\n    id: " + _vm._s(_vm.trashedId) + " "),
-    _c("br")
+    _c("br"),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.restore } }, [_vm._v("restore")]),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.destroy } }, [_vm._v("delete forever")])
   ])
 }
 var staticRenderFns = []
@@ -41402,20 +41437,46 @@ class SweetAlert {
     sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire(...args);
   }
   /**
+  * 
+  * @param {String} resource 
+  */
+
+
+  static async confirmRestore(resource, config = null) {
+    const defaults = {
+      title: 'Are you sure?',
+      text: `This ${resource} will be restored.`,
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, restore it!',
+      cancelButtonText: 'Nevermind'
+    };
+    config = Object.assign({}, defaults, config);
+    const result = await sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire(config);
+
+    if (result.value) {
+      return true;
+    } else if (result.dismiss === sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.DismissReason.cancel) {
+      return false;
+    }
+  }
+  /**
    * 
    * @param {String} resource 
    */
 
 
-  static async confirmDelete(resource, text = null) {
-    const result = await sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire({
+  static async confirmDelete(resource, config = null) {
+    const defaults = {
       title: 'Are you sure?',
-      text: text || `You will not be able to recover this ${resource}!`,
+      text: `This ${resource} will be deleted.`,
       type: 'warning',
       showCancelButton: true,
       confirmButtonText: 'Yes, delete it!',
       cancelButtonText: 'No, keep it'
-    });
+    };
+    config = Object.assign({}, defaults, config);
+    const result = await sweetalert2__WEBPACK_IMPORTED_MODULE_0___default.a.fire(config);
 
     if (result.value) {
       return true;
@@ -41427,6 +41488,34 @@ class SweetAlert {
 }
 
 /* harmony default export */ __webpack_exports__["default"] = (SweetAlert);
+
+/***/ }),
+
+/***/ "./resources/js/classes/Trash.js":
+/*!***************************************!*\
+  !*** ./resources/js/classes/Trash.js ***!
+  \***************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+class Trash {
+  static index() {
+    return axios.get('app/trash');
+  }
+
+  static restore(resource, id) {
+    return axios.get(`app/${resource}/${id}/restore`);
+  }
+
+  static destroy(resource, id) {
+    return axios.delete(`app/${resource}/${id}/destroy`);
+  }
+
+}
+
+/* harmony default export */ __webpack_exports__["default"] = (Trash);
 
 /***/ }),
 
@@ -43470,9 +43559,8 @@ __webpack_require__.r(__webpack_exports__);
   link: {
     view: 'trash.show',
     params: data => {
-      const resource = data.full_name ? 'customer' : data.number ? 'invoice' : 'payment';
       return {
-        resource,
+        resource: data.type,
         trashedId: data.id
       };
     }
