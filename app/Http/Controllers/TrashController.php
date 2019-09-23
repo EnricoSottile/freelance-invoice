@@ -27,19 +27,19 @@ class TrashController extends Controller
 
 
     /**
-     * Returns all trashed items ordered by date
+     * Returns all trashed items 
      *
      * @param  String  $resource
      * @return Model
      */
     public function index(){
         $user = Auth::user();
-        $customers = $user->customers()->onlyTrashed()->get();
-        $invoices = $user->invoices()->onlyTrashed()->get();
-        $payments = $user->payments()->onlyTrashed()->get();
 
-        $combined = $customers->concat($invoices)->concat($payments)->sortByDesc('deleted_at');
-        return $combined->flatten()->toJson();
+        return response()->json([
+            'customers' => $user->customers()->onlyTrashed()->get(),
+            'invoices' => $user->invoices()->onlyTrashed()->get(),
+            'payments' => $user->payments()->onlyTrashed()->get(),
+        ]);
     }
 
 

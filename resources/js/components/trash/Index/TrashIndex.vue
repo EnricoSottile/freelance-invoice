@@ -59,26 +59,36 @@
         methods: {
             async getTrashed(){
                 const { data } = await axios.get('app/trash/index');
-
-                const preparedData = data.map(item => {
-                    const type = item.full_name ? 
-                        'customer' : item.number ?
-                            'invoice' : 'payment';
-
-                    const identifier = item.full_name ?
-                        item.full_name : item.numer ?
-                            item.number : _moneyFormat(item.net_amount, {});
-
-                    return {
-                        id: item.id,
-                        type,
-                        identifier,
-                        deleted_at: item.deleted_at
-                    }
-                });
-
+                const preparedData = this.prepareData( data );
                 this.trashed = preparedData;
                 this.trashedAreReady = true;
+            },
+
+            /** 
+            * sets the type inside the item using the array key
+            * and flatten the object to a datatable readied array
+            * 
+            * @param {Object} dataObj an object of collections
+            * ['customers' => $customers, 'invoices' => $invoices, ....]
+            * 
+            */
+            prepareData(dataObj) {        
+                let data = [];
+                for (const key of Object.keys(dataObj) ) {
+                    const collection = dataObj[key];
+
+                    const items = collection.forEach(item => {
+                        data.push({
+                            id: item.id,
+                            type: key,
+                            identifier: item.full_name || item.number || _moneyFormat(item.net_amount, {}),
+                            deleted_at: item.deleted_at
+                        });
+                    })
+
+                }
+
+                return data;
             }
         },
     }
