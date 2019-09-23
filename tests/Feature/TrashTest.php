@@ -56,7 +56,7 @@ class TrashTest extends TestCase
             $resName = strtolower( class_basename(get_class($res)) );
             $resId = $res->id;
             $res->delete();
-            $route = route('trash.restore', ['resource' => $resName, 'id' => $resId]);
+            $route = route($resName.'.trash.restore', ['id' => $resId]);
             $response = $this->actingAs($this->user)->get($route);
             $response->assertStatus(200);
             
@@ -80,7 +80,7 @@ class TrashTest extends TestCase
             $resName = strtolower( class_basename(get_class($res)) );
             $resId = $res->id;
             $res->delete();
-            $route = route('trash.destroy', ['resource' => $resName, 'id' => $resId]);
+            $route = route($resName.'.trash.destroy', ['id' => $resId]);
             $response = $this->actingAs($this->user)->delete($route);
             $response->assertStatus(200);
             $this->assertDatabaseMissing($resName . "s", $res->toArray());
