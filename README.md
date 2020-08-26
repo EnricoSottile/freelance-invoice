@@ -1,6 +1,6 @@
 # freelance-invoice
 A simple web app to manage customers, invoices and payments as a freelancer.   
-**IMPORTANT: This project it's under active development and it's still far from it's first release.**
+**IMPORTANT: This project is on hold**
 
 ## description
 The main purpose of the application is to help manage the boring part of freelancing (invoicing, keeping track of payments..)
